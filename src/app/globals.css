@@ -1,29 +1,17 @@
+@import "@fontsource/libertinus-sans/400.css";
+@import "@fontsource/libertinus-sans/400-italic.css";
+@import "@fontsource/libertinus-sans/700.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 253 252 251; /* #fdfcfb */
-    --foreground: 42 38 33; /* #2a2621 */
-    --primary: 25 82 33; /* #195221 */
-    --secondary: 108 93 128; /* #6c5d80 */
-  }
-
-  .dark {
-    --background: 42 38 33; /* #2a2621 */
-    --foreground: 253 252 251; /* #fdfcfb */
-    --primary: 25 82 33; /* #195221 */
-    --secondary: 108 93 128; /* #6c5d80 */
-  }
-
-  * {
-    @apply border-border;
-  }
-
   body {
-    @apply bg-background-light dark:bg-background-dark text-foreground-light dark:text-foreground-dark;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    @apply bg-background-light dark:bg-background-dark text-foreground-light dark:text-foreground-dark font-sans;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
   }
 }
 
