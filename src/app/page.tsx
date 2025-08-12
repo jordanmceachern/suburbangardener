@@ -1,28 +1,51 @@
 import ErrorTester from "../components/ErrorTester";
 import Logo from "../components/Logo";
+import Greeting from "../components/Greeting";
 
 export default function Home() {
   return (
     <main className="min-h-screen p-8 bg-background-light dark:bg-background-dark">
       <div className="max-w-4xl mx-auto space-y-8">
-        <header className="flex flex-col items-center text-center space-y-4">
-          <Logo height={150} />
-          <h1 className="text-4xl font-bold text-primary-900 dark:text-primary-100">
-            Welcome to Suburban Gardener
-          </h1>
-          <p className="text-lg text-neutral-700 dark:text-neutral-300">
-            Your gardening journey starts here!
-          </p>
-        </header>
+        <header className="relative flex flex-col items-center text-center overflow-hidden rounded-lg min-h-[400px]">
+          {/* Background Video */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster="https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1754661544/SuburbanGardener/IMG_7791_nl7dzw.jpg"
+            className="absolute inset-0 w-full h-full object-cover z-0"
+          >
+            <source
+              src="https://res.cloudinary.com/dtweazqf2/video/upload/f_auto,q_auto/v1754668830/SuburbanGardener/bannerboomerang_ebv27k.webm"
+              type="video/webm"
+            />
+            Your browser does not support the video tag.
+          </video>
 
-        {/* Error Boundary Tester - Development Only */}
+          {/* Content Overlay */}
+          <div className="relative z-10 w-full p-8">
+            <div className="flex flex-row sm:flex-col">
+              <Logo
+                className="me-6 sm:me-0 mb-0 sm:my-24 h-[100px] sm:h-[300px]"
+                src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,t_transparent-white-alpha-dim,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
+              />
+              <div className="flex sm:hidden w-full px-4 sm:px-24">
+                <Greeting />
+              </div>
+            </div>
+          </div>
+        </header>
+        <div className="hidden sm:flex w-full">
+          <Greeting />
+        </div>
+
         {process.env.NODE_ENV === "development" && (
           <div className="mt-8">
             <ErrorTester />
           </div>
         )}
 
-        {/* Font and Style Test Section */}
         <section className="mt-12 p-6 rounded-lg bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700">
           <h2 className="text-2xl font-bold mb-4 text-secondary-700 dark:text-secondary-300">
             Font and Style Test
