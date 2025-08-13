@@ -1,5 +1,6 @@
 import ErrorTester from "../components/ErrorTester";
 import Logo from "../components/Logo";
+import Link from "next/link";
 import Greeting from "../components/Greeting";
 
 export default function Home() {
@@ -39,6 +40,33 @@ export default function Home() {
         <div className="hidden sm:flex w-full">
           <Greeting />
         </div>
+
+        {/* Authentication Section */}
+        <section className="mt-8 p-6 rounded-lg bg-primary-50 dark:bg-primary-900 border border-primary-200 dark:border-primary-700">
+          <div className="text-center">
+            <h2 className="text-xl font-bold mb-3 text-primary-900 dark:text-primary-100">
+              Join Our Gardening Community
+            </h2>
+            <p className="text-primary-700 dark:text-primary-300 mb-6">
+              Sign up for exclusive access to premium gardening tools,
+              personalized plant care guides, and more!
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/register"
+                className="bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+              >
+                Get Started - Sign Up
+              </Link>
+              <Link
+                href="/login"
+                className="bg-white dark:bg-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-700 text-primary-600 dark:text-primary-400 font-medium py-3 px-6 rounded-lg border border-primary-300 dark:border-primary-600 transition-colors"
+              >
+                Already a Member? Log In
+              </Link>
+            </div>
+          </div>
+        </section>
 
         {process.env.NODE_ENV === "development" && (
           <div className="mt-8">
