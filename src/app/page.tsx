@@ -24,10 +24,9 @@ export default function Home() {
           </video>
 
           <div className="absolute inset-0 z-10 w-full flex flex-col items-center justify-center">
-            <Logo
-              className="h-[125px] sm:h-[225px]"
-              src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,t_transparent-white-alpha-dim,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
-            />
+            <div className="h-[125px] sm:h-[225px] w-full flex">
+              <Logo src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,t_transparent-white-alpha-dim,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png" />
+            </div>
           </div>
         </header>
         <div className="flex w-full">

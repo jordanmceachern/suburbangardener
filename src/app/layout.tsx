@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import type { Metadata } from "next";
 import ErrorBoundary from "../components/ErrorBoundary";
+import Navigation from "../components/Navigation";
 import { AuthProvider } from "../lib/auth-nextauth";
 import "./globals.css";
 
@@ -57,7 +58,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body>
         <AuthProvider>
-          <ErrorBoundary>{children}</ErrorBoundary>
+          <ErrorBoundary>
+            <div className="flex h-screen">
+              <Navigation />
+              <div className="flex-1 sm:ml-20 lg:ml-32">
+                <div className="pb-20 sm:pb-0">{children}</div>
+              </div>
+            </div>
+          </ErrorBoundary>
         </AuthProvider>
       </body>
     </html>
