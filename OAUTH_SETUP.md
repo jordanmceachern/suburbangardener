@@ -16,21 +16,7 @@ This setup uses only GitHub OAuth for simplicity and ease of configuration.
 5. Copy the **Client ID** and generate a **Client Secret**
 6. Add these to your `.env.local` file
 
-### 2. Environment Variables
-
-Update your `.env.local` file with:
-
-```bash
-# NextAuth.js
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your-secret-key-here-change-this-in-production
-
-# GitHub OAuth
-GITHUB_CLIENT_ID=your-github-client-id-from-step-5
-GITHUB_CLIENT_SECRET=your-github-client-secret-from-step-5
-```
-
-### 3. Generate NEXTAUTH_SECRET
+### 2. Generate NEXTAUTH_SECRET
 
 Run this command to generate a secure secret:
 
@@ -40,13 +26,27 @@ openssl rand -base64 32
 
 Copy the output and replace `your-secret-key-here-change-this-in-production` in `.env.local`
 
+### 3. Environment Variables
+
+Update your `.env.local` file with:
+
+```bash
+# NextAuth.js
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=Tsh/ow8FyYZdIaIEHHNGgWKGIIKRAnN5WQ+b/f6sMVI=
+
+# GitHub OAuth
+GITHUB_CLIENT_ID=Ov23liqyjshjOMKAj089
+GITHUB_CLIENT_SECRET=9c5b68523c8fe33633e10fd893c635c161961ef4
+```
+
 ### 4. Production Setup
 
 For production, update your GitHub OAuth app with:
 
-- **Homepage URL**: `https://yourdomain.com`
-- **Authorization callback URL**: `https://yourdomain.com/api/auth/callback/github`
-- **NEXTAUTH_URL**: `https://yourdomain.com`
+- **Homepage URL**: `https://suburbangardener.ca`
+- **Authorization callback URL**: `https://suburbangardener.ca/api/auth/callback/github`
+- **NEXTAUTH_URL**: `https://suburbangardener.ca`
 
 ## What's Been Updated
 

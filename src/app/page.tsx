@@ -8,7 +8,6 @@ export default function Home() {
     <main className="min-h-screen p-8 bg-background-light dark:bg-background-dark">
       <div className="max-w-4xl mx-auto space-y-8">
         <header className="relative flex flex-col items-center text-center overflow-hidden rounded-lg min-h-[400px]">
-          {/* Background Video */}
           <video
             autoPlay
             loop
@@ -24,24 +23,17 @@ export default function Home() {
             Your browser does not support the video tag.
           </video>
 
-          {/* Content Overlay */}
-          <div className="relative z-10 w-full p-8">
-            <div className="flex flex-row sm:flex-col">
-              <Logo
-                className="me-6 sm:me-0 mb-0 sm:my-24 h-[100px] sm:h-[300px]"
-                src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,t_transparent-white-alpha-dim,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
-              />
-              <div className="flex sm:hidden w-full px-4 sm:px-24">
-                <Greeting />
-              </div>
-            </div>
+          <div className="absolute inset-0 z-10 w-full flex flex-col items-center justify-center">
+            <Logo
+              className="h-[125px] sm:h-[225px]"
+              src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,t_transparent-white-alpha-dim,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
+            />
           </div>
         </header>
-        <div className="hidden sm:flex w-full">
+        <div className="flex w-full">
           <Greeting />
         </div>
 
-        {/* Authentication Section */}
         <section className="mt-8 p-6 rounded-lg bg-primary-50 dark:bg-primary-900 border border-primary-200 dark:border-primary-700">
           <div className="text-center">
             <h2 className="text-xl font-bold mb-3 text-primary-900 dark:text-primary-100">

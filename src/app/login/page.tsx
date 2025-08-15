@@ -17,8 +17,8 @@ export default function LoginPage() {
 
     try {
       const result = await signIn("github", {
-        redirect: false,
         callbackUrl: "/dashboard",
+        redirect: true,
       });
 
       if (result?.error) {
