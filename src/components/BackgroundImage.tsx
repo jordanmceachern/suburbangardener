@@ -4,7 +4,7 @@ export interface BackgroundImageProps {
   className?: string;
   imageClassName?: string;
   height?: number;
-  label: string;
+  label?: string;
   src: string;
   width?: number;
   minWidth?: number;
@@ -36,7 +36,7 @@ export function BackgroundImage({
     >
       <div
         aria-label={label}
-        className={`bg-contain bg-center bg-no-repeat w-full h-full dark:bg-neutral-300 dark:rounded-lg dark:shadow-lg${imageClassName ? " " + imageClassName : ""}`}
+        className={`bg-contain bg-center bg-no-repeat w-full h-full dark:bg-neutral-300 dark:rounded-lg dark:shadow-lg${imageClassName ? " " + imageClassName : ""} rounded-lg`}
         style={{ backgroundImage: `url(${src})`, ...customImageWidth }}
       />
     </div>

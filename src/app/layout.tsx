@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import type { Metadata } from "next";
 import ErrorBoundary from "../components/ErrorBoundary";
+import { AuthProvider } from "../lib/auth-nextauth";
 import "./globals.css";
 
 const title = "Suburban Gardener";
@@ -55,7 +56,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <ErrorBoundary>{children}</ErrorBoundary>
+        <AuthProvider>
+          <ErrorBoundary>{children}</ErrorBoundary>
+        </AuthProvider>
       </body>
     </html>
   );
