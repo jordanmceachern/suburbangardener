@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import Logo from "./Logo";
+import BackgroundImage from "./BackgroundImage";
 import { usePathname } from "next/navigation";
 import { useAuth } from "../lib/auth-nextauth";
 
@@ -158,7 +158,7 @@ export default function Navigation() {
   return (
     <>
       {/* Desktop/Tablet Sidebar - Left side for lg+ screens */}
-      <nav className="hidden sm:fixed sm:inset-y-0 sm:left-0 sm:flex sm:flex-col">
+      <nav className="hidden sm:fixed sm:inset-y-0 sm:left-0 sm:flex sm:flex-col sm:w-20 lg:w-32">
         <div className="flex flex-col flex-grow pt-8 bg-white dark:bg-neutral-800 border-r border-neutral-200 dark:border-neutral-700 overflow-y-auto">
           <div className="flex-grow flex flex-col">
             <nav className="flex-1 px-3 space-y-1">
@@ -177,8 +177,10 @@ export default function Navigation() {
                         href={item.href}
                       >
                         <span className="md:h-8 lg:h-16 w-full flex">
-                          <Logo
-                            className="flex-shrink-0"
+                          <BackgroundImage
+                            className="flex-shrink-0 dark:bg-neutral-200"
+                            key="home-logo"
+                            label="Suburban Gardener Logo"
                             src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
                           />
                         </span>
@@ -190,7 +192,7 @@ export default function Navigation() {
                           active
                             ? "bg-primary-100 dark:bg-primary-900 text-primary-900 dark:text-primary-100"
                             : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100"
-                        } group flex items-center px-3 py-2 font-medium rounded-md transition-colors`}
+                        } group flex justify-center items-center px-3 py-2 font-medium rounded-md transition-colors`}
                         href={item.href}
                       >
                         <span className="flex-shrink-0">{item.icon}</span>
@@ -226,8 +228,9 @@ export default function Navigation() {
                   href={item.href}
                 >
                   <span className="h-8 w-12 flex">
-                    <Logo
-                      className="flex-shrink-0"
+                    <BackgroundImage
+                      className="flex-shrink-0 dark:bg-neutral-200"
+                      label="Suburban Gardener Logo"
                       src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
                     />
                   </span>
