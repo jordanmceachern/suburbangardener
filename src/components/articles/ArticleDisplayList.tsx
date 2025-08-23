@@ -9,7 +9,7 @@ interface ArticleDisplayListProps {
   className?: string;
   initialArticles?: number;
   articlesPerLoad?: number;
-  onClick?: (clickedArticle: ArticleDisplayData) => void;
+  onClick?: () => void;
 }
 
 export default function ArticleDisplayList({
@@ -30,17 +30,25 @@ export default function ArticleDisplayList({
     // Simulate loading articles (excluding the featured article)
     const loadArticles = () => {
       // Filter out the most recent article since it's used as featured
-      const mostRecentDate = mockArticles.reduce((latest, current) => {
+      const mostRecentArticle = mockArticles.reduce((latest, current) => {
         const latestDate = new Date(latest.publishedDate);
         const currentDate = new Date(current.publishedDate);
         return currentDate > latestDate ? current : latest;
       }, mockArticles[0]);
 
-      const allArticles = mockArticles.filter(
-        article => article.id !== mostRecentDate.id
+      const filteredArticles = mockArticles.filter(
+        article => article.id !== mostRecentArticle.id
       );
-      setArticles(allArticles);
-      setDisplayedArticles(allArticles.slice(0, initialArticles));
+
+      // Sort remaining articles by date in descending order (most recent first)
+      const sortedArticles = filteredArticles.sort((a, b) => {
+        const dateA = new Date(a.publishedDate);
+        const dateB = new Date(b.publishedDate);
+        return dateB.getTime() - dateA.getTime();
+      });
+
+      setArticles(sortedArticles);
+      setDisplayedArticles(sortedArticles.slice(0, initialArticles));
       setLoading(false);
     };
 
@@ -62,7 +70,7 @@ export default function ArticleDisplayList({
 
   const handleArticleClick = (article: ArticleDisplayData) => {
     if (onClick) {
-      onClick(article);
+      onClick();
     } else {
       // Default behavior - could navigate to article page
       console.log(`Navigate to article: ${article.slug}`);

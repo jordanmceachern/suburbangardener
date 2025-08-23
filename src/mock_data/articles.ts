@@ -1,4 +1,4 @@
-import { ArticleDisplayData } from "../components/ArticleDisplayCard";
+import type { ArticleDisplayData } from "../components/articles/ArticleDisplayCard";
 
 // Article based on the markdown file in this directory
 export const organicTomatoesArticle: ArticleDisplayData = {
@@ -10,7 +10,7 @@ export const organicTomatoesArticle: ArticleDisplayData = {
   author: "Sarah Mitchell",
   slug: "growing-organic-tomatoes",
   imageUrl:
-    "https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1754661544/SuburbanGardener/organic-tomatoes.jpg",
+    "https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1755004794/SuburbanGardener/toflato_l0dkqy.jpg",
   category: "Vegetables",
 };
 
@@ -26,7 +26,7 @@ export const mockArticles: ArticleDisplayData[] = [
     author: "Jordan McEachern",
     slug: "spring-garden-planning-complete-guide",
     imageUrl:
-      "https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1754661544/SuburbanGardener/spring-garden-planning.jpg",
+      "https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1754661543/SuburbanGardener/IMG_7668_iiqz5m.jpg",
     category: "Planning",
   },
   {
@@ -38,7 +38,7 @@ export const mockArticles: ArticleDisplayData[] = [
     author: "Sarah Mitchell",
     slug: "organic-soil-building-foundation",
     imageUrl:
-      "https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1754661544/SuburbanGardener/soil-building.jpg",
+      "https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1754661543/SuburbanGardener/IMG_7775_tov5ej.jpg",
     category: "Soil Care",
   },
   {
@@ -50,7 +50,7 @@ export const mockArticles: ArticleDisplayData[] = [
     author: "Jordan McEachern",
     slug: "water-wise-gardening-sustainable-irrigation",
     imageUrl:
-      "https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1754661544/SuburbanGardener/water-wise-gardening.jpg",
+      "https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1754661543/SuburbanGardener/IMG_7722_sveqok.jpg",
     category: "Watering",
   },
   {
@@ -62,7 +62,7 @@ export const mockArticles: ArticleDisplayData[] = [
     author: "Sarah Mitchell",
     slug: "container-gardening-beginners",
     imageUrl:
-      "https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1754661544/SuburbanGardener/container-gardening.jpg",
+      "https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1754661544/SuburbanGardener/IMG_7791_nl7dzw.jpg",
     category: "Container Gardening",
   },
   {
@@ -74,7 +74,7 @@ export const mockArticles: ArticleDisplayData[] = [
     author: "Jordan McEachern",
     slug: "composting-101-waste-to-garden-gold",
     imageUrl:
-      "https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1754661544/SuburbanGardener/composting.jpg",
+      "https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1754661542/SuburbanGardener/IMG_7560_bfcsta.jpg",
     category: "Composting",
   },
   {
@@ -86,7 +86,7 @@ export const mockArticles: ArticleDisplayData[] = [
     author: "Sarah Mitchell",
     slug: "natural-pest-control-organic-methods",
     imageUrl:
-      "https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1754661544/SuburbanGardener/natural-pest-control.jpg",
+      "https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1754661542/SuburbanGardener/IMG_1402_jv7cf5.jpg",
     category: "Pest Control",
   },
 ];

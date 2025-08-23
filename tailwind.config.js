@@ -24,9 +24,9 @@ module.exports = {
       colors: {
         // Light theme colors
         "background-light": "#fdfcfb", // soft warm white
-        "background-dark": "#2a2621", // soft dark warm gray
+        "background-dark": "#0d2d12", // darkest primary green
         "foreground-light": "#2a2621", // dark text on light bg
-        "foreground-dark": "#fdfcfb", // light text on dark bg
+        "foreground-dark": "#f0f9f1", // light text on dark bg
         // Primary accent colors based on #195221 (forest green)
         primary: {
           50: "#f0f9f1",
@@ -54,6 +54,20 @@ module.exports = {
           800: "#5a4d68",
           900: "#4c4056",
           950: "#322a38",
+        },
+        // Tertiary accent colors based on #faad01 (warm golden yellow)
+        tertiary: {
+          50: "#fffbeb",
+          100: "#fef3c7",
+          200: "#fde68a",
+          300: "#fcd34d",
+          400: "#facc15",
+          500: "#faad01", // your base color
+          600: "#e08e00",
+          700: "#c27803",
+          800: "#a16207",
+          900: "#854d0e",
+          950: "#451a03",
         },
         // Neutral grays with warm undertones
         neutral: {

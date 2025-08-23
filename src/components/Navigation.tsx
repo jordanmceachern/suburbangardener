@@ -159,7 +159,7 @@ export default function Navigation() {
     <>
       {/* Desktop/Tablet Sidebar - Left side for lg+ screens */}
       <nav className="hidden sm:fixed sm:inset-y-0 sm:left-0 sm:flex sm:flex-col sm:w-20 lg:w-32">
-        <div className="flex flex-col flex-grow pt-8 bg-white dark:bg-neutral-800 border-r border-neutral-200 dark:border-neutral-700 overflow-y-auto">
+        <div className="flex flex-col flex-grow pt-8 bg-slate-100 dark:bg-slate-800 border-r border-slate-300 dark:border-slate-600 overflow-y-auto">
           <div className="flex-grow flex flex-col">
             <nav className="flex-1 px-3 space-y-1">
               {filteredNavigation.map(item => {
@@ -210,7 +210,7 @@ export default function Navigation() {
       </nav>
 
       {/* Mobile Navigation - Bottom horizontal bar */}
-      <nav className="sm:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700 z-50">
+      <nav className="sm:hidden fixed bottom-0 left-0 right-0 bg-slate-200 dark:bg-slate-700 border-slate-300 dark:border-slate-600 z-50">
         <div className="flex justify-around items-center py-2">
           {filteredNavigation.map(item => {
             const active = isActive(item.href);
@@ -245,7 +245,7 @@ export default function Navigation() {
                 className={`${
                   active
                     ? "text-primary-600 dark:text-primary-400"
-                    : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100"
+                    : "text-neutral-500 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100"
                 } flex flex-col items-center justify-center min-w-0 py-2 transition-colors`}
               >
                 <span className="flex-shrink-0 mb-1">{item.icon}</span>

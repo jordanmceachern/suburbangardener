@@ -1,8 +1,8 @@
 import React from "react";
 import RecentArticles from "../../components/articles/RecentArticles";
-import ArticleDisplayCard from "../../components/articles/ArticleDisplayCard";
+import ArticlesPageHeader from "../../components/articles/ArticlesPageHeader";
+import FeaturedArticle from "../../components/articles/FeaturedArticle";
 import ArticleDisplayList from "../../components/articles/ArticleDisplayList";
-import { mockFeaturedArticle } from "../../mock_data/articles";
 
 export default function ArticlesPage() {
   return (
@@ -10,20 +10,10 @@ export default function ArticlesPage() {
       {/* Main Content Area */}
       <div className="lg:pr-80">
         <div className="max-w-4xl mx-auto px-4 py-8">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-primary-900 dark:text-primary-100 mb-4">
-              Gardening Articles
-            </h1>
-            <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
-              Discover expert insights, seasonal tips, and in-depth guides for
-              successful suburban gardening.
-            </p>
-          </div>
+          <ArticlesPageHeader />
 
           {/* Featured Article */}
-          <div className="mb-12">
-            <ArticleDisplayCard article={mockFeaturedArticle} />
-          </div>
+          <FeaturedArticle className="mb-12" />
 
           {/* Related Articles Grid */}
           <div className="mt-12">

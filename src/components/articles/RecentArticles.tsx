@@ -67,7 +67,7 @@ export default function RecentArticles({
 
   const collapseButtonClasses = useMemo(
     () =>
-      `absolute top-8 -left-10 bg-slate-200 dark:bg-slate-700 shadow-xl cursor-pointer hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors z-30 focus:outline-none focus:ring-2 focus:ring-primary-500 w-10 h-16 flex items-center justify-center rounded-l-md lg:hidden ${
+      `absolute top-4 -left-10 bg-slate-200 dark:bg-slate-600 shadow-xl cursor-pointer hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors z-30 focus:outline-none focus:ring-2 focus:ring-primary-500 w-10 h-16 flex items-center justify-center rounded-l-md lg:hidden ${
         isOpen
           ? "border-l border-t border-b border-slate-300 dark:border-slate-600"
           : "border border-slate-300 dark:border-slate-600"
@@ -133,7 +133,7 @@ export default function RecentArticles({
           </div>
 
           {/* Divider */}
-          <div className="border-t border-slate-300 dark:border-slate-600 mb-6"></div>
+          <div className="border-t border-slate-300 dark:border-slate-500 mb-6"></div>
 
           <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
             Recent Articles
@@ -146,7 +146,7 @@ export default function RecentArticles({
                   key={index}
                   className={
                     index < maxArticles - 1
-                      ? "border-b border-slate-300 dark:border-slate-600 pb-4 animate-pulse"
+                      ? "border-b border-slate-300 dark:border-slate-500 pb-4 animate-pulse"
                       : "animate-pulse"
                   }
                 >
@@ -169,7 +169,7 @@ export default function RecentArticles({
                   key={article.id}
                   className={
                     index < articles.length - 1
-                      ? "border-b border-slate-300 dark:border-slate-600 pb-4"
+                      ? "border-b border-slate-300 dark:border-slate-500 pb-4"
                       : ""
                   }
                 >

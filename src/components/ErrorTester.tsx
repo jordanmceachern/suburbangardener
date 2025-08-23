@@ -15,13 +15,13 @@ export default function ErrorTester() {
   };
 
   return (
-    <div className="p-6 bg-neutral-100 dark:bg-neutral-800 rounded-lg border border-neutral-200 dark:border-neutral-700">
+    <div className="p-6 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
       <div className="space-y-4">
         <div>
           <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
             🧪 Error Boundary Tester
           </h3>
-          <p className="text-neutral-600 dark:text-neutral-400">
+          <p className="text-neutral-600 dark:text-neutral-200">
             Click the button below to trigger an error and test the error
             boundary system. This will display the branded error page and send
             an email notification.
@@ -44,7 +44,7 @@ export default function ErrorTester() {
           </button>
         </div>
 
-        <div className="text-xs text-neutral-500 dark:text-neutral-400 space-y-1">
+        <div className="text-xs text-neutral-500 dark:text-neutral-200 space-y-1">
           <p>• The error will be caught by the ErrorBoundary component</p>
           <p>• An email will be sent to jormceachern@gmail.com</p>
           <p>• Anti-spam protection prevents duplicate emails</p>
