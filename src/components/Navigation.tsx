@@ -159,7 +159,7 @@ export default function Navigation() {
     <>
       {/* Desktop/Tablet Sidebar - Left side for lg+ screens */}
       <nav className="hidden sm:fixed sm:inset-y-0 sm:left-0 sm:flex sm:flex-col sm:w-20 lg:w-32">
-        <div className="flex flex-col flex-grow pt-8 bg-slate-100 dark:bg-slate-800 border-r border-slate-300 dark:border-slate-600 overflow-y-auto">
+        <div className="flex flex-col flex-grow pt-6 bg-slate-100 dark:bg-slate-800 border-r border-slate-300 dark:border-slate-600 overflow-y-auto">
           <div className="flex-grow flex flex-col">
             <nav className="flex-1 px-3 space-y-1">
               {filteredNavigation.map(item => {

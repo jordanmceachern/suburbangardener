@@ -1,5 +1,5 @@
 import React from "react";
-import RecentArticles from "../../components/articles/RecentArticles";
+import ArticlesSidebar from "../../components/articles/ArticlesSidebar";
 import ArticlesPageHeader from "../../components/articles/ArticlesPageHeader";
 import FeaturedArticle from "../../components/articles/FeaturedArticle";
 import ArticleDisplayList from "../../components/articles/ArticleDisplayList";
@@ -12,7 +12,6 @@ export default function ArticlesPage() {
         <div className="max-w-4xl mx-auto px-4 py-8">
           <ArticlesPageHeader />
 
-          {/* Featured Article */}
           <FeaturedArticle className="mb-12" />
 
           {/* Related Articles Grid */}
@@ -27,7 +26,7 @@ export default function ArticlesPage() {
 
       {/* Collapsible Sidebar - All screens */}
       <div className="fixed top-0 right-0 w-80 z-40">
-        <RecentArticles maxArticles={6} />
+        <ArticlesSidebar maxArticles={6} />
       </div>
     </main>
   );

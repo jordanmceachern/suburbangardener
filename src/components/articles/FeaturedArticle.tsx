@@ -53,7 +53,11 @@ export default function FeaturedArticle({
 
   return (
     <div className={`${className}`}>
-      <ArticleDisplayCard article={featuredArticle} buttonVariant="narrow" />
+      <ArticleDisplayCard
+        article={featuredArticle}
+        buttonVariant="narrow"
+        showArrow={true}
+      />
     </div>
   );
 }

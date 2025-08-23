@@ -1,11 +1,11 @@
 import React from "react";
 import BackgroundImage from "./BackgroundImage";
 
-interface HeroSectionProps {
+interface BannerSectionProps {
   className?: string;
 }
 
-export default function HeroSection({ className = "" }: HeroSectionProps) {
+export default function BannerSection({ className = "" }: BannerSectionProps) {
   return (
     <header
       className={`relative flex flex-col items-center text-center overflow-hidden rounded-lg min-h-[400px] ${className}`}

@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import ArticleDisplayCard from "./ArticleDisplayCard";
+import ViewAllArticlesButton from "./ViewAllArticlesButton";
 import { mockArticles } from "../../mock_data/articles";
 import type { ArticleDisplayData } from "./ArticleDisplayCard";
 
@@ -93,12 +93,7 @@ export default function HomeArticlesSection({
       </div>
 
       <div className="text-center mt-8">
-        <Link
-          href="/articles"
-          className="bg-primary-500 hover:bg-primary-600 text-white hover:text-neutral-100 font-medium py-3 px-6 rounded-lg transition-colors block w-full"
-        >
-          View All Articles
-        </Link>
+        <ViewAllArticlesButton className="block w-full" />
       </div>
     </section>
   );

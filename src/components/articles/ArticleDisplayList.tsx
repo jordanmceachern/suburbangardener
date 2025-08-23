@@ -9,14 +9,12 @@ interface ArticleDisplayListProps {
   className?: string;
   initialArticles?: number;
   articlesPerLoad?: number;
-  onClick?: () => void;
 }
 
 export default function ArticleDisplayList({
   className = "",
   initialArticles = 6,
   articlesPerLoad = 6,
-  onClick,
 }: ArticleDisplayListProps) {
   const [articles, setArticles] = useState<ArticleDisplayData[]>([]);
   const [displayedArticles, setDisplayedArticles] = useState<
@@ -68,15 +66,6 @@ export default function ArticleDisplayList({
     }, 500);
   };
 
-  const handleArticleClick = (article: ArticleDisplayData) => {
-    if (onClick) {
-      onClick();
-    } else {
-      // Default behavior - could navigate to article page
-      console.log(`Navigate to article: ${article.slug}`);
-    }
-  };
-
   const hasMoreArticles = currentCount < articles.length;
 
   if (loading) {
@@ -100,11 +89,7 @@ export default function ArticleDisplayList({
     <div className={`${className}`}>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {displayedArticles.map(article => (
-          <ArticleDisplayCard
-            key={article.id}
-            article={article}
-            onReadMore={() => handleArticleClick(article)}
-          />
+          <ArticleDisplayCard key={article.id} article={article} />
         ))}
       </div>
 

@@ -168,7 +168,7 @@ export default function SearchArticles({
         </div>
 
         {/* Results Summary */}
-        <div className="text-xs text-slate-600 dark:text-slate-400">
+        <div className="text-xs text-slate-600 dark:text-slate-300">
           {searchTerm || selectedCategory !== "All Categories" ? (
             <span>
               Found{" "}

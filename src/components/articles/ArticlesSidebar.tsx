@@ -4,11 +4,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import { mockSidebarArticles } from "../../mock_data/articles";
 import SearchArticles from "./SearchArticles";
 import type { ArticleDisplayData } from "./ArticleDisplayCard";
+import ArticleListItem from "./ArticleListItem";
 
 // Use ArticleDisplayData since it has all the fields we need
 type ArticleMetadata = ArticleDisplayData;
 
-interface RecentArticlesProps {
+interface ArticlesSidebarProps {
   className?: string;
   maxArticles?: number;
 }
@@ -40,10 +41,10 @@ async function fetchArticles(
   return mockSidebarArticles.slice(0, maxArticles);
 }
 
-export default function RecentArticles({
+export default function ArticlesSidebar({
   className = "",
   maxArticles = 3,
-}: RecentArticlesProps) {
+}: ArticlesSidebarProps) {
   const [articles, setArticles] = React.useState<ArticleMetadata[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
@@ -165,24 +166,11 @@ export default function RecentArticles({
           {!loading && !error && (
             <div className="space-y-4">
               {articles.map((article, index) => (
-                <article
+                <ArticleListItem
                   key={article.id}
-                  className={
-                    index < articles.length - 1
-                      ? "border-b border-slate-300 dark:border-slate-500 pb-4"
-                      : ""
-                  }
-                >
-                  <h4 className="font-medium text-slate-800 dark:text-slate-200 mb-2">
-                    {article.title}
-                  </h4>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
-                    {article.excerpt}
-                  </p>
-                  <span className="text-xs text-slate-500 dark:text-slate-500">
-                    {article.publishedDate}
-                  </span>
-                </article>
+                  article={article}
+                  showBorder={index < articles.length - 1}
+                />
               ))}
             </div>
           )}

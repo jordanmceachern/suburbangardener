@@ -10,7 +10,7 @@ export default function CommunitySection({
 }: CommunitySectionProps) {
   return (
     <section
-      className={`p-6 rounded-lg bg-primary-100 dark:bg-secondary-900 border border-primary-200 dark:border-secondary-800 ${className}`}
+      className={`p-6 rounded-lg bg-primary-100 dark:bg-slate-600 border border-primary-200 dark:border-slate-500 ${className}`}
     >
       <div className="text-center">
         <h2 className="text-xl font-bold mb-3 text-neutral-900 dark:text-neutral-100">

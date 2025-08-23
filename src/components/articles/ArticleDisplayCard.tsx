@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import BackgroundImage from "../BackgroundImage";
 
 export interface ArticleDisplayData {
@@ -12,6 +13,7 @@ export interface ArticleDisplayData {
   slug: string;
   imageUrl: string;
   category: string;
+  content?: string; // Full article content for individual pages
 }
 
 interface ArticleDisplayCardProps {
@@ -19,6 +21,7 @@ interface ArticleDisplayCardProps {
   className?: string;
   onReadMore?: () => void;
   buttonVariant?: "default" | "narrow";
+  showArrow?: boolean;
 }
 
 export default function ArticleDisplayCard({
@@ -26,19 +29,18 @@ export default function ArticleDisplayCard({
   className = "",
   onReadMore,
   buttonVariant = "default",
+  showArrow = false,
 }: ArticleDisplayCardProps) {
   const handleReadMore = () => {
+    console.log("Read More clicked for article:", article.slug);
     if (onReadMore) {
       onReadMore();
-    } else {
-      // Default behavior - could navigate to article page
-      console.log(`Navigate to article: ${article.slug}`);
     }
   };
 
   return (
     <article
-      className={`bg-primary-50 dark:bg-neutral-900 rounded-lg shadow-lg overflow-hidden min-w-0 flex flex-col ${className}`}
+      className={`bg-primary-50 dark:bg-slate-500 rounded-lg shadow-lg overflow-hidden min-w-0 flex flex-col ${className}`}
     >
       <div className="h-48 sm:h-64 bg-slate-800">
         <BackgroundImage
@@ -59,14 +61,26 @@ export default function ArticleDisplayCard({
         <p className="text-neutral-700 dark:text-neutral-200 text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3">
           {article.excerpt}
         </p>
-        <button
-          onClick={handleReadMore}
-          className={`bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto ${
-            buttonVariant === "narrow" ? "self-center" : ""
-          }`}
-        >
-          Read More
-        </button>
+
+        {onReadMore ? (
+          <button
+            onClick={handleReadMore}
+            className={`bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto ${
+              buttonVariant === "narrow" ? "self-center" : ""
+            }`}
+          >
+            Read More{showArrow ? " →" : ""}
+          </button>
+        ) : (
+          <Link
+            href={`/articles/${article.slug}`}
+            className={`bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center ${
+              buttonVariant === "narrow" ? "self-center" : ""
+            }`}
+          >
+            Read More{showArrow ? " →" : ""}
+          </Link>
+        )}
       </div>
     </article>
   );
