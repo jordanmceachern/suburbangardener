@@ -29,13 +29,13 @@ export default function ArticlePage({ params }: ArticlePageProps) {
       .map((line, index) => {
         // Handle headers
         if (line.startsWith("### ")) {
-          return `<h3 key="${index}" class="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-8 mb-4">${line.replace("### ", "")}</h3>`;
+          return `<h3 key="${index}" class="text-xl font-semibold text-primary-900 dark:text-primary-100 mt-8 mb-4">${line.replace("### ", "")}</h3>`;
         }
         if (line.startsWith("## ")) {
-          return `<h2 key="${index}" class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-10 mb-6">${line.replace("## ", "")}</h2>`;
+          return `<h2 key="${index}" class="text-2xl font-bold text-primary-900 dark:text-primary-100 mt-10 mb-6">${line.replace("## ", "")}</h2>`;
         }
         if (line.startsWith("# ")) {
-          return `<h1 key="${index}" class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-12 mb-8">${line.replace("# ", "")}</h1>`;
+          return `<h1 key="${index}" class="text-3xl font-bold text-primary-900 dark:text-primary-100 mt-12 mb-8">${line.replace("# ", "")}</h1>`;
         }
 
         // Handle lists
@@ -43,15 +43,15 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           const parts = line.split("**:");
           const term = parts[0].replace("- **", "");
           const definition = parts[1];
-          return `<li key="${index}" class="mb-2"><strong class="text-gray-900 dark:text-gray-100">${term}:</strong><span class="text-gray-700 dark:text-gray-300">${definition}</span></li>`;
+          return `<li key="${index}" class="mb-2"><strong class="text-primary-900 dark:text-primary-100">${term}:</strong><span class="text-neutral-700 dark:text-neutral-200">${definition}</span></li>`;
         }
         if (line.startsWith("- ")) {
-          return `<li key="${index}" class="mb-1 text-gray-700 dark:text-gray-300">${line.replace("- ", "")}</li>`;
+          return `<li key="${index}" class="mb-1 text-neutral-700 dark:text-neutral-200">${line.replace("- ", "")}</li>`;
         }
 
         // Handle numbered lists
         if (/^\d+\./.test(line)) {
-          return `<li key="${index}" class="mb-2 text-gray-700 dark:text-gray-300">${line.replace(/^\d+\.\s*/, "")}</li>`;
+          return `<li key="${index}" class="mb-2 text-neutral-700 dark:text-neutral-200">${line.replace(/^\d+\.\s*/, "")}</li>`;
         }
 
         // Handle paragraphs
@@ -61,7 +61,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           !line.startsWith("-") &&
           !/^\d+\./.test(line)
         ) {
-          return `<p key="${index}" class="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed">${line}</p>`;
+          return `<p key="${index}" class="mb-4 text-neutral-700 dark:text-neutral-200 leading-relaxed">${line}</p>`;
         }
 
         // Empty lines
@@ -78,56 +78,55 @@ export default function ArticlePage({ params }: ArticlePageProps) {
     <div className="min-h-screen  bg-background-light dark:bg-background-dark">
       {/* Main Content Area with Sidebar */}
       <div className="lg:pr-80 relative">
-        <div className="container mx-auto px-6 py-12">
-          <div className="max-w-4xl">
+        <div className="mx-auto px-6 py-12 max-w-screen-2xl">
+          <div>
             {/* Banner Image */}
-            <div className="relative h-96 md:h-[500px] overflow-hidden rounded-lg mb-12">
+            <div className="relative h-96 md:h-[500px] overflow-hidden rounded-lg mb-8 bg-slate-800">
               <BackgroundImage
                 src={article.imageUrl}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-              <div className="absolute inset-0 flex items-end">
-                <div className="w-full p-6 pb-8">
-                  <div className="mb-4">
-                    <Link
-                      href="/articles"
-                      className="inline-flex items-center text-white hover:text-gray-200 transition-colors duration-200"
-                    >
-                      <svg
-                        className="w-5 h-5 mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 19l-7-7 7-7"
-                        />
-                      </svg>
-                      Back to Articles
-                    </Link>
-                  </div>
-                  <span className="inline-block px-3 py-1 bg-tertiary-500 text-white text-sm font-medium rounded-full mb-4">
-                    {article.category}
-                  </span>
-                  <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
-                    {article.title}
-                  </h1>
-                  <div className="flex items-center text-white/90 text-lg">
-                    <span>By {article.author}</span>
-                    <span className="mx-3">•</span>
-                    <span>{article.publishedDate}</span>
-                  </div>
-                </div>
+            </div>
+
+            {/* Article Header */}
+            <div className="mb-12">
+              <div className="mb-4">
+                <Link
+                  href="/articles"
+                  className="inline-flex items-center text-neutral-700 dark:text-neutral-200 hover:text-primary-900 dark:hover:text-primary-100 transition-colors duration-200"
+                >
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                  Back to Articles
+                </Link>
+              </div>
+              <span className="inline-block px-3 py-1 bg-tertiary-500 text-white dark:text-neutral-950 text-sm font-medium rounded-full mb-4">
+                {article.category}
+              </span>
+              <h1 className="text-4xl md:text-5xl font-bold text-primary-900 dark:text-primary-100 mb-4 leading-tight">
+                {article.title}
+              </h1>
+              <div className="flex items-center text-neutral-700 dark:text-neutral-200 text-lg">
+                <span>By {article.author}</span>
+                <span className="mx-3">•</span>
+                <span>{article.publishedDate}</span>
               </div>
             </div>
 
             {/* Article Excerpt */}
             <div className="mb-12">
-              <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed italic font-medium">
+              <p className="text-xl text-neutral-700 dark:text-gray-300 leading-relaxed italic font-medium">
                 {article.excerpt}
               </p>
             </div>
@@ -144,10 +143,10 @@ export default function ArticlePage({ params }: ArticlePageProps) {
 
             {/* Author Bio */}
             <div className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+              <h3 className="text-lg font-semibold text-primary-900 dark:text-primary-100 mb-2">
                 About {article.author}
               </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
+              <p className="text-neutral-700 dark:text-neutral-200 mb-6">
                 {article.author === "Jordan McEachern"
                   ? "Passionate suburban gardener and founder of SuburbanGardener, sharing practical tips for growing food and beauty in small spaces."
                   : "Experienced organic gardener and writer, specializing in sustainable growing practices and soil health."}

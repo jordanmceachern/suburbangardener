@@ -201,6 +201,13 @@ export function ArticleProvider({ children }: ArticleProviderProps) {
   const getFilteredArticles = useCallback(() => {
     let filtered = state.articles;
 
+    // Exclude featured article from the list to avoid duplication
+    if (state.featuredArticle) {
+      filtered = filtered.filter(
+        article => article.id !== state.featuredArticle!.id
+      );
+    }
+
     // Apply category filter (client-side filtering)
     if (state.selectedCategory !== "All Categories") {
       filtered = filtered.filter(
@@ -209,7 +216,7 @@ export function ArticleProvider({ children }: ArticleProviderProps) {
     }
 
     return filtered;
-  }, [state.articles, state.selectedCategory]);
+  }, [state.articles, state.selectedCategory, state.featuredArticle]);
 
   const contextValue: ArticleContextType = {
     state,

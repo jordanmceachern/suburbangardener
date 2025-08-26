@@ -81,8 +81,8 @@ export default function HomeArticlesSection({
         <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
           Latest Gardening Articles
         </h2>
-        <p className="text-lg text-neutral-600 dark:text-neutral-200 max-w-2xl mx-auto">
-          Discover expert insights and seasonal tips for your garden
+        <p className="sm:mx-auto text-lg text-start sm:text-center text-neutral-600 dark:text-neutral-200 max-w-2xl">
+          Discover expert insights and seasonal tips for your garden.
         </p>
       </div>
 

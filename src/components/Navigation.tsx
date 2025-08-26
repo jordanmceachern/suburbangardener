@@ -173,7 +173,7 @@ export default function Navigation() {
                           active
                             ? "bg-primary-100 dark:bg-primary-900 text-primary-900 dark:text-primary-100"
                             : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100"
-                        } group flex items-center md:px-1 md:py-px lg:px-3 lg:py-2 font-medium rounded-md transition-colors`}
+                        } group flex items-center md:px-1 md:py-px lg:px-3 lg:py-2 font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500`}
                         href={item.href}
                       >
                         <span className="md:h-8 lg:h-16 w-full flex">
@@ -192,7 +192,7 @@ export default function Navigation() {
                           active
                             ? "bg-primary-100 dark:bg-primary-900 text-primary-900 dark:text-primary-100"
                             : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100"
-                        } group flex justify-center items-center px-3 py-2 font-medium rounded-md transition-colors`}
+                        } group flex justify-center lg:justify-start items-center px-3 py-2 font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500`}
                         href={item.href}
                       >
                         <span className="flex-shrink-0">{item.icon}</span>
@@ -224,7 +224,7 @@ export default function Navigation() {
                     active
                       ? "text-primary-600 dark:text-primary-400"
                       : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100"
-                  } group flex items-center transition-colors py-2 px-2`}
+                  } group flex items-center transition-colors py-2 px-2 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded`}
                   href={item.href}
                 >
                   <span className="h-8 w-12 flex">
@@ -246,7 +246,7 @@ export default function Navigation() {
                   active
                     ? "text-primary-600 dark:text-primary-400"
                     : "text-neutral-500 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100"
-                } flex flex-col items-center justify-center min-w-0 py-2 transition-colors`}
+                } flex flex-col items-center justify-center min-w-0 py-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 rounded`}
               >
                 <span className="flex-shrink-0 mb-1">{item.icon}</span>
                 <span className="text-xs font-medium truncate">

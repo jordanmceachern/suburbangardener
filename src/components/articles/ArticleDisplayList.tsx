@@ -2,7 +2,9 @@
 
 import React from "react";
 import Image from "next/image";
-import ArticleDisplayCard from "./ArticleDisplayCard";
+import ArticleDisplayCard, {
+  type ArticleDisplayData,
+} from "./ArticleDisplayCard";
 import { useArticles } from "../../contexts/ArticleContext";
 
 interface ArticleDisplayListProps {
@@ -47,7 +49,7 @@ export default function ArticleDisplayList({
             width={400}
             src="https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1755004794/SuburbanGardener/toflato_l0dkqy.jpg"
           />
-          <p className="text-lg text-neutral-600 dark:text-neutral-400">
+          <p className="text-xl text-neutral-900 dark:text-neutral-100">
             Sorry! We encountered an issue while trying to fetch our articles
             for you, please come back to check again later.
           </p>

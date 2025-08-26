@@ -87,7 +87,7 @@ export default function SearchArticles({
               localSearchTerm.trim().length > 0 &&
               localSearchTerm.trim().length < 4
             }
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-900 dark:text-slate-100 hover:text-slate-600 dark:hover:text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <svg
               className="h-4 w-4"

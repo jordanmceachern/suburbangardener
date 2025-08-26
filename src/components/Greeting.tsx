@@ -5,7 +5,7 @@ export const Greeting = () => (
     <h1 className="text-2xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-300 text-center">
       Welcome to Suburban Gardener
     </h1>
-    <p className="text-lg text-neutral-900 dark:text-neutral-300 mt-1 text-center">
+    <p className="text-start sm:text-center text-lg text-neutral-900 dark:text-neutral-300 mt-1">
       Begin your backyard gardening journey today!
     </p>
   </div>

@@ -37,6 +37,8 @@ export default function FeaturedArticle({
         article={state.featuredArticle}
         buttonVariant="narrow"
         showArrow={true}
+        titleClassName="sm:text-3xl md:text-3xl lg:text-3xl"
+        imageClassName="h-60 sm:h-80"
       />
     </div>
   );

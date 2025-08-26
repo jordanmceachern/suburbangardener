@@ -22,6 +22,8 @@ interface ArticleDisplayCardProps {
   onReadMore?: () => void;
   buttonVariant?: "default" | "narrow";
   showArrow?: boolean;
+  titleClassName?: string;
+  imageClassName?: string;
 }
 
 export default function ArticleDisplayCard({
@@ -30,6 +32,8 @@ export default function ArticleDisplayCard({
   onReadMore,
   buttonVariant = "default",
   showArrow = false,
+  titleClassName = "",
+  imageClassName = "",
 }: ArticleDisplayCardProps) {
   const handleReadMore = () => {
     console.log("Read More clicked for article:", article.slug);
@@ -42,20 +46,22 @@ export default function ArticleDisplayCard({
     <article
       className={`bg-primary-50 dark:bg-slate-500 rounded-lg shadow-lg overflow-hidden min-w-0 flex flex-col ${className}`}
     >
-      <div className="h-48 sm:h-64 bg-slate-800">
+      <div className={`h-48 sm:h-64 bg-slate-800 ${imageClassName}`}>
         <BackgroundImage
           src={article.imageUrl}
           label={article.title}
           className="w-full h-full rounded-b-none"
         />
       </div>
-      <div className="p-4 sm:p-8 flex flex-col flex-grow">
-        <div className="flex items-center mb-3 sm:mb-4">
+      <div className="px-6 pb-6 py-4 flex flex-col flex-grow">
+        <div className="flex items-center mb-2">
           <span className="text-neutral-700 dark:text-neutral-200 text-sm">
             {article.publishedDate}
           </span>
         </div>
-        <h2 className="text-xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3 sm:mb-4">
+        <h2
+          className={`text-xl lg:text-2xl xl:text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3 ${titleClassName}`}
+        >
           {article.title}
         </h2>
         <p className="text-neutral-700 dark:text-neutral-200 text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3">

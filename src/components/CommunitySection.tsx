@@ -16,7 +16,7 @@ export default function CommunitySection({
         <h2 className="text-xl font-bold mb-3 text-neutral-900 dark:text-neutral-100">
           Join Our Gardening Community
         </h2>
-        <p className="text-primary-700 dark:text-neutral-300 mb-6">
+        <p className="text-start sm:text-center text-primary-700 dark:text-neutral-300 mb-6">
           Sign up for exclusive access to premium gardening tools, personalized
           plant care guides, and more!
         </p>
