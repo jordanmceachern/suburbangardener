@@ -1,78 +1,27 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
+import Image from "next/image";
 import ArticleDisplayCard from "./ArticleDisplayCard";
-import { mockArticles } from "../../mock_data/articles";
-import type { ArticleDisplayData } from "./ArticleDisplayCard";
+import { useArticles } from "../../contexts/ArticleContext";
 
 interface ArticleDisplayListProps {
   className?: string;
-  initialArticles?: number;
-  articlesPerLoad?: number;
 }
 
 export default function ArticleDisplayList({
   className = "",
-  initialArticles = 6,
-  articlesPerLoad = 6,
 }: ArticleDisplayListProps) {
-  const [articles, setArticles] = useState<ArticleDisplayData[]>([]);
-  const [displayedArticles, setDisplayedArticles] = useState<
-    ArticleDisplayData[]
-  >([]);
-  const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [currentCount, setCurrentCount] = useState(initialArticles);
+  const { state, loadMoreArticles, getFilteredArticles } = useArticles();
 
-  useEffect(() => {
-    // Simulate loading articles (excluding the featured article)
-    const loadArticles = () => {
-      // Filter out the most recent article since it's used as featured
-      const mostRecentArticle = mockArticles.reduce((latest, current) => {
-        const latestDate = new Date(latest.publishedDate);
-        const currentDate = new Date(current.publishedDate);
-        return currentDate > latestDate ? current : latest;
-      }, mockArticles[0]);
+  // Get articles filtered by category (client-side filtering)
+  const displayedArticles = getFilteredArticles();
 
-      const filteredArticles = mockArticles.filter(
-        article => article.id !== mostRecentArticle.id
-      );
-
-      // Sort remaining articles by date in descending order (most recent first)
-      const sortedArticles = filteredArticles.sort((a, b) => {
-        const dateA = new Date(a.publishedDate);
-        const dateB = new Date(b.publishedDate);
-        return dateB.getTime() - dateA.getTime();
-      });
-
-      setArticles(sortedArticles);
-      setDisplayedArticles(sortedArticles.slice(0, initialArticles));
-      setLoading(false);
-    };
-
-    // Simulate a small delay for realistic loading
-    setTimeout(loadArticles, 100);
-  }, [initialArticles]);
-
-  const handleLoadMore = () => {
-    setLoadingMore(true);
-
-    // Simulate loading delay
-    setTimeout(() => {
-      const newCount = currentCount + articlesPerLoad;
-      setDisplayedArticles(articles.slice(0, newCount));
-      setCurrentCount(newCount);
-      setLoadingMore(false);
-    }, 500);
-  };
-
-  const hasMoreArticles = currentCount < articles.length;
-
-  if (loading) {
+  if (state.loading && state.articles.length === 0) {
     return (
       <div className={`${className}`}>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {Array.from({ length: initialArticles }).map((_, index) => (
+          {Array.from({ length: 6 }).map((_, index) => (
             <div key={index} className="animate-pulse">
               <div className="bg-neutral-200 dark:bg-neutral-700 rounded-lg h-48 sm:h-64 mb-4" />
               <div className="bg-neutral-200 dark:bg-neutral-700 rounded h-6 mb-2" />
@@ -87,21 +36,42 @@ export default function ArticleDisplayList({
 
   return (
     <div className={`${className}`}>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {displayedArticles.map(article => (
-          <ArticleDisplayCard key={article.id} article={article} />
-        ))}
-      </div>
+      {/* No Articles Message */}
+      {!state.loading && displayedArticles.length === 0 && (
+        <div className="text-center py-12">
+          {/* eslint-disable-next-line jsx-a11y/alt-text -- alt text is provided via label prop */}
+          <Image
+            alt="a ruined squished tomato on the ground"
+            className="flex justify-center mb-8 rounded-lg mx-auto"
+            height={400}
+            width={400}
+            src="https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1755004794/SuburbanGardener/toflato_l0dkqy.jpg"
+          />
+          <p className="text-lg text-neutral-600 dark:text-neutral-400">
+            Sorry! We encountered an issue while trying to fetch our articles
+            for you, please come back to check again later.
+          </p>
+        </div>
+      )}
+
+      {/* Articles Grid */}
+      {displayedArticles.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {displayedArticles.map(article => (
+            <ArticleDisplayCard key={article.id} article={article} />
+          ))}
+        </div>
+      )}
 
       {/* Load More Articles */}
-      {hasMoreArticles && (
+      {state.hasMore && (
         <div className="mt-8 text-center">
           <button
-            onClick={handleLoadMore}
-            disabled={loadingMore}
+            onClick={loadMoreArticles}
+            disabled={state.loading}
             className="bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 text-white px-8 py-3 rounded-lg font-medium transition-colors inline-flex items-center gap-2"
           >
-            {loadingMore ? (
+            {state.loading ? (
               <>
                 <svg
                   className="animate-spin h-5 w-5"
@@ -125,18 +95,16 @@ export default function ArticleDisplayList({
                 Loading...
               </>
             ) : (
-              `Load More Articles (${articles.length - currentCount} remaining)`
+              `Load More Articles`
             )}
           </button>
         </div>
       )}
 
       {/* Loading More Skeleton */}
-      {loadingMore && (
+      {state.loading && state.articles.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-6">
-          {Array.from({
-            length: Math.min(articlesPerLoad, articles.length - currentCount),
-          }).map((_, index) => (
+          {Array.from({ length: 3 }).map((_, index) => (
             <div key={`loading-${index}`} className="animate-pulse">
               <div className="bg-neutral-200 dark:bg-neutral-700 rounded-lg h-48 sm:h-64 mb-4" />
               <div className="bg-neutral-200 dark:bg-neutral-700 rounded h-6 mb-2" />
@@ -144,6 +112,12 @@ export default function ArticleDisplayList({
               <div className="bg-neutral-200 dark:bg-neutral-700 rounded h-4 w-2/3" />
             </div>
           ))}
+        </div>
+      )}
+
+      {state.error && (
+        <div className="mt-8 text-center">
+          <p className="text-red-600 dark:text-red-400">{state.error}</p>
         </div>
       )}
     </div>

@@ -1,10 +1,20 @@
-import React from "react";
+"use client";
+
+import React, { useEffect } from "react";
+import { ArticleProvider, useArticles } from "../../contexts/ArticleContext";
 import ArticlesSidebar from "../../components/articles/ArticlesSidebar";
 import ArticlesPageHeader from "../../components/articles/ArticlesPageHeader";
 import FeaturedArticle from "../../components/articles/FeaturedArticle";
 import ArticleDisplayList from "../../components/articles/ArticleDisplayList";
 
-export default function ArticlesPage() {
+function ArticlesPageContent() {
+  const { loadArticles } = useArticles();
+
+  useEffect(() => {
+    // Load initial articles on mount
+    loadArticles();
+  }, [loadArticles]);
+
   return (
     <main className="min-h-screen bg-background-light dark:bg-background-dark relative">
       {/* Main Content Area */}
@@ -14,20 +24,25 @@ export default function ArticlesPage() {
 
           <FeaturedArticle className="mb-12" />
 
-          {/* Related Articles Grid */}
+          {/* Articles Feed */}
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">
-              More Articles
-            </h2>
             <ArticleDisplayList />
           </div>
         </div>
       </div>
 
-      {/* Collapsible Sidebar - All screens */}
+      {/* Sidebar */}
       <div className="fixed top-0 right-0 w-80 z-40">
         <ArticlesSidebar maxArticles={6} />
       </div>
     </main>
+  );
+}
+
+export default function ArticlesPage() {
+  return (
+    <ArticleProvider>
+      <ArticlesPageContent />
+    </ArticleProvider>
   );
 }

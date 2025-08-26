@@ -1,28 +1,24 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { mockArticles } from "../../mock_data/articles";
-import type { ArticleDisplayData } from "./ArticleDisplayCard";
+import { useArticles } from "../../contexts/ArticleContext";
 
 interface SearchArticlesProps {
   className?: string;
-  onSearchResults?: (results: ArticleDisplayData[]) => void;
 }
 
 export default function SearchArticles({
   className = "",
-  onSearchResults,
 }: SearchArticlesProps) {
-  const [articles, setArticles] = useState<ArticleDisplayData[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All Categories");
+  const { state, searchArticles, setSelectedCategory } = useArticles();
+  const [localSearchTerm, setLocalSearchTerm] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Get unique categories from articles
   const categories = [
     "All Categories",
-    ...Array.from(new Set(articles.map(article => article.category))),
+    ...Array.from(new Set(state.articles.map(article => article.category))),
   ];
 
   // Close dropdown when clicking outside
@@ -42,42 +38,30 @@ export default function SearchArticles({
     };
   }, []);
 
-  useEffect(() => {
-    // Load all articles for searching
-    const loadArticles = () => {
-      setArticles(mockArticles);
-    };
-
-    loadArticles();
-  }, []);
-
-  // Filter articles based on search term and category
-  useEffect(() => {
-    let filtered = articles;
-
-    // Filter by category
-    if (selectedCategory !== "All Categories") {
-      filtered = filtered.filter(
-        article => article.category === selectedCategory
-      );
+  const handleSearch = async () => {
+    if (
+      localSearchTerm.trim().length >= 4 ||
+      localSearchTerm.trim().length === 0
+    ) {
+      await searchArticles(localSearchTerm.trim());
     }
+  };
 
-    // Filter by search term
-    if (searchTerm.trim()) {
-      const term = searchTerm.toLowerCase();
-      filtered = filtered.filter(
-        article =>
-          article.title.toLowerCase().includes(term) ||
-          article.excerpt.toLowerCase().includes(term) ||
-          article.category.toLowerCase().includes(term) ||
-          article.author.toLowerCase().includes(term)
-      );
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSearch();
     }
+  };
 
-    if (onSearchResults) {
-      onSearchResults(filtered);
-    }
-  }, [searchTerm, selectedCategory, articles, onSearchResults]);
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    setIsDropdownOpen(false);
+  };
+
+  const filteredArticles = state.articles.filter(article => {
+    if (state.selectedCategory === "All Categories") return true;
+    return article.category === state.selectedCategory;
+  });
 
   return (
     <div className={`${className}`}>
@@ -89,9 +73,24 @@ export default function SearchArticles({
       <div className="space-y-4">
         {/* Search Input */}
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <input
+            type="text"
+            placeholder="Search articles..."
+            value={localSearchTerm}
+            onChange={e => setLocalSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
+            className="block w-full pl-3 pr-12 py-2.5 h-10 text-base border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-900 dark:placeholder-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-text hover:border-slate-400 dark:hover:border-slate-500 transition-colors"
+          />
+          <button
+            onClick={handleSearch}
+            disabled={
+              localSearchTerm.trim().length > 0 &&
+              localSearchTerm.trim().length < 4
+            }
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
             <svg
-              className="h-4 w-4 text-slate-900 dark:text-slate-100"
+              className="h-4 w-4"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -103,15 +102,7 @@ export default function SearchArticles({
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
-          </div>
-          <input
-            type="text"
-            placeholder="Search articles..."
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-            className="block w-full pl-9 pr-3 py-2.5 h-10 text-base border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-900 dark:placeholder-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-text hover:border-slate-400 dark:hover:border-slate-500 transition-colors"
-            style={{ appearance: "none" }}
-          />
+          </button>
         </div>
 
         {/* Category Filter */}
@@ -124,7 +115,7 @@ export default function SearchArticles({
             aria-expanded={isDropdownOpen}
             aria-label="Select category"
           >
-            <span className="truncate">{selectedCategory}</span>
+            <span className="truncate">{state.selectedCategory}</span>
             <svg
               className={`h-4 w-4 text-slate-900 dark:text-slate-100 transition-transform ${
                 isDropdownOpen ? "transform rotate-180" : ""
@@ -148,17 +139,14 @@ export default function SearchArticles({
                 <button
                   key={category}
                   type="button"
-                  onClick={() => {
-                    setSelectedCategory(category);
-                    setIsDropdownOpen(false);
-                  }}
+                  onClick={() => handleCategoryChange(category)}
                   className={`w-full px-3 py-2.5 text-left text-base hover:bg-slate-50 dark:hover:bg-slate-600 focus:outline-none focus:bg-slate-50 dark:focus:bg-slate-600 transition-colors first:rounded-t-md last:rounded-b-md ${
-                    selectedCategory === category
+                    state.selectedCategory === category
                       ? "bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300"
                       : "text-slate-900 dark:text-slate-100"
                   }`}
                   role="option"
-                  aria-selected={selectedCategory === category}
+                  aria-selected={state.selectedCategory === category}
                 >
                   {category}
                 </button>
@@ -169,34 +157,13 @@ export default function SearchArticles({
 
         {/* Results Summary */}
         <div className="text-xs text-slate-600 dark:text-slate-300">
-          {searchTerm || selectedCategory !== "All Categories" ? (
+          {state.searchTerm || state.selectedCategory !== "All Categories" ? (
             <span>
-              Found{" "}
-              {
-                articles.filter(article => {
-                  let filtered = articles;
-                  if (selectedCategory !== "All Categories") {
-                    filtered = filtered.filter(
-                      a => a.category === selectedCategory
-                    );
-                  }
-                  if (searchTerm.trim()) {
-                    const term = searchTerm.toLowerCase();
-                    filtered = filtered.filter(
-                      a =>
-                        a.title.toLowerCase().includes(term) ||
-                        a.excerpt.toLowerCase().includes(term) ||
-                        a.category.toLowerCase().includes(term) ||
-                        a.author.toLowerCase().includes(term)
-                    );
-                  }
-                  return filtered.includes(article);
-                }).length
-              }{" "}
-              articles
+              Found {filteredArticles.length} articles
+              {state.searchTerm && ` for "${state.searchTerm}"`}
             </span>
           ) : (
-            <span>{articles.length} total articles</span>
+            <span>{state.total} total articles</span>
           )}
         </div>
       </div>

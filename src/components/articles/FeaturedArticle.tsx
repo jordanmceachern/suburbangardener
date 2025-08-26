@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import ArticleDisplayCard from "./ArticleDisplayCard";
-import { mockArticles } from "../../mock_data/articles";
-import type { ArticleDisplayData } from "./ArticleDisplayCard";
+import { useArticles } from "../../contexts/ArticleContext";
 
 interface FeaturedArticleProps {
   className?: string;
@@ -12,28 +11,9 @@ interface FeaturedArticleProps {
 export default function FeaturedArticle({
   className = "",
 }: FeaturedArticleProps) {
-  const [featuredArticle, setFeaturedArticle] =
-    useState<ArticleDisplayData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { state } = useArticles();
 
-  useEffect(() => {
-    // Find the most recent article from the mock data
-    const loadFeaturedArticle = () => {
-      const mostRecentArticle = mockArticles.reduce((latest, current) => {
-        const latestDate = new Date(latest.publishedDate);
-        const currentDate = new Date(current.publishedDate);
-        return currentDate > latestDate ? current : latest;
-      }, mockArticles[0]);
-
-      setFeaturedArticle(mostRecentArticle);
-      setLoading(false);
-    };
-
-    // Simulate a small delay for realistic loading
-    setTimeout(loadFeaturedArticle, 100);
-  }, []);
-
-  if (loading) {
+  if (state.loading && !state.featuredArticle) {
     return (
       <div className={`${className}`}>
         <div className="animate-pulse">
@@ -47,14 +27,14 @@ export default function FeaturedArticle({
     );
   }
 
-  if (!featuredArticle) {
+  if (!state.featuredArticle) {
     return null;
   }
 
   return (
     <div className={`${className}`}>
       <ArticleDisplayCard
-        article={featuredArticle}
+        article={state.featuredArticle}
         buttonVariant="narrow"
         showArrow={true}
       />
