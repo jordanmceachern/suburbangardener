@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`BackgroundImage Component should match DOM snapshot 1`] = `
+<div
+  class="h-auto w-full flex justify-center"
+>
+  <div
+    aria-label="Test Background"
+    class="bg-contain bg-center bg-no-repeat w-full h-full  rounded-lg"
+    style="background-image: url("/test-image.jpg");"
+  />
+</div>
+`;

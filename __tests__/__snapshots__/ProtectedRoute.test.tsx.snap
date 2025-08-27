@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ProtectedRoute Component should match DOM snapshot with authenticated user 1`] = `
+<div>
+  Protected content
+</div>
+`;

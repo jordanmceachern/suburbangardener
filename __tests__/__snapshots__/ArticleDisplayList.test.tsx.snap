@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ArticleDisplayList Component should match DOM snapshot 1`] = `
+<div
+  class="test-list-class"
+>
+  <div
+    class="text-center py-12"
+  >
+    <img
+      alt="a ruined squished tomato on the ground"
+      class="flex justify-center mb-8 rounded-lg mx-auto"
+      data-nimg="1"
+      decoding="async"
+      height="400"
+      loading="lazy"
+      src="/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdtweazqf2%2Fimage%2Fupload%2Fq_auto%2Cf_auto%2Fv1755004794%2FSuburbanGardener%2Ftoflato_l0dkqy.jpg&w=828&q=75"
+      srcset="/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdtweazqf2%2Fimage%2Fupload%2Fq_auto%2Cf_auto%2Fv1755004794%2FSuburbanGardener%2Ftoflato_l0dkqy.jpg&w=640&q=75 1x, /_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdtweazqf2%2Fimage%2Fupload%2Fq_auto%2Cf_auto%2Fv1755004794%2FSuburbanGardener%2Ftoflato_l0dkqy.jpg&w=828&q=75 2x"
+      style="color: transparent;"
+      width="400"
+    />
+    <p
+      class="text-xl text-neutral-900 dark:text-neutral-100"
+    >
+      Sorry! We encountered an issue while trying to fetch our articles for you, please come back to check again later.
+    </p>
+  </div>
+</div>
+`;

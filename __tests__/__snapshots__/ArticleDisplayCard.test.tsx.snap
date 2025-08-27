@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ArticleDisplayCard Component should match DOM snapshot 1`] = `
+<article
+  class="bg-primary-50 dark:bg-slate-500 rounded-lg shadow-lg overflow-hidden min-w-0 flex flex-col "
+>
+  <div
+    class="h-48 sm:h-64 bg-slate-800 "
+  >
+    <div
+      class="h-auto w-full flex justify-center w-full h-full rounded-b-none"
+    >
+      <div
+        aria-label="Test Article"
+        class="bg-contain bg-center bg-no-repeat w-full h-full  rounded-lg"
+        style="background-image: url("/test-image.jpg");"
+      />
+    </div>
+  </div>
+  <div
+    class="px-6 pb-6 py-4 flex flex-col flex-grow"
+  >
+    <div
+      class="flex items-center mb-2"
+    >
+      <span
+        class="text-neutral-700 dark:text-neutral-200 text-sm"
+      >
+        2024-01-01
+      </span>
+    </div>
+    <h2
+      class="text-xl lg:text-2xl xl:text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3 "
+    >
+      Test Article
+    </h2>
+    <p
+      class="text-neutral-700 dark:text-neutral-200 text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3"
+    >
+      This is a test article excerpt
+    </p>
+    <a
+      class="bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center "
+      href="/articles/test-article"
+    >
+      Read More
+    </a>
+  </div>
+</article>
+`;

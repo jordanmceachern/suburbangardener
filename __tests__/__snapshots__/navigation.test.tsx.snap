@@ -1,0 +1,177 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Navigation Component renders with correct structure and classes 1`] = `
+<nav
+  class="hidden sm:fixed sm:inset-y-0 sm:left-0 sm:flex sm:flex-col sm:w-20 lg:w-32"
+>
+  <div
+    class="flex flex-col flex-grow pt-6 bg-slate-100 dark:bg-slate-800 border-r border-slate-300 dark:border-slate-600 overflow-y-auto"
+  >
+    <div
+      class="flex-grow flex flex-col"
+    >
+      <nav
+        class="flex-1 px-3 space-y-1"
+      >
+        <div
+          class="relative group"
+        >
+          <a
+            class="bg-primary-100 dark:bg-primary-900 text-primary-900 dark:text-primary-100 group flex items-center md:px-1 md:py-px lg:px-3 lg:py-2 font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+            href="/"
+            title="Home"
+          >
+            <span
+              class="md:h-8 lg:h-16 w-full flex"
+            >
+              <div
+                class="h-auto w-full flex justify-center flex-shrink-0 dark:bg-neutral-200"
+              >
+                <div
+                  aria-label="Suburban Gardener Logo"
+                  class="bg-contain bg-center bg-no-repeat w-full h-full  rounded-lg"
+                  style="background-image: url("https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png");"
+                />
+              </div>
+            </span>
+          </a>
+        </div>
+        <div
+          class="relative group"
+        >
+          <a
+            class="text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100 group flex justify-center lg:justify-start items-center px-3 py-2 font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+            href="/tutorials"
+            title="Tutorials"
+          >
+            <span
+              class="flex-shrink-0"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.168 18.477 18.582 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </span>
+            <span
+              class="hidden lg:ml-2 lg:block"
+            >
+              Tutorials
+            </span>
+          </a>
+        </div>
+        <div
+          class="relative group"
+        >
+          <a
+            class="text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100 group flex justify-center lg:justify-start items-center px-3 py-2 font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+            href="/articles"
+            title="Articles"
+          >
+            <span
+              class="flex-shrink-0"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </span>
+            <span
+              class="hidden lg:ml-2 lg:block"
+            >
+              Articles
+            </span>
+          </a>
+        </div>
+        <div
+          class="relative group"
+        >
+          <a
+            class="text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100 group flex justify-center lg:justify-start items-center px-3 py-2 font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+            href="/tools"
+            title="Tools"
+          >
+            <span
+              class="flex-shrink-0"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+                <path
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </span>
+            <span
+              class="hidden lg:ml-2 lg:block"
+            >
+              Tools
+            </span>
+          </a>
+        </div>
+        <div
+          class="relative group"
+        >
+          <a
+            class="text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100 group flex justify-center lg:justify-start items-center px-3 py-2 font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+            href="/store"
+            title="Store"
+          >
+            <span
+              class="flex-shrink-0"
+            >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </span>
+            <span
+              class="hidden lg:ml-2 lg:block"
+            >
+              Store
+            </span>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+</nav>
+`;

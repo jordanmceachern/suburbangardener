@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ArticlesPageHeader Component should match DOM snapshot 1`] = `
+<div
+  class="text-center mb-12 "
+>
+  <h1
+    class="text-4xl font-bold text-primary-900 dark:text-primary-100 mb-4"
+  >
+    Gardening Articles
+  </h1>
+  <p
+    class="text-lg text-start text-neutral-600 dark:text-neutral-200 max-w-2xl mx-auto"
+  >
+    Discover expert insights, seasonal tips, and in-depth guides for successful suburban gardening.
+  </p>
+</div>
+`;

@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ErrorBoundary Component should match DOM snapshot when error occurs 1`] = `
+<div
+  class="min-h-screen w-full flex items-center justify-center bg-background-light dark:bg-background-dark text-foreground-light dark:text-foreground-dark p-4"
+>
+  <div
+    class="flex flex-col items-center text-center max-w-2xl w-full space-y-6"
+  >
+    <img
+      alt="a ruined squished tomato on the ground"
+      class="flex justify-center mb-8 rounded-lg"
+      data-nimg="1"
+      decoding="async"
+      height="400"
+      loading="lazy"
+      src="/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdtweazqf2%2Fimage%2Fupload%2Fq_auto%2Cf_auto%2Fv1755004794%2FSuburbanGardener%2Ftoflato_l0dkqy.jpg&w=828&q=75"
+      srcset="/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdtweazqf2%2Fimage%2Fupload%2Fq_auto%2Cf_auto%2Fv1755004794%2FSuburbanGardener%2Ftoflato_l0dkqy.jpg&w=640&q=75 1x, /_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdtweazqf2%2Fimage%2Fupload%2Fq_auto%2Cf_auto%2Fv1755004794%2FSuburbanGardener%2Ftoflato_l0dkqy.jpg&w=828&q=75 2x"
+      style="color: transparent;"
+      width="400"
+    />
+    <div
+      class="space-y-4"
+    >
+      <h1
+        class="text-2xl font-bold text-foreground-light dark:text-foreground-dark"
+      >
+        Sorry, something went wrong!
+      </h1>
+      <p
+        class="text-lg leading-relaxed text-neutral-700 dark:text-neutral-300"
+      >
+        The website has sent me a notification to let me know. If the issue is coming from our end, I'll be working on resolving it ASAP - please come back soon!
+      </p>
+    </div>
+    <div
+      class="flex flex-col sm:flex-row gap-4 justify-center pt-6"
+    >
+      <button
+        class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
+      >
+        Refresh this Page
+      </button>
+      <button
+        class="px-6 py-3 bg-secondary-600 hover:bg-secondary-700 text-white rounded-lg transition-colors"
+      >
+        Go to Home Page
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ErrorBoundary Component should match DOM snapshot with normal children 1`] = `
+<div>
+  Test content
+</div>
+`;

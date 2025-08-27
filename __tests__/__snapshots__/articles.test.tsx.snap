@@ -1,0 +1,279 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ArticlesPage renders with correct structure and classes 1`] = `
+<main
+  class="min-h-screen bg-background-light dark:bg-background-dark relative"
+>
+  <div
+    class="lg:pr-80"
+  >
+    <div
+      class="mx-auto px-4 py-8"
+    >
+      <div
+        class="max-w-4xl mx-auto"
+      >
+        <div
+          class="text-center mb-12 "
+        >
+          <h1
+            class="text-4xl font-bold text-primary-900 dark:text-primary-100 mb-4"
+          >
+            Gardening Articles
+          </h1>
+          <p
+            class="text-lg text-start text-neutral-600 dark:text-neutral-200 max-w-2xl mx-auto"
+          >
+            Discover expert insights, seasonal tips, and in-depth guides for successful suburban gardening.
+          </p>
+        </div>
+      </div>
+      <div
+        class="mt-6 max-w-4xl mx-auto"
+      >
+        <div
+          class=""
+        >
+          <div
+            class="text-center py-12"
+          >
+            <img
+              alt="a ruined squished tomato on the ground"
+              class="flex justify-center mb-8 rounded-lg mx-auto"
+              data-nimg="1"
+              decoding="async"
+              height="400"
+              loading="lazy"
+              src="/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdtweazqf2%2Fimage%2Fupload%2Fq_auto%2Cf_auto%2Fv1755004794%2FSuburbanGardener%2Ftoflato_l0dkqy.jpg&w=828&q=75"
+              srcset="/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdtweazqf2%2Fimage%2Fupload%2Fq_auto%2Cf_auto%2Fv1755004794%2FSuburbanGardener%2Ftoflato_l0dkqy.jpg&w=640&q=75 1x, /_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdtweazqf2%2Fimage%2Fupload%2Fq_auto%2Cf_auto%2Fv1755004794%2FSuburbanGardener%2Ftoflato_l0dkqy.jpg&w=828&q=75 2x"
+              style="color: transparent;"
+              width="400"
+            />
+            <p
+              class="text-xl text-neutral-900 dark:text-neutral-100"
+            >
+              Sorry! We encountered an issue while trying to fetch our articles for you, please come back to check again later.
+            </p>
+          </div>
+          <div
+            class="mt-8 text-center"
+          >
+            <p
+              class="text-red-600 dark:text-red-400"
+            >
+              fetch is not defined
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="fixed top-0 right-0 w-80 z-40"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="bg-slate-100 dark:bg-slate-800 shadow-lg transition-all duration-300 ease-in-out relative h-screen pb-20 sm:pb-0 translate-x-0 opacity-100 border-l border-slate-300 dark:border-slate-600"
+      >
+        <button
+          aria-label="Hide recent articles"
+          class="absolute top-4 -left-10 bg-slate-200 dark:bg-slate-600 shadow-xl cursor-pointer hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors z-30 focus:outline-none focus:ring-2 focus:ring-primary-500 w-10 h-16 flex items-center justify-center rounded-l-md lg:hidden border-l border-t border-b border-slate-300 dark:border-slate-600"
+          type="button"
+        >
+          <svg
+            class="w-4 h-4 text-slate-600 dark:text-slate-300"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+            />
+          </svg>
+        </button>
+        <div
+          class="p-6 pt-6 h-full overflow-y-auto"
+        >
+          <div
+            class="mb-8"
+          >
+            <div
+              class=""
+            >
+              <h3
+                class="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4"
+              >
+                Search Articles
+              </h3>
+              <div
+                class="space-y-4"
+              >
+                <div
+                  class="relative"
+                >
+                  <input
+                    class="block w-full pl-3 pr-12 py-2.5 h-10 text-base border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-900 dark:placeholder-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-text hover:border-slate-400 dark:hover:border-slate-500 transition-colors"
+                    placeholder="Search articles..."
+                    type="text"
+                    value=""
+                  />
+                  <button
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-900 dark:text-slate-100 hover:text-slate-600 dark:hover:text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <svg
+                      class="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div
+                  class="relative"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    aria-label="Select category"
+                    class="w-full px-3 py-2.5 h-10 text-base border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-slate-500 transition-colors text-left flex items-center justify-between"
+                    type="button"
+                  >
+                    <span
+                      class="truncate"
+                    >
+                      All Categories
+                    </span>
+                    <svg
+                      class="h-4 w-4 text-slate-900 dark:text-slate-100 transition-transform "
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M6 8l4 4 4-4"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div
+                  class="text-xs text-slate-600 dark:text-slate-300"
+                >
+                  <span>
+                    0
+                     total articles
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="border-t border-slate-300 dark:border-slate-500 mb-6"
+          />
+          <h3
+            class="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4"
+          >
+            Recent Articles
+          </h3>
+          <div
+            class="space-y-4"
+          >
+            <div
+              class="border-b border-slate-300 dark:border-slate-500 pb-4 animate-pulse"
+            >
+              <div
+                class="h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2"
+              />
+              <div
+                class="h-3 bg-slate-300 dark:bg-slate-600 rounded mb-2"
+              />
+              <div
+                class="h-3 bg-slate-300 dark:bg-slate-600 rounded w-1/3"
+              />
+            </div>
+            <div
+              class="border-b border-slate-300 dark:border-slate-500 pb-4 animate-pulse"
+            >
+              <div
+                class="h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2"
+              />
+              <div
+                class="h-3 bg-slate-300 dark:bg-slate-600 rounded mb-2"
+              />
+              <div
+                class="h-3 bg-slate-300 dark:bg-slate-600 rounded w-1/3"
+              />
+            </div>
+            <div
+              class="border-b border-slate-300 dark:border-slate-500 pb-4 animate-pulse"
+            >
+              <div
+                class="h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2"
+              />
+              <div
+                class="h-3 bg-slate-300 dark:bg-slate-600 rounded mb-2"
+              />
+              <div
+                class="h-3 bg-slate-300 dark:bg-slate-600 rounded w-1/3"
+              />
+            </div>
+            <div
+              class="border-b border-slate-300 dark:border-slate-500 pb-4 animate-pulse"
+            >
+              <div
+                class="h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2"
+              />
+              <div
+                class="h-3 bg-slate-300 dark:bg-slate-600 rounded mb-2"
+              />
+              <div
+                class="h-3 bg-slate-300 dark:bg-slate-600 rounded w-1/3"
+              />
+            </div>
+            <div
+              class="border-b border-slate-300 dark:border-slate-500 pb-4 animate-pulse"
+            >
+              <div
+                class="h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2"
+              />
+              <div
+                class="h-3 bg-slate-300 dark:bg-slate-600 rounded mb-2"
+              />
+              <div
+                class="h-3 bg-slate-300 dark:bg-slate-600 rounded w-1/3"
+              />
+            </div>
+            <div
+              class="animate-pulse"
+            >
+              <div
+                class="h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2"
+              />
+              <div
+                class="h-3 bg-slate-300 dark:bg-slate-600 rounded mb-2"
+              />
+              <div
+                class="h-3 bg-slate-300 dark:bg-slate-600 rounded w-1/3"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+`;
