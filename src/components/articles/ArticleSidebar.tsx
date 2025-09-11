@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { mockSidebarArticles } from "../../mock_data/articles";
 import type { ArticleDisplayData } from "./ArticleDisplayCard";
 import ArticleListItem from "./ArticleListItem";
 
@@ -28,7 +27,7 @@ async function fetchArticles(
   if (process.env.NODE_ENV === "production") {
     try {
       const response = await fetch(
-        `${PRODUCTION_API_URL}?limit=${maxArticles * 2}&current=${currentArticle?.id || ""}`
+        `${PRODUCTION_API_URL}?limit=${maxArticles}&current=${currentArticle?.id || ""}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch articles");
@@ -54,31 +53,23 @@ async function fetchArticles(
       return { recentArticles, relatedArticles };
     } catch (error) {
       console.error("Error fetching articles:", error);
-      // Fallback to mock data even in production if API fails
-      const filteredMockArticles = mockSidebarArticles.filter(
-        article => article.id !== currentArticle?.id
-      );
-
-      const relatedArticles = currentArticle
-        ? filteredMockArticles
-            .filter(article => article.category === currentArticle.category)
-            .slice(0, maxArticles)
-        : [];
-
-      const recentArticles = filteredMockArticles.slice(0, maxArticles);
-
-      return { recentArticles, relatedArticles };
+      // In production, return empty arrays instead of mock data, never show fake information to users
+      return { recentArticles: [], relatedArticles: [] };
     }
   }
 
   // In development, use mock data
+  const { mockSidebarArticles } = await import("../../mock_data/articles");
   const filteredMockArticles = mockSidebarArticles.filter(
-    article => article.id !== currentArticle?.id
+    (article: ArticleMetadata) => article.id !== currentArticle?.id
   );
 
   const relatedArticles = currentArticle
     ? filteredMockArticles
-        .filter(article => article.category === currentArticle.category)
+        .filter(
+          (article: ArticleMetadata) =>
+            article.category === currentArticle.category
+        )
         .slice(0, maxArticles)
     : [];
 
@@ -225,53 +216,51 @@ export default function ArticleSidebar({
             </div>
           )}
 
-          {/* Related Articles Section - Only show if currentArticle exists */}
-          {currentArticle && (
-            <>
-              <div className="border-t border-slate-300 dark:border-slate-500 mb-6"></div>
+          {/* Related Articles Section */}
+          <>
+            <div className="border-t border-slate-300 dark:border-slate-500 mb-6"></div>
 
-              <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
-                Related Articles
-              </h3>
+            <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
+              Related Articles
+            </h3>
 
-              {loading && (
-                <div className="space-y-4">
-                  {Array.from({ length: maxArticles }).map((_, index) => (
-                    <div
-                      key={`related-skeleton-${index}`}
-                      className={
-                        index < maxArticles - 1
-                          ? "border-b border-slate-300 dark:border-slate-500 pb-4 animate-pulse"
-                          : "animate-pulse"
-                      }
-                    >
-                      <div className="h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2" />
-                      <div className="h-3 bg-slate-300 dark:bg-slate-600 rounded mb-2" />
-                      <div className="h-3 bg-slate-300 dark:bg-slate-600 rounded w-1/3" />
-                    </div>
-                  ))}
-                </div>
-              )}
+            {loading && (
+              <div className="space-y-4">
+                {Array.from({ length: maxArticles }).map((_, index) => (
+                  <div
+                    key={`related-skeleton-${index}`}
+                    className={
+                      index < maxArticles - 1
+                        ? "border-b border-slate-300 dark:border-slate-500 pb-4 animate-pulse"
+                        : "animate-pulse"
+                    }
+                  >
+                    <div className="h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2" />
+                    <div className="h-3 bg-slate-300 dark:bg-slate-600 rounded mb-2" />
+                    <div className="h-3 bg-slate-300 dark:bg-slate-600 rounded w-1/3" />
+                  </div>
+                ))}
+              </div>
+            )}
 
-              {!loading && relatedArticles.length === 0 && (
-                <p className="text-sm text-slate-600 dark:text-slate-300 italic">
-                  No related articles found in this category.
-                </p>
-              )}
+            {!loading && relatedArticles.length === 0 && (
+              <p className="text-sm text-slate-600 dark:text-slate-300 italic">
+                No related articles found in this category.
+              </p>
+            )}
 
-              {!loading && relatedArticles.length > 0 && (
-                <div className="space-y-4">
-                  {relatedArticles.map((article, index) => (
-                    <ArticleListItem
-                      key={article.id}
-                      article={article}
-                      showBorder={index < relatedArticles.length - 1}
-                    />
-                  ))}
-                </div>
-              )}
-            </>
-          )}
+            {!loading && relatedArticles.length > 0 && (
+              <div className="space-y-4">
+                {relatedArticles.map((article, index) => (
+                  <ArticleListItem
+                    key={article.id}
+                    article={article}
+                    showBorder={index < relatedArticles.length - 1}
+                  />
+                ))}
+              </div>
+            )}
+          </>
         </div>
       </div>
     </div>

@@ -3,11 +3,62 @@
 import React, { useState, useEffect } from "react";
 import ArticleDisplayCard from "./ArticleDisplayCard";
 import ViewAllArticlesButton from "./ViewAllArticlesButton";
-import { mockArticles } from "../../mock_data/articles";
 import type { ArticleDisplayData } from "./ArticleDisplayCard";
 
 interface HomeArticlesSectionProps {
   className?: string;
+}
+
+// Placeholder API URL for production
+const PRODUCTION_API_URL = "https://api.suburbangardener.com/articles/featured";
+
+async function fetchFeaturedArticles(): Promise<ArticleDisplayData[]> {
+  // In production, make an API call
+  if (process.env.NODE_ENV === "production") {
+    try {
+      const response = await fetch(`${PRODUCTION_API_URL}?limit=2`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch articles");
+      }
+      const allArticles = await response.json();
+      return allArticles.slice(0, 2); // Take first 2 articles
+    } catch (error) {
+      console.error("Error fetching articles:", error);
+      // In production, return empty array instead of mock data
+      // Never show fake information to users
+      return [];
+    }
+  }
+
+  // In development, use mock data - only import when not in production
+  const { mockArticles } = await import("../../mock_data/articles");
+
+  // Get first 2 articles (same as original logic)
+  // Exclude the most recent one since it would be featured elsewhere
+  const mostRecentArticle = mockArticles.reduce(
+    (latest: ArticleDisplayData, current: ArticleDisplayData) => {
+      const latestDate = new Date(latest.publishedDate);
+      const currentDate = new Date(current.publishedDate);
+      return currentDate > latestDate ? current : latest;
+    },
+    mockArticles[0]
+  );
+
+  const filteredArticles = mockArticles.filter(
+    (article: ArticleDisplayData) => article.id !== mostRecentArticle.id
+  );
+
+  // Sort remaining articles by date in descending order (most recent first)
+  const sortedArticles = filteredArticles.sort(
+    (a: ArticleDisplayData, b: ArticleDisplayData) => {
+      const dateA = new Date(a.publishedDate);
+      const dateB = new Date(b.publishedDate);
+      return dateB.getTime() - dateA.getTime();
+    }
+  );
+
+  // Take the first 2 articles after sorting
+  return sortedArticles.slice(0, 2);
 }
 
 export default function HomeArticlesSection({
@@ -17,32 +68,20 @@ export default function HomeArticlesSection({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadArticles = () => {
-      // Get first 3 articles (same as initial display in ArticleDisplayList)
-      // Exclude the most recent one since it would be featured elsewhere
-      const mostRecentArticle = mockArticles.reduce((latest, current) => {
-        const latestDate = new Date(latest.publishedDate);
-        const currentDate = new Date(current.publishedDate);
-        return currentDate > latestDate ? current : latest;
-      }, mockArticles[0]);
-
-      const filteredArticles = mockArticles.filter(
-        article => article.id !== mostRecentArticle.id
-      );
-
-      // Sort remaining articles by date in descending order (most recent first)
-      const sortedArticles = filteredArticles.sort((a, b) => {
-        const dateA = new Date(a.publishedDate);
-        const dateB = new Date(b.publishedDate);
-        return dateB.getTime() - dateA.getTime();
-      });
-
-      // Take the first 2 articles after sorting
-      setArticles(sortedArticles.slice(0, 2));
-      setLoading(false);
+    const loadArticles = async () => {
+      try {
+        setLoading(true);
+        const fetchedArticles = await fetchFeaturedArticles();
+        setArticles(fetchedArticles);
+      } catch (error) {
+        console.error("Error loading articles:", error);
+        setArticles([]);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    // Simulate a small delay for realistic loading
+    // Simulate a small delay for realistic loading in development
     setTimeout(loadArticles, 100);
   }, []);
 

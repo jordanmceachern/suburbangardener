@@ -19,7 +19,6 @@ export interface ArticleDisplayData {
 interface ArticleDisplayCardProps {
   article: ArticleDisplayData;
   className?: string;
-  onReadMore?: () => void;
   buttonVariant?: "default" | "narrow";
   showArrow?: boolean;
   titleClassName?: string;
@@ -29,19 +28,11 @@ interface ArticleDisplayCardProps {
 export default function ArticleDisplayCard({
   article,
   className = "",
-  onReadMore,
   buttonVariant = "default",
   showArrow = false,
   titleClassName = "",
   imageClassName = "",
 }: ArticleDisplayCardProps) {
-  const handleReadMore = () => {
-    console.log("Read More clicked for article:", article.slug);
-    if (onReadMore) {
-      onReadMore();
-    }
-  };
-
   return (
     <article
       className={`bg-primary-50 dark:bg-slate-500 rounded-lg shadow-lg overflow-hidden min-w-0 flex flex-col ${className}`}
@@ -67,26 +58,14 @@ export default function ArticleDisplayCard({
         <p className="text-neutral-700 dark:text-neutral-200 text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3">
           {article.excerpt}
         </p>
-
-        {onReadMore ? (
-          <button
-            onClick={handleReadMore}
-            className={`bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto ${
-              buttonVariant === "narrow" ? "self-center" : ""
-            }`}
-          >
-            Read More{showArrow ? " →" : ""}
-          </button>
-        ) : (
-          <Link
-            href={`/articles/${article.slug}`}
-            className={`bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center ${
-              buttonVariant === "narrow" ? "self-center" : ""
-            }`}
-          >
-            Read More{showArrow ? " →" : ""}
-          </Link>
-        )}
+        <Link
+          href={`/articles/${article.slug}`}
+          className={`bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center ${
+            buttonVariant === "narrow" ? "self-center" : ""
+          }`}
+        >
+          Read More{showArrow ? " →" : ""}
+        </Link>
       </div>
     </article>
   );

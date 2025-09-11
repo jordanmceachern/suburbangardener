@@ -63,6 +63,8 @@ export default function SearchArticles({
     return article.category === state.selectedCategory;
   });
 
+  const toggleCategoryFilter = () => setIsDropdownOpen(!isDropdownOpen);
+
   return (
     <div className={`${className}`}>
       <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
@@ -109,7 +111,7 @@ export default function SearchArticles({
         <div ref={dropdownRef} className="relative">
           <button
             type="button"
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            onClick={toggleCategoryFilter}
             className="w-full px-3 py-2.5 h-10 text-base border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-slate-500 transition-colors text-left flex items-center justify-between"
             aria-haspopup="listbox"
             aria-expanded={isDropdownOpen}

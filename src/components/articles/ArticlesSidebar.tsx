@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { mockSidebarArticles } from "../../mock_data/articles";
 import SearchArticles from "./SearchArticles";
 import type { ArticleDisplayData } from "./ArticleDisplayCard";
 import ArticleListItem from "./ArticleListItem";
@@ -32,12 +31,14 @@ async function fetchArticles(
       return await response.json();
     } catch (error) {
       console.error("Error fetching articles:", error);
-      // Fallback to mock data even in production if API fails
-      return mockSidebarArticles.slice(0, maxArticles);
+      // In production, return empty array instead of mock data
+      // Never show fake information to users
+      return [];
     }
   }
 
-  // In development, use mock data
+  // In development, use mock data - only import when not in production
+  const { mockSidebarArticles } = await import("../../mock_data/articles");
   return mockSidebarArticles.slice(0, maxArticles);
 }
 

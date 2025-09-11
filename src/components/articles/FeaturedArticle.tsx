@@ -15,7 +15,7 @@ export default function FeaturedArticle({
 
   if (state.loading && !state.featuredArticle) {
     return (
-      <div className={`${className}`}>
+      <div className={className}>
         <div className="animate-pulse">
           <div className="bg-neutral-200 dark:bg-neutral-700 rounded-lg h-48 sm:h-64 mb-4" />
           <div className="bg-neutral-200 dark:bg-neutral-700 rounded h-8 mb-3" />
@@ -32,11 +32,11 @@ export default function FeaturedArticle({
   }
 
   return (
-    <div className={`${className}`}>
+    <div className={className}>
       <ArticleDisplayCard
         article={state.featuredArticle}
         buttonVariant="narrow"
-        showArrow={true}
+        showArrow
         titleClassName="sm:text-3xl md:text-3xl lg:text-3xl"
         imageClassName="h-60 sm:h-80"
       />
