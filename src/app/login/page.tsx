@@ -36,29 +36,23 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-background-light dark:bg-background-dark p-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-lg p-8">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-primary-900 dark:text-primary-100 mb-2">
-              Welcome Back
-            </h1>
-            <p className="text-neutral-600 dark:text-neutral-400">
+    <main className="auth-page">
+      <div className="auth-shell">
+        <div className="auth-card">
+          <div className="auth-header">
+            <h1 className="auth-title">Welcome Back</h1>
+            <p className="auth-subtitle">
               Sign in to your Suburban Gardener account
             </p>
           </div>
 
-          {error && (
-            <div className="mb-6 text-red-600 dark:text-red-400 text-sm text-center bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
-              {error}
-            </div>
-          )}
+          {error && <div className="auth-error">{error}</div>}
 
-          <div className="space-y-4">
+          <div className="auth-form">
             <button
               onClick={handleOAuthSignIn}
               disabled={isLoading}
-              className="w-full bg-neutral-900 dark:bg-neutral-700 hover:bg-neutral-800 dark:hover:bg-neutral-600 disabled:opacity-50 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-3"
+              className="auth-button"
             >
               {isLoading ? (
                 <LoadingSpinner
@@ -69,7 +63,7 @@ export default function LoginPage() {
               ) : (
                 <>
                   <svg
-                    className="w-5 h-5"
+                    className="auth-button-icon"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -81,20 +75,12 @@ export default function LoginPage() {
             </button>
           </div>
 
-          <div className="mt-6 text-center">
-            <p className="text-neutral-600 dark:text-neutral-400 text-sm">
-              By signing in, you agree to our terms of service and privacy
-              policy.
-            </p>
+          <div className="auth-legal">
+            By signing in, you agree to our terms of service and privacy policy.
           </div>
 
-          <div className="mt-6 text-center">
-            <Link
-              href="/"
-              className="text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 text-sm"
-            >
-              ← Back to Home
-            </Link>
+          <div className="auth-link">
+            <Link href="/">← Back to Home</Link>
           </div>
         </div>
       </div>
