@@ -19,4 +19,104 @@
   .theme-transition {
     @apply transition-colors duration-300 ease-in-out;
   }
+
+  .store-page {
+    @apply min-h-screen bg-background-light dark:bg-background-dark;
+  }
+
+  .store-shell {
+    @apply max-w-6xl mx-auto px-4 py-8;
+  }
+
+  .store-header {
+    @apply text-center mb-12;
+  }
+
+  .store-title {
+    @apply text-4xl font-bold text-primary-900 dark:text-primary-100 mb-4;
+  }
+
+  .store-subtitle {
+    @apply text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto;
+  }
+
+  .store-filter-list {
+    @apply flex flex-wrap justify-center gap-4 mb-12;
+  }
+
+  .store-filter-button {
+    @apply bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 px-6 py-2 rounded-full font-medium hover:bg-primary-100 dark:hover:bg-primary-900 transition-colors;
+  }
+
+  .store-filter-button--active {
+    @apply bg-primary-600 text-white hover:bg-primary-700;
+  }
+
+  .store-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6;
+  }
+
+  .store-product-card {
+    @apply bg-white dark:bg-neutral-800 rounded-lg shadow-lg overflow-hidden;
+  }
+
+  .store-product-visual {
+    @apply h-48 relative;
+  }
+
+  .store-product-badge {
+    @apply absolute top-3 right-3 bg-red-500 text-white px-2 py-1 rounded text-xs font-bold;
+  }
+
+  .store-product-body {
+    @apply p-4;
+  }
+
+  .store-product-title {
+    @apply text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2;
+  }
+
+  .store-product-description {
+    @apply text-neutral-600 dark:text-neutral-400 text-sm mb-3;
+  }
+
+  .store-product-row {
+    @apply flex items-center justify-between;
+  }
+
+  .store-price {
+    @apply text-lg font-bold text-primary-600 dark:text-primary-400;
+  }
+
+  .store-original-price {
+    @apply text-sm text-neutral-500 dark:text-neutral-400 line-through ml-2;
+  }
+
+  .store-product-button {
+    @apply bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors;
+  }
+
+  .store-newsletter {
+    @apply mt-16 bg-primary-50 dark:bg-primary-900 rounded-lg p-8 text-center;
+  }
+
+  .store-newsletter-title {
+    @apply text-2xl font-bold text-primary-900 dark:text-primary-100 mb-4;
+  }
+
+  .store-newsletter-text {
+    @apply text-primary-700 dark:text-primary-300 mb-6 max-w-md mx-auto;
+  }
+
+  .store-newsletter-form {
+    @apply flex flex-col sm:flex-row gap-4 max-w-md mx-auto;
+  }
+
+  .store-newsletter-input {
+    @apply flex-1 px-4 py-3 rounded-lg border border-primary-200 dark:border-primary-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+  }
+
+  .store-newsletter-submit {
+    @apply bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-medium transition-colors;
+  }
 }
