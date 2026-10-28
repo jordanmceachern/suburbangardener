@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import ErrorBoundary from "../components/ErrorBoundary";
 import Navigation from "../components/Navigation";
 import { AuthProvider } from "../lib/auth-nextauth";
+import { appLayout } from "../lib/tailwind";
 import "./globals.css";
 
 const title = "Suburban Gardener";
@@ -59,10 +60,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <AuthProvider>
           <ErrorBoundary>
-            <div className="flex h-screen">
+            <div className={appLayout.shell}>
               <Navigation />
-              <div className="flex-1 sm:ml-20 lg:ml-32">
-                <div className="pb-20 sm:pb-0">{children}</div>
+              <div className={appLayout.main}>
+                <div className={appLayout.content}>{children}</div>
               </div>
             </div>
           </ErrorBoundary>

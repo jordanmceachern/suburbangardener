@@ -99,8 +99,8 @@ interface ArticleContextType {
   state: ArticleState;
   loadArticles: () => Promise<void>;
   loadMoreArticles: () => Promise<void>;
-  searchArticles: (searchTerm: string) => Promise<void>;
-  setSelectedCategory: (category: string) => void;
+  searchArticles: (_searchTerm: string) => Promise<void>;
+  setSelectedCategory: (_category: string) => void;
   getFilteredArticles: () => ArticleDisplayData[];
 }
 

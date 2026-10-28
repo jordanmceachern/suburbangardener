@@ -1,19 +1,19 @@
 import { render } from "@testing-library/react";
 import RecentArticles from "@/components/articles/RecentArticles";
+import type { ArticleDisplayData } from "@/components/articles/ArticleDisplayCard";
 
 describe("RecentArticles Component", () => {
-  const mockArticles = [
+  const mockArticles: ArticleDisplayData[] = [
     {
-      id: 1,
+      id: "1",
       title: "Recent Article 1",
       excerpt: "First recent article",
+      publishedDate: "2024-01-01",
       slug: "recent-article-1",
       content: "Recent content 1",
       imageUrl: "/recent-image-1.jpg",
-      tags: ["recent"],
+      category: "Gardening",
       author: "Test Author",
-      publishDate: "2024-01-01",
-      readTime: 5,
     },
   ];
 

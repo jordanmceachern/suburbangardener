@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import BackgroundImage from "../BackgroundImage";
+import { articleCardStyles, cn } from "../../lib/tailwind";
 
 export interface ArticleDisplayData {
   id: string;
@@ -13,7 +14,7 @@ export interface ArticleDisplayData {
   slug: string;
   imageUrl: string;
   category: string;
-  content?: string; // Full article content for individual pages
+  content?: string;
 }
 
 interface ArticleDisplayCardProps {
@@ -34,35 +35,28 @@ export default function ArticleDisplayCard({
   imageClassName = "",
 }: ArticleDisplayCardProps) {
   return (
-    <article
-      className={`bg-primary-50 dark:bg-slate-500 rounded-lg shadow-lg overflow-hidden min-w-0 flex flex-col ${className}`}
-    >
-      <div className={`h-48 sm:h-64 bg-slate-800 ${imageClassName}`}>
+    <article className={cn(articleCardStyles.card, className)}>
+      <div className={cn(articleCardStyles.imageWrap, imageClassName)}>
         <BackgroundImage
           src={article.imageUrl}
           label={article.title}
-          className="w-full h-full rounded-b-none"
+          className={articleCardStyles.image}
         />
       </div>
-      <div className="px-6 pb-6 py-4 flex flex-col flex-grow">
-        <div className="flex items-center mb-2">
-          <span className="text-neutral-700 dark:text-neutral-200 text-sm">
-            {article.publishedDate}
-          </span>
+      <div className={articleCardStyles.content}>
+        <div className={articleCardStyles.meta}>
+          <span className={articleCardStyles.metaText}>{article.publishedDate}</span>
         </div>
-        <h2
-          className={`text-xl lg:text-2xl xl:text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3 ${titleClassName}`}
-        >
+        <h2 className={cn(articleCardStyles.title, titleClassName)}>
           {article.title}
         </h2>
-        <p className="text-neutral-700 dark:text-neutral-200 text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3">
-          {article.excerpt}
-        </p>
+        <p className={articleCardStyles.excerpt}>{article.excerpt}</p>
         <Link
           href={`/articles/${article.slug}`}
-          className={`bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center ${
-            buttonVariant === "narrow" ? "self-center" : ""
-          }`}
+          className={cn(
+            articleCardStyles.button,
+            buttonVariant === "narrow" ? articleCardStyles.buttonNarrow : "",
+          )}
         >
           Read More{showArrow ? " →" : ""}
         </Link>

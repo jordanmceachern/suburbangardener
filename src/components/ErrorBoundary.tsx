@@ -2,6 +2,7 @@
 
 import React, { Component, ReactNode } from "react";
 import Image from "next/image";
+import { errorStyles } from "../lib/tailwind";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -98,62 +99,60 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen w-full flex items-center justify-center bg-background-light dark:bg-background-dark text-foreground-light dark:text-foreground-dark p-4">
-          <div className="flex flex-col items-center text-center max-w-2xl w-full space-y-6">
+        <div className={errorStyles.shell}>
+          <div className={errorStyles.card}>
             {/* eslint-disable-next-line jsx-a11y/alt-text -- alt text is provided via label prop */}
             <Image
               alt="a ruined squished tomato on the ground"
-              className="flex justify-center mb-8 rounded-lg"
+              className={errorStyles.image}
               height={400}
               width={400}
               src="https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1755004794/SuburbanGardener/toflato_l0dkqy.jpg"
             />
 
-            <div className="space-y-4">
-              <h1 className="text-2xl font-bold text-foreground-light dark:text-foreground-dark">
-                Sorry, something went wrong!
-              </h1>
-              <p className="text-lg leading-relaxed text-neutral-700 dark:text-neutral-300">
+            <div className={errorStyles.section}>
+              <h1 className={errorStyles.title}>Sorry, something went wrong!</h1>
+              <p className={errorStyles.text}>
                 The website has sent me a notification to let me know. If the
                 issue is coming from our end, I&apos;ll be working on resolving
                 it ASAP - please come back soon!
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
+            <div className={errorStyles.actions}>
               <button
                 onClick={() => window.location.reload()}
-                className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
+                className={errorStyles.primaryButton}
               >
                 Refresh this Page
               </button>
               <button
                 onClick={() => (window.location.href = "/")}
-                className="px-6 py-3 bg-secondary-600 hover:bg-secondary-700 text-white rounded-lg transition-colors"
+                className={errorStyles.secondaryButton}
               >
                 Go to Home Page
               </button>
             </div>
 
             {process.env.NODE_ENV === "development" && this.state.error && (
-              <details className="w-full mt-8 p-4 bg-neutral-100 dark:bg-neutral-800 rounded-lg text-left">
-                <summary className="cursor-pointer font-medium text-neutral-800 dark:text-neutral-200 mb-2">
+              <details className={errorStyles.details}>
+                <summary className={errorStyles.summary}>
                   Developer Details (Development Only)
                 </summary>
-                <div className="space-y-2 text-sm font-mono text-neutral-700 dark:text-neutral-300">
+                <div className={errorStyles.detailBlock}>
                   <div>
                     <strong>Error:</strong> {this.state.error.message}
                   </div>
                   <div>
                     <strong>Stack:</strong>
-                    <pre className="whitespace-pre-wrap text-xs mt-1 p-2 bg-neutral-200 dark:bg-neutral-700 rounded text-neutral-800 dark:text-neutral-200">
+                    <pre className={errorStyles.codeBlock}>
                       {this.state.error.stack}
                     </pre>
                   </div>
                   {this.state.errorInfo && (
                     <div>
                       <strong>Component Stack:</strong>
-                      <pre className="whitespace-pre-wrap text-xs mt-1 p-2 bg-neutral-200 dark:bg-neutral-700 rounded text-neutral-800 dark:text-neutral-200">
+                      <pre className={errorStyles.codeBlock}>
                         {this.state.errorInfo.componentStack}
                       </pre>
                     </div>

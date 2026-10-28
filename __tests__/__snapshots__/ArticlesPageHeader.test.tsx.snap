@@ -2,7 +2,7 @@
 
 exports[`ArticlesPageHeader Component should match DOM snapshot 1`] = `
 <div
-  class="text-center mb-12 "
+  class="text-center mb-12"
 >
   <h1
     class="text-4xl font-bold text-primary-900 dark:text-primary-100 mb-4"

@@ -2,24 +2,21 @@ import React from "react";
 
 export default function ToolsPage() {
   return (
-    <main className="min-h-screen bg-background-light dark:bg-background-dark">
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-primary-900 dark:text-primary-100 mb-4">
-            Garden Tools & Calculators
-          </h1>
-          <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+    <main className="tools-page">
+      <div className="tools-shell">
+        <div className="tools-header">
+          <h1 className="tools-title">Garden Tools & Calculators</h1>
+          <p className="tools-subtitle">
             Plan your perfect garden with our interactive tools and calculators
             designed for suburban gardening success.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Garden Planner Tool */}
-          <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-lg p-6">
-            <div className="flex items-center justify-center w-16 h-16 bg-green-100 dark:bg-green-900 rounded-lg mb-4">
+        <div className="tools-grid">
+          <div className="tool-card">
+            <div className="tool-icon-wrap tool-icon-wrap--green">
               <svg
-                className="w-8 h-8 text-green-600 dark:text-green-400"
+                className="tool-icon tool-icon--green"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -32,23 +29,18 @@ export default function ToolsPage() {
                 />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
-              Garden Layout Planner
-            </h3>
-            <p className="text-neutral-600 dark:text-neutral-400 mb-6">
+            <h3 className="tool-title">Garden Layout Planner</h3>
+            <p className="tool-copy">
               Design your garden layout with our interactive drag-and-drop
               planner. Optimize space and plan companion planting.
             </p>
-            <button className="w-full bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg font-medium transition-colors">
-              Launch Planner
-            </button>
+            <button className="tool-button">Launch Planner</button>
           </div>
 
-          {/* Spacing Calculator */}
-          <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-lg p-6">
-            <div className="flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-lg mb-4">
+          <div className="tool-card">
+            <div className="tool-icon-wrap tool-icon-wrap--blue">
               <svg
-                className="w-8 h-8 text-blue-600 dark:text-blue-400"
+                className="tool-icon tool-icon--blue"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -61,23 +53,18 @@ export default function ToolsPage() {
                 />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
-              Plant Spacing Calculator
-            </h3>
-            <p className="text-neutral-600 dark:text-neutral-400 mb-6">
+            <h3 className="tool-title">Plant Spacing Calculator</h3>
+            <p className="tool-copy">
               Calculate optimal spacing between plants based on variety, growth
               habits, and available space.
             </p>
-            <button className="w-full bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg font-medium transition-colors">
-              Calculate Spacing
-            </button>
+            <button className="tool-button">Calculate Spacing</button>
           </div>
 
-          {/* Watering Schedule */}
-          <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-lg p-6">
-            <div className="flex items-center justify-center w-16 h-16 bg-cyan-100 dark:bg-cyan-900 rounded-lg mb-4">
+          <div className="tool-card">
+            <div className="tool-icon-wrap tool-icon-wrap--cyan">
               <svg
-                className="w-8 h-8 text-cyan-600 dark:text-cyan-400"
+                className="tool-icon tool-icon--cyan"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -90,23 +77,18 @@ export default function ToolsPage() {
                 />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
-              Watering Schedule Tool
-            </h3>
-            <p className="text-neutral-600 dark:text-neutral-400 mb-6">
+            <h3 className="tool-title">Watering Schedule Tool</h3>
+            <p className="tool-copy">
               Create personalized watering schedules based on plant types,
               weather, and soil conditions.
             </p>
-            <button className="w-full bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg font-medium transition-colors">
-              Create Schedule
-            </button>
+            <button className="tool-button">Create Schedule</button>
           </div>
 
-          {/* Harvest Calendar */}
-          <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-lg p-6">
-            <div className="flex items-center justify-center w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-lg mb-4">
+          <div className="tool-card">
+            <div className="tool-icon-wrap tool-icon-wrap--orange">
               <svg
-                className="w-8 h-8 text-orange-600 dark:text-orange-400"
+                className="tool-icon tool-icon--orange"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -119,23 +101,18 @@ export default function ToolsPage() {
                 />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
-              Harvest Calendar
-            </h3>
-            <p className="text-neutral-600 dark:text-neutral-400 mb-6">
+            <h3 className="tool-title">Harvest Calendar</h3>
+            <p className="tool-copy">
               Track planting dates and predict harvest times for all your
               vegetables and herbs.
             </p>
-            <button className="w-full bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg font-medium transition-colors">
-              View Calendar
-            </button>
+            <button className="tool-button">View Calendar</button>
           </div>
 
-          {/* Soil Test Tracker */}
-          <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-lg p-6">
-            <div className="flex items-center justify-center w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-lg mb-4">
+          <div className="tool-card">
+            <div className="tool-icon-wrap tool-icon-wrap--purple">
               <svg
-                className="w-8 h-8 text-purple-600 dark:text-purple-400"
+                className="tool-icon tool-icon--purple"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -148,23 +125,18 @@ export default function ToolsPage() {
                 />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
-              Soil Test Tracker
-            </h3>
-            <p className="text-neutral-600 dark:text-neutral-400 mb-6">
+            <h3 className="tool-title">Soil Test Tracker</h3>
+            <p className="tool-copy">
               Log and track soil pH, nutrients, and amendments over time to
               optimize soil health.
             </p>
-            <button className="w-full bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg font-medium transition-colors">
-              Track Soil Data
-            </button>
+            <button className="tool-button">Track Soil Data</button>
           </div>
 
-          {/* Seed Starting Calculator */}
-          <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-lg p-6">
-            <div className="flex items-center justify-center w-16 h-16 bg-emerald-100 dark:bg-emerald-900 rounded-lg mb-4">
+          <div className="tool-card">
+            <div className="tool-icon-wrap tool-icon-wrap--emerald">
               <svg
-                className="w-8 h-8 text-emerald-600 dark:text-emerald-400"
+                className="tool-icon tool-icon--emerald"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -177,35 +149,28 @@ export default function ToolsPage() {
                 />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
-              Seed Starting Calculator
-            </h3>
-            <p className="text-neutral-600 dark:text-neutral-400 mb-6">
+            <h3 className="tool-title">Seed Starting Calculator</h3>
+            <p className="tool-copy">
               Calculate when to start seeds indoors based on your last frost
               date and desired harvest time.
             </p>
-            <button className="w-full bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg font-medium transition-colors">
-              Calculate Dates
-            </button>
+            <button className="tool-button">Calculate Dates</button>
           </div>
         </div>
 
-        {/* Featured Tool Section */}
-        <div className="mt-16 bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900 dark:to-secondary-900 rounded-lg p-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-primary-900 dark:text-primary-100 mb-4">
-              Garden Design Studio
-            </h2>
-            <p className="text-lg text-primary-700 dark:text-primary-300 mb-8">
+        <div className="tools-feature">
+          <div className="tools-feature-inner">
+            <h2 className="tools-feature-title">Garden Design Studio</h2>
+            <p className="tools-feature-copy">
               Our most comprehensive tool for designing your complete suburban
               garden layout with 3D visualization, plant databases, and seasonal
               planning.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-lg font-medium text-lg transition-colors">
+            <div className="tools-feature-actions">
+              <button className="tools-feature-button-primary">
                 Launch Design Studio
               </button>
-              <button className="bg-white dark:bg-neutral-800 border border-primary-600 text-primary-600 dark:text-primary-400 px-8 py-3 rounded-lg font-medium text-lg hover:bg-primary-50 dark:hover:bg-primary-900 transition-colors">
+              <button className="tools-feature-button-secondary">
                 Watch Demo
               </button>
             </div>

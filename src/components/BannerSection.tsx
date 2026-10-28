@@ -1,5 +1,6 @@
 import React from "react";
 import BackgroundImage from "./BackgroundImage";
+import { bannerStyles, cn } from "../lib/tailwind";
 
 interface BannerSectionProps {
   className?: string;
@@ -7,16 +8,14 @@ interface BannerSectionProps {
 
 export default function BannerSection({ className = "" }: BannerSectionProps) {
   return (
-    <header
-      className={`relative flex flex-col items-center text-center overflow-hidden rounded-lg min-h-[400px] ${className}`}
-    >
+    <header className={cn(bannerStyles.header, className)}>
       <video
         autoPlay
         loop
         muted
         playsInline
         poster="https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1754661544/SuburbanGardener/IMG_7791_nl7dzw.jpg"
-        className="absolute inset-0 w-full h-full object-cover z-0"
+        className={bannerStyles.video}
       >
         <source
           src="https://res.cloudinary.com/dtweazqf2/video/upload/f_auto,q_auto/v1754668830/SuburbanGardener/bannerboomerang_ebv27k.webm"
@@ -25,8 +24,8 @@ export default function BannerSection({ className = "" }: BannerSectionProps) {
         Your browser does not support the video tag.
       </video>
 
-      <div className="absolute inset-0 z-10 w-full flex flex-col items-center justify-center">
-        <div className="h-[125px] sm:h-[225px] w-full flex">
+      <div className={bannerStyles.overlay}>
+        <div className={bannerStyles.logoWrap}>
           <BackgroundImage
             key="landing-logo"
             label="Suburban Gardener Logo"

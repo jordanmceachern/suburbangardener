@@ -5,6 +5,7 @@ import Link from "next/link";
 import BackgroundImage from "./BackgroundImage";
 import { usePathname } from "next/navigation";
 import { useAuth } from "../lib/auth-nextauth";
+import { cn, navStyles } from "../lib/tailwind";
 
 interface NavItem {
   name: string;
@@ -157,28 +158,26 @@ export default function Navigation() {
 
   return (
     <>
-      {/* Desktop/Tablet Sidebar - Left side for lg+ screens */}
-      <nav className="hidden sm:fixed sm:inset-y-0 sm:left-0 sm:flex sm:flex-col sm:w-20 lg:w-32">
-        <div className="flex flex-col flex-grow pt-6 bg-slate-100 dark:bg-slate-800 border-r border-slate-300 dark:border-slate-600 overflow-y-auto">
-          <div className="flex-grow flex flex-col">
-            <nav className="flex-1 px-3 space-y-1">
+      <nav className={navStyles.shell}>
+        <div className={navStyles.sidebar}>
+          <div className={navStyles.sidebarInner}>
+            <nav className={navStyles.list}>
               {filteredNavigation.map(item => {
                 const active = isActive(item.href);
                 return (
-                  <div className="relative group" key={item.name}>
+                  <div className={navStyles.item} key={item.name}>
                     {item.name === "Home" ? (
                       <Link
                         title={item.name}
-                        className={`${
-                          active
-                            ? "bg-primary-100 dark:bg-primary-900 text-primary-900 dark:text-primary-100"
-                            : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100"
-                        } group flex items-center md:px-1 md:py-px lg:px-3 lg:py-2 font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500`}
+                        className={cn(
+                          active ? navStyles.linkActive : navStyles.linkInactive,
+                          navStyles.homeModifier,
+                        )}
                         href={item.href}
                       >
-                        <span className="md:h-8 lg:h-16 w-full flex">
+                        <span className={navStyles.homeLogo}>
                           <BackgroundImage
-                            className="flex-shrink-0 dark:bg-neutral-200"
+                            className={cn(navStyles.icon, "dark:bg-neutral-200")}
                             key="home-logo"
                             label="Suburban Gardener Logo"
                             src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
@@ -188,17 +187,14 @@ export default function Navigation() {
                     ) : (
                       <Link
                         title={item.name}
-                        className={`${
-                          active
-                            ? "bg-primary-100 dark:bg-primary-900 text-primary-900 dark:text-primary-100"
-                            : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100"
-                        } group flex justify-center lg:justify-start items-center px-3 py-2 font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500`}
+                        className={cn(
+                          active ? navStyles.linkActive : navStyles.linkInactive,
+                          navStyles.desktopModifier,
+                        )}
                         href={item.href}
                       >
-                        <span className="flex-shrink-0">{item.icon}</span>
-                        <span className="hidden lg:ml-2 lg:block">
-                          {item.name}
-                        </span>
+                        <span className={navStyles.icon}>{item.icon}</span>
+                        <span className={navStyles.label}>{item.name}</span>
                       </Link>
                     )}
                   </div>
@@ -209,9 +205,8 @@ export default function Navigation() {
         </div>
       </nav>
 
-      {/* Mobile Navigation - Bottom horizontal bar */}
-      <nav className="sm:hidden fixed bottom-0 left-0 right-0 bg-slate-200 dark:bg-slate-700 border-slate-300 dark:border-slate-600 z-50">
-        <div className="flex justify-around items-center py-2">
+      <nav className={navStyles.mobileShell}>
+        <div className={navStyles.mobileInner}>
           {filteredNavigation.map(item => {
             const active = isActive(item.href);
 
@@ -220,16 +215,12 @@ export default function Navigation() {
                 <Link
                   key={item.name}
                   title={item.name}
-                  className={`${
-                    active
-                      ? "text-primary-600 dark:text-primary-400"
-                      : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100"
-                  } group flex items-center transition-colors py-2 px-2 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded`}
+                  className={active ? navStyles.mobileHomeActive : navStyles.mobileHomeInactive}
                   href={item.href}
                 >
-                  <span className="h-8 w-12 flex">
+                  <span className={navStyles.mobileHomeLogo}>
                     <BackgroundImage
-                      className="flex-shrink-0 dark:bg-neutral-200"
+                      className={cn(navStyles.icon, "dark:bg-neutral-200")}
                       label="Suburban Gardener Logo"
                       src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
                     />
@@ -242,16 +233,10 @@ export default function Navigation() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`${
-                  active
-                    ? "text-primary-600 dark:text-primary-400"
-                    : "text-neutral-500 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100"
-                } flex flex-col items-center justify-center min-w-0 py-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 rounded`}
+                className={active ? navStyles.mobileLinkActive : navStyles.mobileLinkInactive}
               >
-                <span className="flex-shrink-0 mb-1">{item.icon}</span>
-                <span className="text-xs font-medium truncate">
-                  {item.name}
-                </span>
+                <span className={navStyles.mobileIcon}>{item.icon}</span>
+                <span className={navStyles.mobileLabel}>{item.name}</span>
               </Link>
             );
           })}

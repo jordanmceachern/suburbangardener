@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import SearchArticles from "./SearchArticles";
 import type { ArticleDisplayData } from "./ArticleDisplayCard";
 import ArticleListItem from "./ArticleListItem";
+import { articleSidebarStyles, cn } from "../../lib/tailwind";
 
 // Use ArticleDisplayData since it has all the fields we need
 type ArticleMetadata = ArticleDisplayData;
@@ -59,21 +60,21 @@ export default function ArticlesSidebar({
 
   const panelClasses = useMemo(
     () =>
-      `bg-slate-100 dark:bg-slate-800 shadow-lg transition-all duration-300 ease-in-out relative h-screen pb-20 sm:pb-0 ${
-        isOpen
-          ? "translate-x-0 opacity-100 border-l border-slate-300 dark:border-slate-600"
-          : "translate-x-full lg:translate-x-0 opacity-90 lg:opacity-100"
-      }`,
+      cn(
+        articleSidebarStyles.panelBase,
+        isOpen ? articleSidebarStyles.panelOpen : articleSidebarStyles.panelClosed,
+      ),
     [isOpen]
   );
 
   const collapseButtonClasses = useMemo(
     () =>
-      `absolute top-4 -left-10 bg-slate-200 dark:bg-slate-600 shadow-xl cursor-pointer hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors z-30 focus:outline-none focus:ring-2 focus:ring-primary-500 w-10 h-16 flex items-center justify-center rounded-l-md lg:hidden ${
+      cn(
+        articleSidebarStyles.collapseButtonBase,
         isOpen
-          ? "border-l border-t border-b border-slate-300 dark:border-slate-600"
-          : "border border-slate-300 dark:border-slate-600"
-      }`,
+          ? articleSidebarStyles.collapseButtonOpen
+          : articleSidebarStyles.collapseButtonClosed,
+      ),
     [isOpen]
   );
 
@@ -113,7 +114,7 @@ export default function ArticlesSidebar({
           aria-label={isOpen ? "Hide recent articles" : "Show recent articles"}
         >
           <svg
-            className="w-4 h-4 text-slate-600 dark:text-slate-300"
+            className={articleSidebarStyles.collapseIcon}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -127,45 +128,40 @@ export default function ArticlesSidebar({
           </svg>
         </button>
 
-        {/* Panel Content */}
-        <div className="p-6 pt-6 h-full overflow-y-auto">
-          {/* Search Articles Component */}
+        <div className={articleSidebarStyles.content}>
           <div className="mb-8">
             <SearchArticles />
           </div>
 
-          {/* Divider */}
-          <div className="border-t border-slate-300 dark:border-slate-500 mb-6"></div>
+          <div className={articleSidebarStyles.divider}></div>
 
-          <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
-            Recent Articles
-          </h3>
+          <h3 className={articleSidebarStyles.sectionTitle}>Recent Articles</h3>
 
           {loading && (
-            <div className="space-y-4">
+            <div className={articleSidebarStyles.skeletonWrap}>
               {Array.from({ length: maxArticles }).map((_, index) => (
                 <div
                   key={index}
                   className={
                     index < maxArticles - 1
-                      ? "border-b border-slate-300 dark:border-slate-500 pb-4 animate-pulse"
-                      : "animate-pulse"
+                      ? articleSidebarStyles.skeletonDivider
+                      : articleSidebarStyles.skeletonItem
                   }
                 >
-                  <div className="h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2" />
-                  <div className="h-3 bg-slate-300 dark:bg-slate-600 rounded mb-2" />
-                  <div className="h-3 bg-slate-300 dark:bg-slate-600 rounded w-1/3" />
+                  <div className={articleSidebarStyles.skeletonBlock} />
+                  <div className={articleSidebarStyles.skeletonLine} />
+                  <div className={articleSidebarStyles.skeletonShort} />
                 </div>
               ))}
             </div>
           )}
 
           {error && (
-            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+            <p className={articleSidebarStyles.errorText}>{error}</p>
           )}
 
           {!loading && !error && (
-            <div className="space-y-4">
+            <div className={articleSidebarStyles.listWrap}>
               {articles.map((article, index) => (
                 <ArticleListItem
                   key={article.id}
