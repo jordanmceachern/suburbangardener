@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { cn, searchStyles } from "../../lib/tailwind";
 import { useArticles } from "../../contexts/ArticleContext";
 
 interface SearchArticlesProps {
@@ -66,14 +67,10 @@ export default function SearchArticles({
   const toggleCategoryFilter = () => setIsDropdownOpen(!isDropdownOpen);
 
   return (
-    <div className={`${className}`}>
-      <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">
-        Search Articles
-      </h3>
+    <div className={className}>
+      <h3 className={searchStyles.title}>Search Articles</h3>
 
-      {/* Search and Filter Bar */}
-      <div className="space-y-4">
-        {/* Search Input */}
+      <div className={searchStyles.container}>
         <div className="relative">
           <input
             type="text"
@@ -81,7 +78,7 @@ export default function SearchArticles({
             value={localSearchTerm}
             onChange={e => setLocalSearchTerm(e.target.value)}
             onKeyPress={handleKeyPress}
-            className="block w-full pl-3 pr-12 py-2.5 h-10 text-base border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-900 dark:placeholder-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-text hover:border-slate-400 dark:hover:border-slate-500 transition-colors"
+            className={searchStyles.input}
           />
           <button
             onClick={handleSearch}
@@ -89,10 +86,10 @@ export default function SearchArticles({
               localSearchTerm.trim().length > 0 &&
               localSearchTerm.trim().length < 4
             }
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-900 dark:text-slate-100 hover:text-slate-600 dark:hover:text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className={searchStyles.searchButton}
           >
             <svg
-              className="h-4 w-4"
+              className={searchStyles.inputIcon}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -107,21 +104,21 @@ export default function SearchArticles({
           </button>
         </div>
 
-        {/* Category Filter */}
         <div ref={dropdownRef} className="relative">
           <button
             type="button"
             onClick={toggleCategoryFilter}
-            className="w-full px-3 py-2.5 h-10 text-base border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-slate-500 transition-colors text-left flex items-center justify-between"
+            className={searchStyles.dropdownButton}
             aria-haspopup="listbox"
             aria-expanded={isDropdownOpen}
             aria-label="Select category"
           >
             <span className="truncate">{state.selectedCategory}</span>
             <svg
-              className={`h-4 w-4 text-slate-900 dark:text-slate-100 transition-transform ${
-                isDropdownOpen ? "transform rotate-180" : ""
-              }`}
+              className={cn(
+                searchStyles.dropdownIcon,
+                isDropdownOpen ? "transform rotate-180" : "",
+              )}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 20 20"
@@ -136,17 +133,18 @@ export default function SearchArticles({
           </button>
 
           {isDropdownOpen && (
-            <div className="absolute z-50 w-full mt-1 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md max-h-60 overflow-auto shadow-lg">
+            <div className={searchStyles.dropdownMenu}>
               {categories.map(category => (
                 <button
                   key={category}
                   type="button"
                   onClick={() => handleCategoryChange(category)}
-                  className={`w-full px-3 py-2.5 text-left text-base hover:bg-slate-50 dark:hover:bg-slate-600 focus:outline-none focus:bg-slate-50 dark:focus:bg-slate-600 transition-colors first:rounded-t-md last:rounded-b-md ${
+                  className={cn(
+                    searchStyles.dropdownItem,
                     state.selectedCategory === category
-                      ? "bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300"
-                      : "text-slate-900 dark:text-slate-100"
-                  }`}
+                      ? searchStyles.dropdownItemActive
+                      : searchStyles.dropdownItemInactive,
+                  )}
                   role="option"
                   aria-selected={state.selectedCategory === category}
                 >
@@ -157,8 +155,7 @@ export default function SearchArticles({
           )}
         </div>
 
-        {/* Results Summary */}
-        <div className="text-xs text-slate-600 dark:text-slate-300">
+        <div className={searchStyles.results}>
           {state.searchTerm || state.selectedCategory !== "All Categories" ? (
             <span>
               Found {filteredArticles.length} articles

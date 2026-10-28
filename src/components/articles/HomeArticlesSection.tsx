@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import ArticleDisplayCard from "./ArticleDisplayCard";
 import ViewAllArticlesButton from "./ViewAllArticlesButton";
+import { cn, homeArticleStyles } from "../../lib/tailwind";
 import type { ArticleDisplayData } from "./ArticleDisplayCard";
 
 interface HomeArticlesSectionProps {
@@ -87,24 +88,20 @@ export default function HomeArticlesSection({
 
   if (loading) {
     return (
-      <section
-        className={`p-6 rounded-lg bg-tertiary-100 dark:bg-tertiary-800 border border-tertiary-200 dark:border-tertiary-700 ${className}`}
-      >
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
-            Latest Gardening Articles
-          </h2>
-          <p className="text-lg text-neutral-600 dark:text-neutral-200 max-w-2xl mx-auto">
+      <section className={cn(homeArticleStyles.sectionLoading, className)}>
+        <div className={homeArticleStyles.titleWrap}>
+          <h2 className={homeArticleStyles.title}>Latest Gardening Articles</h2>
+          <p className={homeArticleStyles.description}>
             Discover expert insights and seasonal tips for your garden
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className={homeArticleStyles.grid}>
           {Array.from({ length: 2 }).map((_, index) => (
-            <div key={index} className="animate-pulse">
-              <div className="bg-neutral-200 dark:bg-neutral-700 rounded-lg h-48 sm:h-64 mb-4" />
-              <div className="bg-neutral-200 dark:bg-neutral-700 rounded h-6 mb-2" />
-              <div className="bg-neutral-200 dark:bg-neutral-700 rounded h-4 mb-2" />
-              <div className="bg-neutral-200 dark:bg-neutral-700 rounded h-4 w-2/3" />
+            <div key={index} className={homeArticleStyles.skeletonCard}>
+              <div className={homeArticleStyles.skeletonBlock} />
+              <div className={homeArticleStyles.skeletonLine} />
+              <div className={homeArticleStyles.skeletonMeta} />
+              <div className={homeArticleStyles.skeletonMetaShort} />
             </div>
           ))}
         </div>
@@ -113,26 +110,22 @@ export default function HomeArticlesSection({
   }
 
   return (
-    <section
-      className={`p-6 rounded-lg bg-secondary-100 dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 ${className}`}
-    >
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
-          Latest Gardening Articles
-        </h2>
-        <p className="sm:mx-auto text-lg text-start sm:text-center text-neutral-600 dark:text-neutral-200 max-w-2xl">
+    <section className={cn(homeArticleStyles.sectionLoaded, className)}>
+      <div className={homeArticleStyles.titleWrap}>
+        <h2 className={homeArticleStyles.title}>Latest Gardening Articles</h2>
+        <p className={homeArticleStyles.descriptionMobile}>
           Discover expert insights and seasonal tips for your garden.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className={homeArticleStyles.grid}>
         {articles.map(article => (
           <ArticleDisplayCard key={article.id} article={article} />
         ))}
       </div>
 
-      <div className="text-center mt-8">
-        <ViewAllArticlesButton className="block w-full" />
+      <div className={homeArticleStyles.ctaWrap}>
+        <ViewAllArticlesButton className={homeArticleStyles.ctaButton} />
       </div>
     </section>
   );

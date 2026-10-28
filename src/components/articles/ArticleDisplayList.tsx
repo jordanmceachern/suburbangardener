@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import ArticleDisplayCard from "./ArticleDisplayCard";
 import LoadingSpinner from "../LoadingSpinner";
+import { articleListStyles } from "../../lib/tailwind";
 import { useArticles } from "../../contexts/ArticleContext";
 
 interface ArticleDisplayListProps {
@@ -20,14 +21,14 @@ export default function ArticleDisplayList({
 
   if (state.loading && state.articles.length === 0) {
     return (
-      <div className={`${className}`}>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className={className}>
+        <div className={articleListStyles.section}>
           {Array.from({ length: 6 }).map((_, index) => (
-            <div key={index} className="animate-pulse">
-              <div className="bg-neutral-200 dark:bg-neutral-700 rounded-lg h-48 sm:h-64 mb-4" />
-              <div className="bg-neutral-200 dark:bg-neutral-700 rounded h-6 mb-2" />
-              <div className="bg-neutral-200 dark:bg-neutral-700 rounded h-4 mb-2" />
-              <div className="bg-neutral-200 dark:bg-neutral-700 rounded h-4 w-2/3" />
+            <div key={index} className={articleListStyles.skeletonCard}>
+              <div className={articleListStyles.skeletonBlock} />
+              <div className={articleListStyles.skeletonLine} />
+              <div className={articleListStyles.skeletonMeta} />
+              <div className={articleListStyles.skeletonMetaShort} />
             </div>
           ))}
         </div>
@@ -37,39 +38,36 @@ export default function ArticleDisplayList({
 
   return (
     <div className={className}>
-      {/* No Articles Message */}
       {!state.loading && displayedArticles.length === 0 && (
-        <div className="text-center py-12">
+        <div className={articleListStyles.emptyWrapper}>
           <Image
             alt="a ruined squished tomato on the ground"
-            className="flex justify-center mb-8 rounded-lg mx-auto"
+            className={articleListStyles.emptyImage}
             height={400}
             width={400}
             src="https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1755004794/SuburbanGardener/toflato_l0dkqy.jpg"
           />
-          <p className="text-xl text-neutral-900 dark:text-neutral-100">
+          <p className={articleListStyles.emptyText}>
             Sorry! We encountered an issue while trying to fetch our articles
             for you, please come back to check again later.
           </p>
         </div>
       )}
 
-      {/* Articles Grid */}
       {displayedArticles.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className={articleListStyles.section}>
           {displayedArticles.map(article => (
             <ArticleDisplayCard key={article.id} article={article} />
           ))}
         </div>
       )}
 
-      {/* Load More Articles */}
       {state.hasMore && (
-        <div className="mt-8 text-center">
+        <div className={articleListStyles.loadMoreWrap}>
           <button
             onClick={loadMoreArticles}
             disabled={state.loading}
-            className="bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 text-white px-8 py-3 rounded-lg font-medium transition-colors inline-flex items-center gap-2"
+            className={articleListStyles.loadMoreButton}
           >
             {state.loading ? (
               <LoadingSpinner size="sm" text="Loading..." />
@@ -80,15 +78,14 @@ export default function ArticleDisplayList({
         </div>
       )}
 
-      {/* Loading More Skeleton */}
       {state.loading && state.articles.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-6">
+        <div className={`${articleListStyles.section} mt-6`}>
           {Array.from({ length: 3 }).map((_, index) => (
-            <div key={`loading-${index}`} className="animate-pulse">
-              <div className="bg-neutral-200 dark:bg-neutral-700 rounded-lg h-48 sm:h-64 mb-4" />
-              <div className="bg-neutral-200 dark:bg-neutral-700 rounded h-6 mb-2" />
-              <div className="bg-neutral-200 dark:bg-neutral-700 rounded h-4 mb-2" />
-              <div className="bg-neutral-200 dark:bg-neutral-700 rounded h-4 w-2/3" />
+            <div key={`loading-${index}`} className={articleListStyles.skeletonCard}>
+              <div className={articleListStyles.skeletonBlock} />
+              <div className={articleListStyles.skeletonLine} />
+              <div className={articleListStyles.skeletonMeta} />
+              <div className={articleListStyles.skeletonMetaShort} />
             </div>
           ))}
         </div>
@@ -96,7 +93,7 @@ export default function ArticleDisplayList({
 
       {state.error && (
         <div className="mt-8 text-center">
-          <p className="text-red-600 dark:text-red-400">{state.error}</p>
+          <p className={articleListStyles.errorText}>{state.error}</p>
         </div>
       )}
     </div>

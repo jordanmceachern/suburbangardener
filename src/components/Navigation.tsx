@@ -5,6 +5,7 @@ import Link from "next/link";
 import BackgroundImage from "./BackgroundImage";
 import { usePathname } from "next/navigation";
 import { useAuth } from "../lib/auth-nextauth";
+import { cn, navStyles } from "../lib/tailwind";
 
 interface NavItem {
   name: string;
@@ -157,27 +158,26 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className="nav-shell-desktop">
-        <div className="nav-sidebar">
-          <div className="nav-sidebar-inner">
-            <nav className="nav-list">
+      <nav className={navStyles.shell}>
+        <div className={navStyles.sidebar}>
+          <div className={navStyles.sidebarInner}>
+            <nav className={navStyles.list}>
               {filteredNavigation.map(item => {
                 const active = isActive(item.href);
                 return (
-                  <div className="nav-item group" key={item.name}>
+                  <div className={navStyles.item} key={item.name}>
                     {item.name === "Home" ? (
                       <Link
                         title={item.name}
-                        className={
-                          active
-                            ? "nav-link nav-link--active nav-link-home group"
-                            : "nav-link nav-link--inactive nav-link-home group"
-                        }
+                        className={cn(
+                          active ? navStyles.linkActive : navStyles.linkInactive,
+                          navStyles.homeModifier,
+                        )}
                         href={item.href}
                       >
-                        <span className="nav-home-logo-wrap">
+                        <span className={navStyles.homeLogo}>
                           <BackgroundImage
-                            className="flex-shrink-0 dark:bg-neutral-200"
+                            className={cn(navStyles.icon, "dark:bg-neutral-200")}
                             key="home-logo"
                             label="Suburban Gardener Logo"
                             src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
@@ -187,15 +187,14 @@ export default function Navigation() {
                     ) : (
                       <Link
                         title={item.name}
-                        className={
-                          active
-                            ? "nav-link nav-link--active nav-link--desktop nav-link--desktop-item group"
-                            : "nav-link nav-link--inactive nav-link--desktop nav-link--desktop-item group"
-                        }
+                        className={cn(
+                          active ? navStyles.linkActive : navStyles.linkInactive,
+                          navStyles.desktopModifier,
+                        )}
                         href={item.href}
                       >
-                        <span className="flex-shrink-0">{item.icon}</span>
-                        <span className="nav-link-label">{item.name}</span>
+                        <span className={navStyles.icon}>{item.icon}</span>
+                        <span className={navStyles.label}>{item.name}</span>
                       </Link>
                     )}
                   </div>
@@ -206,8 +205,8 @@ export default function Navigation() {
         </div>
       </nav>
 
-      <nav className="nav-mobile-bar">
-        <div className="nav-mobile-inner">
+      <nav className={navStyles.mobileShell}>
+        <div className={navStyles.mobileInner}>
           {filteredNavigation.map(item => {
             const active = isActive(item.href);
 
@@ -216,16 +215,12 @@ export default function Navigation() {
                 <Link
                   key={item.name}
                   title={item.name}
-                  className={
-                    active
-                      ? "nav-mobile-home-link nav-mobile-link--active group"
-                      : "nav-mobile-home-link nav-mobile-link--inactive group"
-                  }
+                  className={active ? navStyles.mobileHomeActive : navStyles.mobileHomeInactive}
                   href={item.href}
                 >
-                  <span className="nav-mobile-home-logo-wrap">
+                  <span className={navStyles.mobileHomeLogo}>
                     <BackgroundImage
-                      className="flex-shrink-0 dark:bg-neutral-200"
+                      className={cn(navStyles.icon, "dark:bg-neutral-200")}
                       label="Suburban Gardener Logo"
                       src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
                     />
@@ -238,14 +233,10 @@ export default function Navigation() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={
-                  active
-                    ? "nav-mobile-link nav-mobile-link--active"
-                    : "nav-mobile-link nav-mobile-link--inactive"
-                }
+                className={active ? navStyles.mobileLinkActive : navStyles.mobileLinkInactive}
               >
-                <span className="nav-mobile-icon">{item.icon}</span>
-                <span className="nav-mobile-label">{item.name}</span>
+                <span className={navStyles.mobileIcon}>{item.icon}</span>
+                <span className={navStyles.mobileLabel}>{item.name}</span>
               </Link>
             );
           })}
