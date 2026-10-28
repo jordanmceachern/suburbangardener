@@ -2,10 +2,10 @@
 
 exports[`ArticleDisplayCard Component should match DOM snapshot 1`] = `
 <article
-  class="bg-primary-50 dark:bg-slate-500 rounded-lg shadow-lg overflow-hidden min-w-0 flex flex-col "
+  class="bg-primary-50 dark:bg-slate-500 rounded-lg shadow-lg overflow-hidden min-w-0 flex flex-col"
 >
   <div
-    class="h-48 sm:h-64 bg-slate-800 "
+    class="h-48 sm:h-64 bg-slate-800"
   >
     <div
       class="h-auto w-full flex justify-center w-full h-full rounded-b-none"
@@ -30,7 +30,7 @@ exports[`ArticleDisplayCard Component should match DOM snapshot 1`] = `
       </span>
     </div>
     <h2
-      class="text-xl lg:text-2xl xl:text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3 "
+      class="text-xl lg:text-2xl xl:text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3"
     >
       Test Article
     </h2>
@@ -40,7 +40,7 @@ exports[`ArticleDisplayCard Component should match DOM snapshot 1`] = `
       This is a test article excerpt
     </p>
     <a
-      class="bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center "
+      class="bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center"
       href="/articles/test-article"
     >
       Read More

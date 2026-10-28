@@ -14,7 +14,7 @@ exports[`ArticlesPage renders with correct structure and classes 1`] = `
         class="max-w-4xl mx-auto"
       >
         <div
-          class="text-center mb-12 "
+          class="text-center mb-12"
         >
           <h1
             class="text-4xl font-bold text-primary-900 dark:text-primary-100 mb-4"
@@ -156,7 +156,7 @@ exports[`ArticlesPage renders with correct structure and classes 1`] = `
                       All Categories
                     </span>
                     <svg
-                      class="h-4 w-4 text-slate-900 dark:text-slate-100 transition-transform "
+                      class="h-4 w-4 text-slate-900 dark:text-slate-100 transition-transform"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 20 20"

@@ -16,14 +16,15 @@ describe("Navigation Component", () => {
     const navs = getAllByRole("navigation");
     expect(navs.length).toBeGreaterThan(0);
 
-    // Verify Tailwind classes for responsive navigation
+    // Verify the responsive navigation shell and shared CSS hook classes.
     const hasFlexClasses = container.innerHTML.includes("flex");
-    const hasResponsiveClasses =
-      container.innerHTML.includes("sm:") ||
-      container.innerHTML.includes("md:") ||
-      container.innerHTML.includes("lg:");
+    const hasNavigationHooks =
+      container.innerHTML.includes("nav-shell-desktop") ||
+      container.innerHTML.includes("nav-mobile-bar") ||
+      container.innerHTML.includes("nav-link--desktop") ||
+      container.innerHTML.includes("nav-link--active");
 
     expect(hasFlexClasses).toBe(true);
-    expect(hasResponsiveClasses).toBe(true);
+    expect(hasNavigationHooks).toBe(true);
   });
 });

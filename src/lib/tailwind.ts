@@ -142,3 +142,54 @@ export const articlePageHeaderStyles = {
   copy:
     "text-lg text-start text-neutral-600 dark:text-neutral-200 max-w-2xl mx-auto",
 } as const;
+
+export const bannerStyles = {
+  header:
+    "relative flex flex-col items-center text-center overflow-hidden rounded-lg min-h-[400px]",
+  video: "absolute inset-0 w-full h-full object-cover z-0",
+  overlay: "absolute inset-0 z-10 w-full flex flex-col items-center justify-center",
+  logoWrap: "h-[125px] sm:h-[225px] w-full flex",
+} as const;
+
+export const greetingStyles = {
+  wrapper:
+    "rounded-lg p-6 bg-tertiary-100 dark:bg-tertiary-800 border border-tertiary-200 dark:border-tertiary-700 flex flex-col items-start sm:items-center py-3 w-full",
+  heading:
+    "text-2xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-300 text-center",
+  text: "text-start sm:text-center text-lg text-neutral-900 dark:text-neutral-300 mt-1",
+} as const;
+
+export const errorStyles = {
+  shell:
+    "min-h-screen w-full flex items-center justify-center bg-background-light dark:bg-background-dark text-foreground-light dark:text-foreground-dark p-4",
+  card: "flex flex-col items-center text-center max-w-2xl w-full space-y-6",
+  image: "flex justify-center mb-8 rounded-lg",
+  section: "space-y-4",
+  title: "text-2xl font-bold text-foreground-light dark:text-foreground-dark",
+  text: "text-lg leading-relaxed text-neutral-700 dark:text-neutral-300",
+  actions: "flex flex-col sm:flex-row gap-4 justify-center pt-6",
+  primaryButton:
+    "px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors",
+  secondaryButton:
+    "px-6 py-3 bg-secondary-600 hover:bg-secondary-700 text-white rounded-lg transition-colors",
+  details:
+    "w-full mt-8 p-4 bg-neutral-100 dark:bg-neutral-800 rounded-lg text-left",
+  summary:
+    "cursor-pointer font-medium text-neutral-800 dark:text-neutral-200 mb-2",
+  detailBlock: "space-y-2 text-sm font-mono text-neutral-700 dark:text-neutral-300",
+  codeBlock:
+    "whitespace-pre-wrap text-xs mt-1 p-2 bg-neutral-200 dark:bg-neutral-700 rounded text-neutral-800 dark:text-neutral-200",
+} as const;
+
+export const articleCardStyles = {
+  card: "bg-primary-50 dark:bg-slate-500 rounded-lg shadow-lg overflow-hidden min-w-0 flex flex-col",
+  imageWrap: "h-48 sm:h-64 bg-slate-800",
+  image: "w-full h-full rounded-b-none",
+  content: "px-6 pb-6 py-4 flex flex-col flex-grow",
+  meta: "flex items-center mb-2",
+  metaText: "text-neutral-700 dark:text-neutral-200 text-sm",
+  title: "text-xl lg:text-2xl xl:text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3",
+  excerpt: "text-neutral-700 dark:text-neutral-200 text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3",
+  button: "bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center",
+  buttonNarrow: "self-center",
+} as const;
