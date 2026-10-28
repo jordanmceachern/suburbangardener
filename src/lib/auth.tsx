@@ -11,13 +11,13 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }: any) {
       if (user) {
-        token.id = user.id;
+        token.id = String(user.id);
       }
       return token;
     },
     async session({ session, token }: any) {
       if (session.user) {
-        session.user.id = token.id as string;
+        session.user.id = String(token.id || session.user.email || "");
       }
       return session;
     },
