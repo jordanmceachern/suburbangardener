@@ -1,23 +1,49 @@
 import type { NextAuthOptions } from "next-auth";
-import GitHubProvider from "next-auth/providers/github";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { verifyUserCredentials } from "@/lib/auth-user";
 
 export const authOptions: NextAuthOptions = {
   providers: [
-    GitHubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID || "",
-      clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
+    CredentialsProvider({
+      name: "Email",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
+
+        const user = await verifyUserCredentials({
+          email: String(credentials.email),
+          password: String(credentials.password),
+        });
+
+        if (!user) {
+          return null;
+        }
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name ?? user.email,
+        };
+      },
     }),
   ],
   callbacks: {
     async jwt({ token, user }: any) {
       if (user) {
-        token.id = String(user.id);
+        token.id = String(user.id ?? token.sub ?? "");
       }
       return token;
     },
     async session({ session, token }: any) {
       if (session.user) {
-        session.user.id = String(token.id || session.user.email || "");
+        session.user.id = String(
+          token.id || token.sub || session.user.email || ""
+        );
       }
       return session;
     },
