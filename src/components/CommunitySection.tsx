@@ -22,7 +22,7 @@ export default function CommunitySection({
             Get Started - Sign Up
           </Link>
           <Link href="/login" className={communityStyles.secondaryButton}>
-            Already a Member? Log In
+            Log In
           </Link>
         </div>
       </div>

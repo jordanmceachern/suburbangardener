@@ -1,4 +1,3 @@
-import Link from "next/link";
 import ErrorTester from "../components/ErrorTester";
 import Greeting from "../components/Greeting";
 import BannerSection from "../components/BannerSection";
@@ -12,16 +11,7 @@ export default function Home() {
       <div className="max-w-4xl mx-auto space-y-8">
         <BannerSection />
 
-        <div className="flex w-full items-start justify-between gap-4">
-          <Greeting />
-
-          <Link
-            href="/login"
-            className="inline-flex items-center justify-center rounded-lg bg-neutral-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-neutral-700 dark:bg-neutral-700 dark:hover:bg-neutral-600"
-          >
-            Log In
-          </Link>
-        </div>
+        <Greeting />
 
         <CommunitySection className="mt-8" />
 

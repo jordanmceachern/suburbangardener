@@ -89,13 +89,12 @@ describe("credentials auth flow", () => {
     expect(invalidUser).toBeNull();
   });
 
-  it("shows a login CTA on the home page", () => {
+  it("shows a single login CTA on the home page", () => {
     render(<HomePage />);
 
     const loginLinks = screen.getAllByRole("link", { name: /log in|login/i });
 
-    expect(
-      loginLinks.some(link => link.getAttribute("href") === "/login")
-    ).toBe(true);
+    expect(loginLinks).toHaveLength(1);
+    expect(loginLinks[0]).toHaveAttribute("href", "/login");
   });
 });

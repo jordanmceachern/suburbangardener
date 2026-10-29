@@ -38,7 +38,7 @@ export const communityStyles = {
   section:
     "p-6 rounded-lg bg-primary-100 dark:bg-slate-600 border border-primary-200 dark:border-slate-500",
   inner: "text-center",
-  title: "text-xl font-bold mb-3 text-neutral-900 dark:text-neutral-100",
+  title: "text-3xl font-bold mb-3 text-neutral-900 dark:text-neutral-100",
   text: "text-start sm:text-center text-primary-700 dark:text-neutral-300 mb-6",
   actions: "flex flex-col sm:flex-row gap-4 justify-center",
   primaryButton:

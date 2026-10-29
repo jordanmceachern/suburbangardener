@@ -545,7 +545,7 @@
   }
 
   .nav-shell-desktop {
-    @apply hidden sm:fixed sm:inset-y-0 sm:left-0 sm:flex sm:flex-col sm:w-20 lg:w-32;
+    @apply hidden sm:fixed sm:inset-y-0 sm:left-0 sm:flex sm:flex-col sm:w-24 lg:w-40;
   }
 
   .nav-sidebar {

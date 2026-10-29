@@ -8,7 +8,7 @@ exports[`CommunitySection Component should match DOM snapshot 1`] = `
     class="text-center"
   >
     <h2
-      class="text-xl font-bold mb-3 text-neutral-900 dark:text-neutral-100"
+      class="text-3xl font-bold mb-3 text-neutral-900 dark:text-neutral-100"
     >
       Join Our Gardening Community
     </h2>
@@ -30,7 +30,7 @@ exports[`CommunitySection Component should match DOM snapshot 1`] = `
         class="bg-white dark:bg-tertiary-800 hover:bg-neutral-50 dark:hover:bg-tertiary-900 text-neutral-600 dark:text-neutral-100 font-medium py-3 px-6 rounded-lg border border-primary-300 dark:border-none transition-colors"
         href="/login"
       >
-        Already a Member? Log In
+        Log In
       </a>
     </div>
   </div>
