@@ -27,7 +27,9 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function isJsonPayload(value: unknown): value is Record<string, unknown> | unknown[] {
+function isJsonPayload(
+  value: unknown
+): value is Record<string, unknown> | unknown[] {
   return typeof value === "object" && value !== null;
 }
 
@@ -55,12 +57,20 @@ export function sanitizeProfileInput(input: unknown): Partial<ProfileInput> {
 
   const sanitized: Partial<ProfileInput> = {};
 
-  const displayName = typeof input.displayName === "string" ? input.displayName.trim() : undefined;
-  if (displayName && displayName.length > 0 && displayName.length <= MAX_DISPLAY_NAME_LENGTH) {
+  const displayName =
+    typeof input.displayName === "string"
+      ? input.displayName.trim()
+      : undefined;
+  if (
+    displayName &&
+    displayName.length > 0 &&
+    displayName.length <= MAX_DISPLAY_NAME_LENGTH
+  ) {
     sanitized.displayName = displayName;
   }
 
-  const avatarUrl = typeof input.avatarUrl === "string" ? input.avatarUrl.trim() : undefined;
+  const avatarUrl =
+    typeof input.avatarUrl === "string" ? input.avatarUrl.trim() : undefined;
   if (avatarUrl) {
     try {
       const parsed = new URL(avatarUrl);

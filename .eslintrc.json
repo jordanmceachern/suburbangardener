@@ -1,6 +1,13 @@
 {
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true,
+    "jest": true
+  },
   "extends": ["next/core-web-vitals", "eslint:recommended", "prettier"],
   "plugins": ["prettier"],
+  "ignorePatterns": [".next/", "node_modules/", "coverage/"],
   "rules": {
     "prettier/prettier": "error",
     "no-unused-vars": [

@@ -45,7 +45,9 @@ export default function ArticleDisplayCard({
       </div>
       <div className={articleCardStyles.content}>
         <div className={articleCardStyles.meta}>
-          <span className={articleCardStyles.metaText}>{article.publishedDate}</span>
+          <span className={articleCardStyles.metaText}>
+            {article.publishedDate}
+          </span>
         </div>
         <h2 className={cn(articleCardStyles.title, titleClassName)}>
           {article.title}
@@ -55,7 +57,7 @@ export default function ArticleDisplayCard({
           href={`/articles/${article.slug}`}
           className={cn(
             articleCardStyles.button,
-            buttonVariant === "narrow" ? articleCardStyles.buttonNarrow : "",
+            buttonVariant === "narrow" ? articleCardStyles.buttonNarrow : ""
           )}
         >
           Read More{showArrow ? " →" : ""}

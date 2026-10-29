@@ -111,7 +111,9 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
             />
 
             <div className={errorStyles.section}>
-              <h1 className={errorStyles.title}>Sorry, something went wrong!</h1>
+              <h1 className={errorStyles.title}>
+                Sorry, something went wrong!
+              </h1>
               <p className={errorStyles.text}>
                 The website has sent me a notification to let me know. If the
                 issue is coming from our end, I&apos;ll be working on resolving

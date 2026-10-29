@@ -170,14 +170,19 @@ export default function Navigation() {
                       <Link
                         title={item.name}
                         className={cn(
-                          active ? navStyles.linkActive : navStyles.linkInactive,
-                          navStyles.homeModifier,
+                          active
+                            ? navStyles.linkActive
+                            : navStyles.linkInactive,
+                          navStyles.homeModifier
                         )}
                         href={item.href}
                       >
                         <span className={navStyles.homeLogo}>
                           <BackgroundImage
-                            className={cn(navStyles.icon, "dark:bg-neutral-200")}
+                            className={cn(
+                              navStyles.icon,
+                              "dark:bg-neutral-200"
+                            )}
                             key="home-logo"
                             label="Suburban Gardener Logo"
                             src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
@@ -188,8 +193,10 @@ export default function Navigation() {
                       <Link
                         title={item.name}
                         className={cn(
-                          active ? navStyles.linkActive : navStyles.linkInactive,
-                          navStyles.desktopModifier,
+                          active
+                            ? navStyles.linkActive
+                            : navStyles.linkInactive,
+                          navStyles.desktopModifier
                         )}
                         href={item.href}
                       >
@@ -215,7 +222,11 @@ export default function Navigation() {
                 <Link
                   key={item.name}
                   title={item.name}
-                  className={active ? navStyles.mobileHomeActive : navStyles.mobileHomeInactive}
+                  className={
+                    active
+                      ? navStyles.mobileHomeActive
+                      : navStyles.mobileHomeInactive
+                  }
                   href={item.href}
                 >
                   <span className={navStyles.mobileHomeLogo}>
@@ -233,7 +244,11 @@ export default function Navigation() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={active ? navStyles.mobileLinkActive : navStyles.mobileLinkInactive}
+                className={
+                  active
+                    ? navStyles.mobileLinkActive
+                    : navStyles.mobileLinkInactive
+                }
               >
                 <span className={navStyles.mobileIcon}>{item.icon}</span>
                 <span className={navStyles.mobileLabel}>{item.name}</span>

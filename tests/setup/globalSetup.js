@@ -15,7 +15,7 @@ module.exports = async () => {
   }
 
   // Start the development server in the background
-  const server = execSync("npm run dev > /dev/null 2>&1 &", {
+  execSync("npm run dev > /dev/null 2>&1 &", {
     cwd: path.resolve(__dirname, "../../"),
     stdio: "ignore",
   });

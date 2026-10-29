@@ -117,7 +117,7 @@ export default function SearchArticles({
             <svg
               className={cn(
                 searchStyles.dropdownIcon,
-                isDropdownOpen ? "transform rotate-180" : "",
+                isDropdownOpen ? "transform rotate-180" : ""
               )}
               fill="none"
               stroke="currentColor"
@@ -143,7 +143,7 @@ export default function SearchArticles({
                     searchStyles.dropdownItem,
                     state.selectedCategory === category
                       ? searchStyles.dropdownItemActive
-                      : searchStyles.dropdownItemInactive,
+                      : searchStyles.dropdownItemInactive
                   )}
                   role="option"
                   aria-selected={state.selectedCategory === category}

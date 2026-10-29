@@ -19,7 +19,7 @@ export async function GET() {
       preferences: {},
       progress: {},
       cart: {},
-    },
+    }
   );
 }
 
@@ -35,11 +35,17 @@ export async function PUT(request: Request) {
   try {
     payload = await request.json();
   } catch {
-    return NextResponse.json({ error: "Invalid JSON payload" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Invalid JSON payload" },
+      { status: 400 }
+    );
   }
 
   if (!payload || typeof payload !== "object") {
-    return NextResponse.json({ error: "Profile payload must be an object" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Profile payload must be an object" },
+      { status: 400 }
+    );
   }
 
   const profile = await upsertUserProfile(session.user.id, payload);

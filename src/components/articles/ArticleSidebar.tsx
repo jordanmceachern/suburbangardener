@@ -104,7 +104,9 @@ export default function ArticleSidebar({
     () =>
       cn(
         articleSidebarStyles.panelBase,
-        isOpen ? articleSidebarStyles.panelOpen : articleSidebarStyles.panelClosed,
+        isOpen
+          ? articleSidebarStyles.panelOpen
+          : articleSidebarStyles.panelClosed
       ),
     [isOpen]
   );
@@ -115,7 +117,7 @@ export default function ArticleSidebar({
         articleSidebarStyles.collapseButtonBase,
         isOpen
           ? articleSidebarStyles.collapseButtonOpen
-          : articleSidebarStyles.collapseButtonClosed,
+          : articleSidebarStyles.collapseButtonClosed
       ),
     [isOpen]
   );
@@ -215,7 +217,9 @@ export default function ArticleSidebar({
           <>
             <div className={articleSidebarStyles.divider}></div>
 
-            <h3 className={articleSidebarStyles.sectionTitle}>Related Articles</h3>
+            <h3 className={articleSidebarStyles.sectionTitle}>
+              Related Articles
+            </h3>
 
             {loading && (
               <div className={articleSidebarStyles.skeletonWrap}>

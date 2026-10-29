@@ -35,7 +35,8 @@ export const navStyles = {
 } as const;
 
 export const communityStyles = {
-  section: "p-6 rounded-lg bg-primary-100 dark:bg-slate-600 border border-primary-200 dark:border-slate-500",
+  section:
+    "p-6 rounded-lg bg-primary-100 dark:bg-slate-600 border border-primary-200 dark:border-slate-500",
   inner: "text-center",
   title: "text-xl font-bold mb-3 text-neutral-900 dark:text-neutral-100",
   text: "text-start sm:text-center text-primary-700 dark:text-neutral-300 mb-6",
@@ -56,7 +57,8 @@ export const searchStyles = {
   inputIcon: "h-4 w-4",
   dropdownButton:
     "w-full px-3 py-2.5 h-10 text-base border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-slate-500 transition-colors text-left flex items-center justify-between",
-  dropdownIcon: "h-4 w-4 text-slate-900 dark:text-slate-100 transition-transform",
+  dropdownIcon:
+    "h-4 w-4 text-slate-900 dark:text-slate-100 transition-transform",
   dropdownMenu:
     "absolute z-50 w-full mt-1 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md max-h-60 overflow-auto shadow-lg",
   dropdownItem:
@@ -72,8 +74,7 @@ export const articleListStyles = {
   skeletonCard: "animate-pulse",
   skeletonBlock:
     "bg-neutral-200 dark:bg-neutral-700 rounded-lg h-48 sm:h-64 mb-4",
-  skeletonLine:
-    "bg-neutral-200 dark:bg-neutral-700 rounded h-6 mb-2",
+  skeletonLine: "bg-neutral-200 dark:bg-neutral-700 rounded h-6 mb-2",
   skeletonMeta: "bg-neutral-200 dark:bg-neutral-700 rounded h-4 mb-2",
   skeletonMetaShort: "bg-neutral-200 dark:bg-neutral-700 rounded h-4 w-2/3",
   emptyWrapper: "text-center py-12",
@@ -100,8 +101,7 @@ export const homeArticleStyles = {
   skeletonCard: "animate-pulse",
   skeletonBlock:
     "bg-neutral-200 dark:bg-neutral-700 rounded-lg h-48 sm:h-64 mb-4",
-  skeletonLine:
-    "bg-neutral-200 dark:bg-neutral-700 rounded h-6 mb-2",
+  skeletonLine: "bg-neutral-200 dark:bg-neutral-700 rounded h-6 mb-2",
   skeletonMeta: "bg-neutral-200 dark:bg-neutral-700 rounded h-4 mb-2",
   skeletonMetaShort: "bg-neutral-200 dark:bg-neutral-700 rounded h-4 w-2/3",
   ctaWrap: "text-center mt-8",
@@ -113,8 +113,7 @@ export const articleSidebarStyles = {
     "bg-slate-100 dark:bg-slate-800 shadow-lg transition-all duration-300 ease-in-out relative h-screen pb-20 sm:pb-0",
   panelOpen:
     "translate-x-0 opacity-100 border-l border-slate-300 dark:border-slate-600",
-  panelClosed:
-    "translate-x-full lg:translate-x-0 opacity-90 lg:opacity-100",
+  panelClosed: "translate-x-full lg:translate-x-0 opacity-90 lg:opacity-100",
   collapseButtonBase:
     "absolute top-4 -left-10 bg-slate-200 dark:bg-slate-600 shadow-xl cursor-pointer hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors z-30 focus:outline-none focus:ring-2 focus:ring-primary-500 w-10 h-16 flex items-center justify-center rounded-l-md lg:hidden",
   collapseButtonOpen:
@@ -139,15 +138,15 @@ export const articleSidebarStyles = {
 export const articlePageHeaderStyles = {
   wrapper: "text-center mb-12",
   title: "text-4xl font-bold text-primary-900 dark:text-primary-100 mb-4",
-  copy:
-    "text-lg text-start text-neutral-600 dark:text-neutral-200 max-w-2xl mx-auto",
+  copy: "text-lg text-start text-neutral-600 dark:text-neutral-200 max-w-2xl mx-auto",
 } as const;
 
 export const bannerStyles = {
   header:
     "relative flex flex-col items-center text-center overflow-hidden rounded-lg min-h-[400px]",
   video: "absolute inset-0 w-full h-full object-cover z-0",
-  overlay: "absolute inset-0 z-10 w-full flex flex-col items-center justify-center",
+  overlay:
+    "absolute inset-0 z-10 w-full flex flex-col items-center justify-center",
   logoWrap: "h-[125px] sm:h-[225px] w-full flex",
 } as const;
 
@@ -176,7 +175,8 @@ export const errorStyles = {
     "w-full mt-8 p-4 bg-neutral-100 dark:bg-neutral-800 rounded-lg text-left",
   summary:
     "cursor-pointer font-medium text-neutral-800 dark:text-neutral-200 mb-2",
-  detailBlock: "space-y-2 text-sm font-mono text-neutral-700 dark:text-neutral-300",
+  detailBlock:
+    "space-y-2 text-sm font-mono text-neutral-700 dark:text-neutral-300",
   codeBlock:
     "whitespace-pre-wrap text-xs mt-1 p-2 bg-neutral-200 dark:bg-neutral-700 rounded text-neutral-800 dark:text-neutral-200",
 } as const;
@@ -188,8 +188,11 @@ export const articleCardStyles = {
   content: "px-6 pb-6 py-4 flex flex-col flex-grow",
   meta: "flex items-center mb-2",
   metaText: "text-neutral-700 dark:text-neutral-200 text-sm",
-  title: "text-xl lg:text-2xl xl:text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3",
-  excerpt: "text-neutral-700 dark:text-neutral-200 text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3",
-  button: "bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center",
+  title:
+    "text-xl lg:text-2xl xl:text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3",
+  excerpt:
+    "text-neutral-700 dark:text-neutral-200 text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3",
+  button:
+    "bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center",
   buttonNarrow: "self-center",
 } as const;

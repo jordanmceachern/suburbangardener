@@ -62,7 +62,9 @@ export default function ArticlesSidebar({
     () =>
       cn(
         articleSidebarStyles.panelBase,
-        isOpen ? articleSidebarStyles.panelOpen : articleSidebarStyles.panelClosed,
+        isOpen
+          ? articleSidebarStyles.panelOpen
+          : articleSidebarStyles.panelClosed
       ),
     [isOpen]
   );
@@ -73,7 +75,7 @@ export default function ArticlesSidebar({
         articleSidebarStyles.collapseButtonBase,
         isOpen
           ? articleSidebarStyles.collapseButtonOpen
-          : articleSidebarStyles.collapseButtonClosed,
+          : articleSidebarStyles.collapseButtonClosed
       ),
     [isOpen]
   );
@@ -156,9 +158,7 @@ export default function ArticlesSidebar({
             </div>
           )}
 
-          {error && (
-            <p className={articleSidebarStyles.errorText}>{error}</p>
-          )}
+          {error && <p className={articleSidebarStyles.errorText}>{error}</p>}
 
           {!loading && !error && (
             <div className={articleSidebarStyles.listWrap}>

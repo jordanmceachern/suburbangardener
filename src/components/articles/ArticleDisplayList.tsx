@@ -81,7 +81,10 @@ export default function ArticleDisplayList({
       {state.loading && state.articles.length > 0 && (
         <div className={`${articleListStyles.section} mt-6`}>
           {Array.from({ length: 3 }).map((_, index) => (
-            <div key={`loading-${index}`} className={articleListStyles.skeletonCard}>
+            <div
+              key={`loading-${index}`}
+              className={articleListStyles.skeletonCard}
+            >
               <div className={articleListStyles.skeletonBlock} />
               <div className={articleListStyles.skeletonLine} />
               <div className={articleListStyles.skeletonMeta} />
