@@ -80,6 +80,7 @@ export default function LoginPage() {
             <label className="auth-field">
               <span>Email</span>
               <input
+                className="auth-input"
                 type="email"
                 value={email}
                 onChange={event => setEmail(event.target.value)}
@@ -91,6 +92,7 @@ export default function LoginPage() {
             <label className="auth-field">
               <span>Password</span>
               <input
+                className="auth-input"
                 type="password"
                 value={password}
                 onChange={event => setPassword(event.target.value)}
