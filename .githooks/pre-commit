@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+cd "$(git rev-parse --show-toplevel)"
+
+echo "Running pre-commit checks: lint + tests"
+npm run lint
+npm test -- --runInBand
