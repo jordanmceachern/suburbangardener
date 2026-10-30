@@ -22,11 +22,28 @@ export async function sendVerificationEmail({
   }
 
   try {
+    const displayName = name || "Gardener";
+    const emailText = `Hello ${displayName},\n\nThanks for creating an account with Suburban Gardener. Please verify your email by visiting:\n\n${verificationUrl}\n\nIf you did not create this account, you can ignore this message.`;
+    const emailHtml = `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #1f2937; max-width: 600px; margin: 0 auto; padding: 24px;">
+        <h2 style="margin: 0 0 16px; color: #111827;">Verify your Suburban Gardener account</h2>
+        <p style="margin: 0 0 16px;">Hello ${displayName},</p>
+        <p style="margin: 0 0 20px;">Thanks for creating an account with Suburban Gardener. Please confirm your email address to secure your account.</p>
+        <p style="margin: 0 0 24px; text-align: center;">
+          <a href="${verificationUrl}" style="display: inline-block; background-color: #f97316; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 9999px; font-weight: 700;">Confirm my account</a>
+        </p>
+        <p style="margin: 0 0 12px;">If the button does not work, visit this link:</p>
+        <p style="margin: 0 0 16px; word-break: break-all;"><a href="${verificationUrl}" style="color: #f97316;">${verificationUrl}</a></p>
+        <p style="margin: 0; color: #4b5563;">If you did not create this account, you can ignore this message.</p>
+      </div>
+    `.trim();
+
     const result = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev",
       to: email,
       subject: "Verify your Suburban Gardener account",
-      text: `Hello ${name || "Gardener"},\n\nThanks for creating an account with Suburban Gardener. Please verify your email by visiting:\n\n${verificationUrl}\n\nIf you did not create this account, you can ignore this message.`,
+      text: emailText,
+      html: emailHtml,
     });
 
     console.log("Verification email sent successfully via Resend:", result);

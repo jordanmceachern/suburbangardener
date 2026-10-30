@@ -154,6 +154,12 @@
     color: #ffffff;
   }
 
+  .auth-success {
+    @apply mb-6 flex items-start gap-3 text-left text-lg font-bold text-white;
+    background: transparent;
+    color: #ffffff;
+  }
+
   .auth-form {
     @apply space-y-4;
   }

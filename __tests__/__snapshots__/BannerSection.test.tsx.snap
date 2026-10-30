@@ -24,12 +24,14 @@ exports[`BannerSection Component should match DOM snapshot 1`] = `
       class="h-[125px] sm:h-[225px] w-full flex"
     >
       <div
-        class="h-auto w-full flex justify-center"
+        class="flex w-full justify-center"
       >
-        <div
+        <img
+          alt="Suburban Gardener Logo"
           aria-label="Suburban Gardener Logo"
-          class="bg-contain bg-center bg-no-repeat w-full h-full  rounded-lg"
-          style="background-image: url("https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,t_transparent-white-alpha-dim,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png");"
+          class="h-auto w-full rounded-lg object-contain "
+          src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,t_transparent-white-alpha-dim,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
+          style="object-fit: contain;"
         />
       </div>
     </div>

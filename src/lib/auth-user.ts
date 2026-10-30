@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
@@ -5,7 +6,16 @@ export type AuthUser = {
   id: string;
   email: string;
   name: string | null;
+  verificationToken?: string;
 };
+
+export function generateVerificationToken(): string {
+  return crypto.randomBytes(32).toString("hex");
+}
+
+export function hashVerificationToken(token: string): string {
+  return crypto.createHash("sha256").update(token).digest("hex");
+}
 
 export async function createUserWithPassword({
   email,
@@ -35,12 +45,16 @@ export async function createUserWithPassword({
   }
 
   const passwordHash = await bcrypt.hash(password, 12);
+  const verificationToken = generateVerificationToken();
+  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
   const user = await prisma.user.create({
     data: {
       email: normalizedEmail,
       passwordHash,
       name: name?.trim() || null,
+      emailVerificationToken: hashVerificationToken(verificationToken),
+      emailVerificationExpires: expiresAt,
     },
   });
 
@@ -48,7 +62,47 @@ export async function createUserWithPassword({
     id: user.id,
     email: user.email,
     name: user.name,
+    verificationToken,
   };
+}
+
+export async function verifyUserEmail({
+  email,
+  token,
+}: {
+  email: string;
+  token: string;
+}): Promise<boolean> {
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const user = await prisma.user.findUnique({
+    where: { email: normalizedEmail },
+  });
+
+  if (!user || !user.emailVerificationToken || !user.emailVerificationExpires) {
+    return false;
+  }
+
+  if (new Date() > new Date(user.emailVerificationExpires)) {
+    return false;
+  }
+
+  const hashedToken = hashVerificationToken(token);
+
+  if (user.emailVerificationToken !== hashedToken) {
+    return false;
+  }
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      emailVerified: new Date(),
+      emailVerificationToken: null,
+      emailVerificationExpires: null,
+    },
+  });
+
+  return true;
 }
 
 export async function getCredentialFailureReason({

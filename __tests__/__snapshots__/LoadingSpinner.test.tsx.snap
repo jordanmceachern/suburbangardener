@@ -2,10 +2,10 @@
 
 exports[`LoadingSpinner Component should match DOM snapshot with default props 1`] = `
 <div
-  class="text-center "
+  class="inline-flex items-center justify-center gap-2 text-center text-current "
 >
   <svg
-    class="animate-spin mx-auto mb-4 text-primary-600 h-12 w-12"
+    class="animate-spin text-current h-12 w-12"
     fill="none"
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
@@ -24,20 +24,20 @@ exports[`LoadingSpinner Component should match DOM snapshot with default props 1
       fill="currentColor"
     />
   </svg>
-  <p
-    class="text-neutral-600 dark:text-neutral-400"
+  <span
+    class="whitespace-nowrap text-current"
   >
     Loading...
-  </p>
+  </span>
 </div>
 `;
 
 exports[`LoadingSpinner Component should match DOM snapshot with different sizes 1`] = `
 <div
-  class="text-center "
+  class="inline-flex items-center justify-center gap-2 text-center text-current "
 >
   <svg
-    class="animate-spin mx-auto mb-4 text-primary-600 h-6 w-6"
+    class="animate-spin text-current h-6 w-6"
     fill="none"
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
@@ -56,20 +56,20 @@ exports[`LoadingSpinner Component should match DOM snapshot with different sizes
       fill="currentColor"
     />
   </svg>
-  <p
-    class="text-neutral-600 dark:text-neutral-400"
+  <span
+    class="whitespace-nowrap text-current"
   >
     Loading...
-  </p>
+  </span>
 </div>
 `;
 
 exports[`LoadingSpinner Component should match DOM snapshot with different sizes 2`] = `
 <div
-  class="text-center "
+  class="inline-flex items-center justify-center gap-2 text-center text-current "
 >
   <svg
-    class="animate-spin mx-auto mb-4 text-primary-600 h-16 w-16"
+    class="animate-spin text-current h-16 w-16"
     fill="none"
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
@@ -88,10 +88,10 @@ exports[`LoadingSpinner Component should match DOM snapshot with different sizes
       fill="currentColor"
     />
   </svg>
-  <p
-    class="text-neutral-600 dark:text-neutral-400"
+  <span
+    class="whitespace-nowrap text-current"
   >
     Loading...
-  </p>
+  </span>
 </div>
 `;

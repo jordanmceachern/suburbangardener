@@ -8,6 +8,13 @@ import {
   verifyUserCredentials,
 } from "../src/lib/auth-user";
 
+const mockSearchParams = jest.fn();
+
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: jest.fn() }),
+  useSearchParams: () => mockSearchParams(),
+}));
+
 jest.mock("next-auth/react", () => ({
   signIn: jest.fn(),
 }));
@@ -33,6 +40,7 @@ const { __mockPrismaUser: prismaUser } = jest.requireMock("../src/lib/prisma");
 describe("credentials auth flow", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockSearchParams.mockReturnValue(new URLSearchParams());
   });
 
   it("creates a user with a hashed password and rejects duplicate emails", async () => {
@@ -262,6 +270,56 @@ describe("credentials auth flow", () => {
 
     await waitFor(() => {
       expect(screen.getByText(/verification link/i)).toBeInTheDocument();
+    });
+
+    expect(
+      screen.getByRole("button", { name: /resend verification email/i })
+    ).toBeInTheDocument();
+  });
+
+  it("updates the current auth window when the verification link succeeds", async () => {
+    mockSearchParams.mockReturnValue(new URLSearchParams("verified=1"));
+
+    render(<LoginPage />);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          /your email has been verified\. you can sign in now\./i
+        )
+      ).toBeInTheDocument();
+    });
+
+    expect(
+      screen.getByRole("button", { name: /^sign in$/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /resend verification email/i })
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows the verification step when a user tries to sign in before verifying their email", async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: false,
+      json: async () => ({
+        error:
+          "Please verify your email before signing in. Check your inbox for the confirmation link.",
+      }),
+    }) as jest.Mock;
+
+    render(<LoginPage />);
+
+    fireEvent.change(screen.getByLabelText(/^email$/i), {
+      target: { value: "pending@example.com" },
+    });
+    fireEvent.change(screen.getByLabelText(/^password$/i), {
+      target: { value: "gardenpass" },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /^sign in$/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/verify your email/i)).toBeInTheDocument();
     });
 
     expect(

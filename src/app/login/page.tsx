@@ -17,18 +17,44 @@ export default function LoginPage() {
   const [accountExists, setAccountExists] = useState(false);
   const [verificationSent, setVerificationSent] = useState(false);
   const [verificationEmail, setVerificationEmail] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
 
   useEffect(() => {
     const requestedMode = searchParams.get("mode");
+    const verified = searchParams.get("verified");
+    const errorParam = searchParams.get("error");
+
     if (requestedMode === "signUp") {
       setMode("signUp");
+    } else {
+      setMode("signIn");
+    }
+
+    if (verified === "1") {
+      setVerificationSent(false);
+      setVerificationEmail("");
+      setSuccessMessage("Your email has been verified. You can sign in now.");
+      setError("");
+      setAccountExists(false);
+    } else if (errorParam) {
+      setVerificationSent(false);
+      setVerificationEmail("");
+      setSuccessMessage("");
+      setError(
+        errorParam === "invalid-verification-link"
+          ? "That verification link is invalid or expired."
+          : "That verification link is invalid or expired."
+      );
+    } else {
+      setSuccessMessage("");
     }
   }, [searchParams]);
 
   const resetAccountForm = () => {
     setError("");
+    setSuccessMessage("");
     setAccountExists(false);
     setVerificationSent(false);
     setVerificationEmail("");
@@ -113,10 +139,18 @@ export default function LoginPage() {
       const validationData = await validationResponse.json();
 
       if (!validationResponse.ok) {
-        throw new Error(
+        const errorMessage =
           validationData.error ||
-            "The email or password is invalid. Please check both and try again."
-        );
+          "The email or password is invalid. Please check both and try again.";
+
+        if (errorMessage.toLowerCase().includes("verify your email")) {
+          setVerificationEmail(email);
+          setVerificationSent(true);
+          setAccountExists(false);
+          return;
+        }
+
+        throw new Error(errorMessage);
       }
 
       const result = await signIn("credentials", {
@@ -232,6 +266,16 @@ export default function LoginPage() {
           </div>
 
           <form className="auth-form" onSubmit={handleSubmit}>
+            {successMessage && (
+              <div className="auth-success" role="status">
+                <AlertTriangle
+                  className="auth-helper-icon"
+                  aria-hidden="true"
+                />
+                <span>{successMessage}</span>
+              </div>
+            )}
+
             <label className="auth-field">
               <span>Email</span>
               <input
