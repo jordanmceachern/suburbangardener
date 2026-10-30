@@ -51,6 +51,48 @@ export async function createUserWithPassword({
   };
 }
 
+export async function getCredentialFailureReason({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}): Promise<string | null> {
+  const normalizedEmail = email.trim().toLowerCase();
+
+  if (!normalizedEmail) {
+    return "Email is required.";
+  }
+
+  if (!password) {
+    return "Password is required.";
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { email: normalizedEmail },
+  });
+
+  if (!user) {
+    return "No account was found for that email.";
+  }
+
+  if (!user.passwordHash) {
+    return "This account does not have a password set.";
+  }
+
+  if (!user.emailVerified) {
+    return "Please verify your email before signing in. Check your inbox for the confirmation link.";
+  }
+
+  const isValid = await bcrypt.compare(password, user.passwordHash);
+
+  if (!isValid) {
+    return "The password is incorrect.";
+  }
+
+  return null;
+}
+
 export async function verifyUserCredentials({
   email,
   password,
@@ -58,23 +100,18 @@ export async function verifyUserCredentials({
   email: string;
   password: string;
 }): Promise<AuthUser | null> {
-  const normalizedEmail = email.trim().toLowerCase();
+  const failureReason = await getCredentialFailureReason({ email, password });
 
-  if (!normalizedEmail || !password) {
+  if (failureReason) {
     return null;
   }
 
+  const normalizedEmail = email.trim().toLowerCase();
   const user = await prisma.user.findUnique({
     where: { email: normalizedEmail },
   });
 
-  if (!user || !user.passwordHash) {
-    return null;
-  }
-
-  const isValid = await bcrypt.compare(password, user.passwordHash);
-
-  if (!isValid) {
+  if (!user) {
     return null;
   }
 

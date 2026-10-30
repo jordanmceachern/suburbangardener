@@ -1,7 +1,41 @@
-// Email service configuration for error reporting using Resend
+// Email service configuration for error reporting and verification emails using Resend
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
+
+export async function sendVerificationEmail({
+  email,
+  name,
+  verificationUrl,
+}: {
+  email: string;
+  name?: string | null;
+  verificationUrl: string;
+}): Promise<{ success: boolean; skipped?: boolean; error?: unknown }> {
+  if (!resend) {
+    console.warn(
+      "RESEND_API_KEY is not configured. Verification email was not sent."
+    );
+    return { success: false, skipped: true };
+  }
+
+  try {
+    const result = await resend.emails.send({
+      from: process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev",
+      to: email,
+      subject: "Verify your Suburban Gardener account",
+      text: `Hello ${name || "Gardener"},\n\nThanks for creating an account with Suburban Gardener. Please verify your email by visiting:\n\n${verificationUrl}\n\nIf you did not create this account, you can ignore this message.`,
+    });
+
+    console.log("Verification email sent successfully via Resend:", result);
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to send verification email:", error);
+    return { success: false, error };
+  }
+}
 
 export async function sendErrorEmail(errorData: any) {
   try {

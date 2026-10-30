@@ -21,23 +21,28 @@ export function BackgroundImage({
   src,
   width,
 }: BackgroundImageProps) {
-  const customContainerHeight = {
+  const containerStyle = {
     height: height ? `${height}px` : undefined,
   };
-  const customImageWidth = {
+  const imageStyle = {
     maxWidth: maxWidth ? `${maxWidth}px` : undefined,
     minWidth: minWidth ? `${minWidth}px` : undefined,
     width: width ? `${width}px` : undefined,
+    height: height ? `${height}px` : undefined,
+    objectFit: "contain" as const,
   };
+
   return (
     <div
-      className={`h-auto w-full flex justify-center${className ? " " + className : ""}`}
-      style={customContainerHeight}
+      className={`flex w-full justify-center${className ? " " + className : ""}`}
+      style={containerStyle}
     >
-      <div
+      <img
+        alt={label || "Decorative image"}
         aria-label={label}
-        className={`bg-contain bg-center bg-no-repeat w-full h-full ${imageClassName ? " " + imageClassName : ""} rounded-lg`}
-        style={{ backgroundImage: `url(${src})`, ...customImageWidth }}
+        className={`h-auto w-full rounded-lg object-contain ${imageClassName ? " " + imageClassName : ""}`}
+        src={src}
+        style={imageStyle}
       />
     </div>
   );

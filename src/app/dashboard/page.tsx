@@ -1,19 +1,64 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useAuth } from "../../lib/auth-nextauth";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
 export default function DashboardPage() {
   const { user, isLoading } = useAuth();
   const router = useRouter();
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+
+  useEffect(() => {
+    if (!deleteConfirmOpen) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setDeleteConfirmOpen(false);
+    }, 15000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [deleteConfirmOpen]);
 
   const handleLogout = async () => {
     await signOut({ redirect: false });
     router.push("/");
+  };
+
+  const handleDeleteProfile = async () => {
+    if (!deleteConfirmOpen) {
+      setDeleteConfirmOpen(true);
+      setDeleteError("");
+      return;
+    }
+
+    setIsDeleting(true);
+    setDeleteError("");
+
+    try {
+      const response = await fetch("/api/profile", {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({ error: "Unable to delete profile." }));
+        throw new Error(data.error || "Unable to delete profile.");
+      }
+
+      await signOut({ redirect: false });
+      router.push("/login?mode=signUp");
+    } catch (error) {
+      setDeleteError(
+        error instanceof Error ? error.message : "Unable to delete profile."
+      );
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   if (isLoading) {
@@ -33,10 +78,10 @@ export default function DashboardPage() {
     <main className="dashboard-page">
       <header className="dashboard-header">
         <div className="dashboard-header-inner">
-          <div>
+          <div className="dashboard-header-copy">
             <h1 className="dashboard-title">Suburban Gardener Dashboard</h1>
-            <p className="dashboard-subtitle">Welcome back, {user.name}!</p>
           </div>
+
           <div className="dashboard-user-meta">
             <span className="dashboard-email">{user.email}</span>
             <button onClick={handleLogout} className="dashboard-logout-button">
@@ -47,112 +92,49 @@ export default function DashboardPage() {
       </header>
 
       <div className="dashboard-content">
-        <div className="dashboard-grid">
-          <div className="dashboard-card">
-            <h2 className="dashboard-card-title">🌱 Welcome to Your Garden</h2>
-            <p className="dashboard-copy">
-              This is your personal gardening dashboard. Here you can track your
-              plants, plan your garden, and access exclusive content.
-            </p>
-            <div className="dashboard-highlight">
-              <p className="dashboard-highlight-text">
-                🎉 You&apos;re now logged in and have access to premium
-                features!
-              </p>
-            </div>
-          </div>
-
-          <div className="dashboard-card">
-            <h3 className="dashboard-card-title-small">🌿 My Plants</h3>
-            <div className="dashboard-list">
-              <div className="dashboard-list-item">
-                <span className="dashboard-list-label">Tomatoes</span>
-                <span className="dashboard-status dashboard-status--healthy">
-                  Healthy
-                </span>
-              </div>
-              <div className="dashboard-list-item">
-                <span className="dashboard-list-label">Basil</span>
-                <span className="dashboard-status dashboard-status--growing">
-                  Growing
-                </span>
-              </div>
-              <div className="dashboard-list-item">
-                <span className="dashboard-list-label">Lettuce</span>
-                <span className="dashboard-status dashboard-status--warning">
-                  Needs Water
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="dashboard-card">
-            <h3 className="dashboard-card-title-small">🛠️ Garden Tools</h3>
-            <div className="dashboard-list">
-              <button className="dashboard-tool-button dashboard-tool-button--primary">
-                <span className="dashboard-tool-label">Plant Planner</span>
-              </button>
-              <button className="dashboard-tool-button dashboard-tool-button--secondary">
-                <span className="dashboard-tool-label--secondary">
-                  Watering Schedule
-                </span>
-              </button>
-              <button className="dashboard-tool-button dashboard-tool-button--neutral">
-                <span className="dashboard-tool-label--neutral">
-                  Garden Journal
-                </span>
-              </button>
-            </div>
-          </div>
-
-          <div className="dashboard-card">
-            <h3 className="dashboard-card-title-small">📊 Quick Stats</h3>
-            <div className="dashboard-stat-group">
+        <div className="dashboard-layout">
+          <aside className="dashboard-settings-card">
+            <div className="dashboard-settings-heading">
+              <span className="dashboard-settings-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m15 12-9.373 9.373a1 1 0 0 1-3.001-3L12 9" />
+                  <path d="m18 15 4-4" />
+                  <path d="m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172v-.344a2 2 0 0 0-.586-1.414l-1.657-1.657A6 6 0 0 0 12.516 3H9l1.243 1.243A6 6 0 0 1 12 8.485V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5" />
+                </svg>
+              </span>
               <div>
-                <div className="dashboard-stat-row">
-                  <span className="dashboard-stat-label">Plants Growing</span>
-                  <span className="dashboard-stat-value">12</span>
-                </div>
-                <div className="dashboard-progress">
-                  <div className="dashboard-progress-bar dashboard-progress-bar--green w-3/4"></div>
-                </div>
-              </div>
-              <div>
-                <div className="dashboard-stat-row">
-                  <span className="dashboard-stat-label">Garden Health</span>
-                  <span className="dashboard-stat-value">85%</span>
-                </div>
-                <div className="dashboard-progress">
-                  <div className="dashboard-progress-bar dashboard-progress-bar--primary w-5/6"></div>
-                </div>
+                <h2 className="dashboard-settings-title">Settings</h2>
+                <p className="dashboard-settings-subtitle">Account controls</p>
               </div>
             </div>
-          </div>
 
-          <div className="dashboard-card">
-            <h3 className="dashboard-card-title-small">🌤️ Weather</h3>
-            <div className="dashboard-weather">
-              <div className="dashboard-weather-icon">☀️</div>
-              <div className="dashboard-weather-temp">72°F</div>
-              <div className="dashboard-weather-copy">
-                Perfect gardening weather!
-              </div>
-            </div>
-          </div>
+            <div className="dashboard-settings-body">
+              <div className="dashboard-settings-column dashboard-settings-column--danger">
+                <button
+                  type="button"
+                  className="dashboard-delete-button"
+                  onClick={handleDeleteProfile}
+                  disabled={isDeleting}
+                >
+                  {isDeleting
+                    ? "Deleting profile..."
+                    : deleteConfirmOpen
+                      ? "Are you sure? Delete profile"
+                      : "Delete profile"}
+                </button>
 
-          <div className="dashboard-card">
-            <h3 className="dashboard-card-title-small">🔗 Quick Links</h3>
-            <div className="dashboard-list">
-              <Link href="/" className="dashboard-link-card">
-                <span className="dashboard-link-label">← Back to Home</span>
-              </Link>
-              <div className="dashboard-mini-card">
-                <span className="dashboard-mini-copy">
-                  More features coming soon...
-                </span>
+                {deleteConfirmOpen && (
+                  <p className="dashboard-delete-warning">
+                    This will delete any saved progress with tools and reading &amp; shopping history, etc.
+                  </p>
+                )}
+
+                {deleteError && (
+                  <p className="dashboard-delete-error">{deleteError}</p>
+                )}
               </div>
             </div>
-          </div>
+          </aside>
         </div>
       </div>
     </main>

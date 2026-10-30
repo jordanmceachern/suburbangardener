@@ -3,8 +3,8 @@ export function cn(...classes: Array<string | false | null | undefined>) {
 }
 
 export const appLayout = {
-  shell: "flex h-screen",
-  main: "flex-1 sm:ml-20 lg:ml-32",
+  shell: "min-h-screen",
+  main: "flex-1 sm:pl-24 lg:pl-40",
   content: "pb-20 sm:pb-0",
 } as const;
 
@@ -38,7 +38,8 @@ export const communityStyles = {
   section:
     "p-6 rounded-lg bg-primary-100 dark:bg-slate-600 border border-primary-200 dark:border-slate-500",
   inner: "text-center",
-  title: "text-3xl font-bold mb-3 text-neutral-900 dark:text-neutral-100",
+  title:
+    "text-2xl sm:text-3xl font-bold mb-3 text-neutral-900 dark:text-neutral-100",
   text: "text-start sm:text-center text-primary-700 dark:text-neutral-300 mb-6",
   actions: "flex flex-col sm:flex-row gap-4 justify-center",
   primaryButton:
@@ -92,7 +93,8 @@ export const homeArticleStyles = {
   sectionLoaded:
     "p-6 rounded-lg bg-secondary-100 dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700",
   titleWrap: "text-center mb-8",
-  title: "text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-4",
+  title:
+    "text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-4",
   description:
     "text-lg text-neutral-600 dark:text-neutral-200 max-w-2xl mx-auto",
   descriptionMobile:

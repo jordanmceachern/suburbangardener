@@ -121,15 +121,19 @@
   }
 
   .auth-page {
-    @apply min-h-screen flex items-center justify-center bg-background-light dark:bg-background-dark p-4;
+    @apply min-h-screen flex items-center justify-center bg-background-light dark:bg-background-dark p-4 sm:p-6;
   }
 
   .auth-shell {
-    @apply w-full max-w-md;
+    @apply w-full max-w-xl flex flex-col items-center gap-5;
+  }
+
+  .auth-logo {
+    @apply w-full max-w-[180px] mx-auto mb-5;
   }
 
   .auth-card {
-    @apply bg-white dark:bg-neutral-800 rounded-lg shadow-lg p-8;
+    @apply w-full bg-tertiary-100 dark:bg-tertiary-800 rounded-2xl shadow-xl border border-tertiary-200 dark:border-tertiary-700 p-6 sm:p-8;
   }
 
   .auth-header {
@@ -137,15 +141,17 @@
   }
 
   .auth-title {
-    @apply text-3xl font-bold text-primary-900 dark:text-primary-100 mb-2;
+    @apply text-2xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-300 text-center;
   }
 
   .auth-subtitle {
-    @apply text-neutral-600 dark:text-neutral-400;
+    @apply text-start sm:text-center text-lg sm:text-xl text-neutral-900 dark:text-neutral-300 mt-1;
   }
 
   .auth-error {
-    @apply mb-6 text-red-600 dark:text-red-400 text-sm text-center bg-red-50 dark:bg-red-900/20 p-3 rounded-lg;
+    @apply mb-6 flex items-start gap-3 text-left text-lg font-bold text-white;
+    background: transparent;
+    color: #ffffff;
   }
 
   .auth-form {
@@ -153,19 +159,86 @@
   }
 
   .auth-field {
-    @apply flex flex-col gap-2 text-left text-sm font-medium text-neutral-700 dark:text-neutral-200;
+    @apply flex flex-col gap-2 text-left text-lg font-medium text-neutral-700 dark:text-neutral-200;
   }
 
   .auth-input {
-    @apply w-full rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-3 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-500 dark:placeholder:text-neutral-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20;
+    @apply w-full rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-3 text-lg text-neutral-900 dark:text-neutral-100 placeholder:text-lg placeholder:text-neutral-500 dark:placeholder:text-neutral-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20;
+    background-color: #ffffff !important;
+    -webkit-text-fill-color: #111827;
+    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    caret-color: #111827;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  .auth-input:hover,
+  .auth-input:focus,
+  .auth-input:active {
+    background-color: #ffffff !important;
+    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+  }
+
+  .auth-input::placeholder {
+    color: #6b7280;
+    opacity: 1;
+  }
+
+  .auth-input:-webkit-autofill,
+  .auth-input:-webkit-autofill:hover,
+  .auth-input:-webkit-autofill:focus,
+  .auth-input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    -webkit-text-fill-color: #111827 !important;
+    background-color: #ffffff !important;
+    border-color: #d1d5db !important;
+    transition: background-color 5000s ease-in-out 0s;
   }
 
   .auth-button {
-    @apply w-full bg-neutral-900 dark:bg-neutral-700 hover:bg-neutral-800 dark:hover:bg-neutral-600 disabled:opacity-50 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-3;
+    @apply w-full bg-tertiary-500 hover:bg-tertiary-400 disabled:opacity-50 text-neutral-900 font-bold py-3 px-4 rounded-lg transition-colors inline-flex items-center justify-center gap-3 shadow-sm border border-tertiary-400 text-lg whitespace-nowrap;
+  }
+
+  .auth-helper {
+    @apply mt-2 flex items-start gap-3 text-left text-lg font-bold text-white;
+    background: transparent;
+    color: #ffffff;
+  }
+
+  .auth-helper-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+    color: #ffffff;
+    stroke-width: 2.2;
+  }
+
+  .auth-verification {
+    @apply mt-2 text-left text-lg text-neutral-800 dark:text-neutral-200;
+  }
+
+  .auth-actions {
+    @apply mt-4;
+  }
+
+  .auth-toggle {
+    @apply mt-4 text-center;
+  }
+
+  .auth-toggle-text {
+    @apply text-neutral-900 dark:text-neutral-100 text-lg;
+  }
+
+  .auth-toggle-action {
+    @apply underline decoration-2 underline-offset-4 text-neutral-900 dark:text-neutral-100 font-medium bg-transparent border-0 p-0 cursor-pointer align-baseline;
+  }
+
+  .auth-toggle-action:hover {
+    @apply no-underline;
   }
 
   .auth-link-button {
-    @apply w-full text-center text-sm text-primary-700 hover:text-primary-900 dark:text-primary-300 dark:hover:text-primary-100 transition-colors;
+    @apply w-full text-center text-lg text-neutral-900 hover:text-neutral-800 dark:text-neutral-100 dark:hover:text-neutral-200 transition-colors;
   }
 
   .auth-button-icon {
@@ -173,11 +246,19 @@
   }
 
   .auth-legal {
-    @apply mt-6 text-center text-neutral-600 dark:text-neutral-400 text-sm;
+    @apply mt-6 text-left text-neutral-700 dark:text-neutral-300 text-lg;
   }
 
   .auth-link {
-    @apply mt-6 text-center text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 text-sm;
+    @apply mt-6 text-center text-neutral-700 hover:text-neutral-900 dark:text-neutral-200 dark:hover:text-neutral-100 text-lg;
+  }
+
+  .auth-link a {
+    @apply inline-flex items-center justify-center gap-1 underline decoration-2 underline-offset-4 text-neutral-900 dark:text-neutral-100 leading-none pt-[2px];
+  }
+
+  .auth-link a:hover {
+    @apply no-underline;
   }
 
   .dashboard-page {
@@ -185,83 +266,132 @@
   }
 
   .dashboard-header {
-    @apply bg-white dark:bg-neutral-800 shadow-sm border-b border-neutral-200 dark:border-neutral-700;
+    background: rgb(90 77 104 / var(--tw-bg-opacity, 1)) !important;
+    border-bottom: 1px solid rgb(90 77 104 / var(--tw-bg-opacity, 1)) !important;
+    @apply shadow-sm;
   }
 
   .dashboard-header-inner {
-    @apply max-w-6xl mx-auto px-4 py-4 flex justify-between items-center;
+    @apply max-w-6xl mx-auto px-4 py-4 flex justify-between items-center gap-4;
+  }
+
+  .dashboard-header-copy {
+    @apply pl-2;
   }
 
   .dashboard-title {
-    @apply text-2xl font-bold text-primary-900 dark:text-primary-100;
+    @apply text-3xl sm:text-4xl font-bold;
+    color: #ffffff !important;
   }
 
   .dashboard-subtitle {
-    @apply text-neutral-600 dark:text-neutral-400;
+    @apply text-lg;
+    color: rgba(255, 255, 255, 0.9);
   }
 
   .dashboard-user-meta {
-    @apply flex items-center space-x-4;
+    @apply flex items-center gap-3 flex-wrap justify-end;
   }
 
   .dashboard-email {
-    @apply text-sm text-neutral-600 dark:text-neutral-400;
-  }
-
-  .dashboard-logout-button {
-    @apply bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors;
+    @apply text-lg;
+    color: #ffffff;
   }
 
   .dashboard-content {
     @apply max-w-6xl mx-auto px-4 py-8;
   }
 
+  .dashboard-layout {
+    @apply grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-6 items-start;
+  }
+
+  .dashboard-empty-column {
+    @apply hidden lg:block min-h-[200px] bg-transparent border-0;
+  }
+
+  .dashboard-settings-card {
+    background: rgb(161 98 7 / var(--tw-bg-opacity, 1)) !important;
+    border: 1px solid rgb(161 98 7 / var(--tw-bg-opacity, 1)) !important;
+    @apply rounded-2xl shadow-sm p-4;
+  }
+
+  .dashboard-settings-heading {
+    @apply flex items-center gap-3 pb-3 mb-4;
+    border-bottom: 1px solid rgba(52, 44, 21, 0.35);
+  }
+
+  .dashboard-settings-icon {
+    @apply inline-flex h-12 w-12 items-center justify-center rounded-xl text-[2rem] leading-none;
+    color: #ffffff;
+  }
+
+  .dashboard-settings-icon svg {
+    width: 2rem;
+    height: 2rem;
+    display: block;
+  }
+
+  .dashboard-settings-title {
+    @apply text-[1.6rem] font-bold;
+    color: #ffffff !important;
+  }
+
+  .dashboard-settings-subtitle {
+    @apply text-lg;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .dashboard-settings-body {
+    @apply grid grid-cols-1 gap-4;
+  }
+
+  .dashboard-settings-column {
+    @apply rounded-xl p-4;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .dashboard-settings-column--danger {
+    background: transparent;
+    border: 0;
+    padding: 0;
+  }
+
+  .dashboard-settings-label {
+    @apply text-sm font-semibold uppercase tracking-[0.12em];
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .dashboard-settings-meta {
+    @apply mt-2 text-lg break-words;
+    color: #ffffff;
+  }
+
+  .dashboard-delete-button {
+    @apply w-full rounded-lg border-0 px-4 py-3 text-lg font-bold text-white transition-colors hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-70;
+    background: #b82d24;
+  }
+
+  .dashboard-delete-warning {
+    @apply mt-3 text-base font-bold leading-relaxed;
+    color: #ffffff;
+  }
+
+  .dashboard-delete-error {
+    @apply mt-2 text-base text-red-600;
+  }
+
+  .dashboard-logout-button {
+    @apply bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded-lg transition-colors text-base font-medium;
+  }
+
   .dashboard-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+    @apply hidden;
   }
 
   .dashboard-card {
-    @apply bg-white dark:bg-neutral-800 rounded-lg shadow-sm border border-neutral-200 dark:border-neutral-700 p-6;
-  }
-
-  .dashboard-card-title {
-    @apply text-xl font-semibold text-primary-900 dark:text-primary-100 mb-4;
-  }
-
-  .dashboard-card-title-small {
-    @apply text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-4;
-  }
-
-  .dashboard-copy {
-    @apply text-neutral-600 dark:text-neutral-400 mb-4;
-  }
-
-  .dashboard-highlight {
-    @apply bg-primary-50 dark:bg-primary-900 p-4 rounded-lg;
-  }
-
-  .dashboard-highlight-text {
-    @apply text-primary-700 dark:text-primary-300 text-sm;
-  }
-
-  .dashboard-list {
-    @apply space-y-3;
-  }
-
-  .dashboard-list-item {
-    @apply flex items-center justify-between p-3 bg-neutral-50 dark:bg-neutral-700 rounded-lg;
-  }
-
-  .dashboard-list-label {
-    @apply text-neutral-700 dark:text-neutral-300;
-  }
-
-  .dashboard-status {
-    @apply text-sm;
-  }
-
-  .dashboard-status--healthy {
-    @apply text-green-600 dark:text-green-400;
+    @apply hidden;
   }
 
   .dashboard-status--growing {

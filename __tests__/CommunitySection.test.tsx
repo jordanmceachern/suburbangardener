@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
 import CommunitySection from "@/components/CommunitySection";
+import { communityStyles, homeArticleStyles } from "@/lib/tailwind";
 
 describe("CommunitySection Component", () => {
   it("should match DOM snapshot", () => {
@@ -19,5 +20,12 @@ describe("CommunitySection Component", () => {
       container.innerHTML.includes("grid");
 
     expect(hasSectionClasses).toBe(true);
+  });
+
+  it("keeps home section headings no larger than the hero text on mobile", () => {
+    expect(communityStyles.title.startsWith("text-2xl")).toBe(true);
+    expect(homeArticleStyles.title.startsWith("text-2xl")).toBe(true);
+    expect(communityStyles.title).toContain("sm:text-3xl");
+    expect(homeArticleStyles.title).toContain("sm:text-3xl");
   });
 });
