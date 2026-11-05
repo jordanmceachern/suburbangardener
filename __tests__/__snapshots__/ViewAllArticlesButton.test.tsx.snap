@@ -2,7 +2,7 @@
 
 exports[`ViewAllArticlesButton Component should match DOM snapshot 1`] = `
 <a
-  class="font-medium rounded-lg transition-colors inline-flex items-center justify-center bg-primary-500 hover:bg-primary-600 text-white hover:text-neutral-100 py-3 px-6 text-base "
+  class="font-medium text-lg rounded-lg transition-colors inline-flex items-center justify-center bg-primary-500 hover:bg-primary-600 text-white hover:text-neutral-100 py-3 px-6 text-base "
   href="/articles"
 >
   View All Articles

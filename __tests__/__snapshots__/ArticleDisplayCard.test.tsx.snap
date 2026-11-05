@@ -42,7 +42,7 @@ exports[`ArticleDisplayCard Component should match DOM snapshot 1`] = `
       This is a test article excerpt
     </p>
     <a
-      class="bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center"
+      class="bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-neutral-900 dark:text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center"
       href="/articles/test-article"
     >
       Read More
