@@ -44,7 +44,7 @@ export const customBuildStyles = {
   text: "text-start sm:text-center text-primary-700 dark:text-neutral-300 mb-6",
   actions: "flex flex-col sm:flex-row gap-4 justify-center",
   primaryButton:
-    "bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-6 rounded-lg transition-colors",
+    "bg-primary-500 hover:bg-primary-600 text-white font-medium py-3 px-6 rounded-lg transition-colors",
   secondaryButton:
     "bg-white dark:bg-tertiary-800 hover:bg-primary-100 hover:text-primary-700 dark:hover:bg-tertiary-900 dark:hover:text-neutral-100 text-neutral-600 dark:text-neutral-100 font-medium py-3 px-6 rounded-lg border border-primary-300 dark:border-none transition-colors",
 } as const;
