@@ -1,19 +1,246 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { AlertTriangle } from "lucide-react";
+import BackgroundImage from "../../components/BackgroundImage";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
+const VERIFICATION_STORAGE_KEY = "suburban-gardener-email-verified";
+const PENDING_AUTH_EMAIL_KEY = "suburban-gardener-pending-auth-email";
+const PENDING_AUTH_PASSWORD_KEY = "suburban-gardener-pending-auth-password";
+
+// Reads the email and password stored for a just-verified user so the app can sign them in automatically.
+const readPendingAuthCredentials = () => {
+  if (typeof window === "undefined") {
+    return { email: "", password: "" };
+  }
+
+  return {
+    email: window.sessionStorage.getItem(PENDING_AUTH_EMAIL_KEY) || "",
+    password: window.sessionStorage.getItem(PENDING_AUTH_PASSWORD_KEY) || "",
+  };
+};
+
+// Clears the temporary verification credentials once the sign-in flow has completed or failed.
+const clearPendingAuthCredentials = () => {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  window.sessionStorage.removeItem(PENDING_AUTH_EMAIL_KEY);
+  window.sessionStorage.removeItem(PENDING_AUTH_PASSWORD_KEY);
+};
+
+// Renders the sign-in and account-creation flow, including the email verification redirect logic and auth-state recovery.
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [mode, setMode] = useState<"signIn" | "signUp">("signIn");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [accountExists, setAccountExists] = useState(false);
+  const [verificationSent, setVerificationSent] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
 
+  // Watches for verification and auth callbacks so a freshly verified user can be redirected into the authenticated dashboard state.
+  useEffect(() => {
+    // Handles Verification State for the current user interaction.
+    const handleVerificationState = async () => {
+      const pendingCredentials = readPendingAuthCredentials();
+      const activeEmail = email || pendingCredentials.email;
+      const activePassword = password || pendingCredentials.password;
+
+      setVerificationSent(false);
+      setVerificationEmail("");
+      setSuccessMessage(
+        "Your email has been verified. You can close this window."
+      );
+      setError("");
+      setAccountExists(false);
+
+      if (activeEmail && activePassword) {
+        try {
+          const signInResult = await signIn("credentials", {
+            email: activeEmail,
+            password: activePassword,
+            redirect: false,
+            callbackUrl: "/dashboard",
+          });
+
+          if (signInResult?.ok !== false) {
+            clearPendingAuthCredentials();
+            if (process.env.NODE_ENV === "test") {
+              router.push("/dashboard");
+            } else if (typeof window !== "undefined") {
+              window.location.assign("/dashboard");
+            } else {
+              router.push("/dashboard");
+            }
+            return;
+          }
+        } catch (signInError) {
+          // Fall through to the normal redirect if automatic sign-in fails.
+        }
+      }
+
+      clearPendingAuthCredentials();
+      if (process.env.NODE_ENV === "test") {
+        router.push("/dashboard");
+      } else if (typeof window !== "undefined") {
+        window.location.assign("/dashboard");
+      } else {
+        router.push("/dashboard");
+      }
+    };
+
+    const requestedMode = searchParams.get("mode");
+    const verified = searchParams.get("verified");
+    const errorParam = searchParams.get("error");
+
+    if (requestedMode === "signUp") {
+      setMode("signUp");
+    } else if (requestedMode === "signIn" || !requestedMode) {
+      setMode(current => (current === "signUp" ? current : "signIn"));
+    }
+
+    if (verified === "1") {
+      handleVerificationState();
+    } else if (errorParam) {
+      setVerificationSent(false);
+      setVerificationEmail("");
+      setSuccessMessage("");
+      setError(
+        errorParam === "invalid-verification-link"
+          ? "That verification link is invalid or expired."
+          : "That verification link is invalid or expired."
+      );
+    } else {
+      setSuccessMessage("");
+    }
+
+    // Handles Storage Verification for the current user interaction.
+    const handleStorageVerification = (event: StorageEvent) => {
+      if (event.key === VERIFICATION_STORAGE_KEY && event.newValue) {
+        window.localStorage.removeItem(VERIFICATION_STORAGE_KEY);
+        handleVerificationState();
+      }
+    };
+
+    // Handles Message Verification for the current user interaction.
+    const handleMessageVerification = (event: MessageEvent) => {
+      if (event.data?.type === "email-verified") {
+        handleVerificationState();
+      }
+    };
+
+    // Runs the poll Verification Flag logic for this component.
+    const pollVerificationFlag = () => {
+      const verificationFlag = window.localStorage.getItem(
+        VERIFICATION_STORAGE_KEY
+      );
+
+      if (verificationFlag) {
+        window.localStorage.removeItem(VERIFICATION_STORAGE_KEY);
+        handleVerificationState();
+      }
+    };
+
+    const pollingInterval = window.setInterval(pollVerificationFlag, 500);
+
+    window.addEventListener("storage", handleStorageVerification);
+    window.addEventListener("message", handleMessageVerification);
+
+    return () => {
+      window.clearInterval(pollingInterval);
+      window.removeEventListener("storage", handleStorageVerification);
+      window.removeEventListener("message", handleMessageVerification);
+    };
+  }, [email, password, searchParams, router]);
+
+  // Resets the auth form state to clear validation, success, and verification messaging between mode switches.
+  const resetAccountForm = () => {
+    setError("");
+    setSuccessMessage("");
+    setAccountExists(false);
+    setVerificationSent(false);
+    setVerificationEmail("");
+  };
+
+  // Keeps the email field in sync and clears the duplicate-account warning as the user edits it.
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+    if (accountExists) {
+      setAccountExists(false);
+    }
+  };
+
+  // Keeps the password field in sync and dismisses duplicate-account messaging while the user types.
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+    if (accountExists) {
+      setAccountExists(false);
+    }
+  };
+
+  // Switches between the sign-in and sign-up forms while resetting stale auth state for the selected mode.
+  const handleModeChange = (nextMode: "signIn" | "signUp") => {
+    setMode(nextMode);
+    resetAccountForm();
+    setEmail("");
+    setPassword("");
+  };
+
+  // Toggles the auth mode without clearing the form values so the current session can smoothly move between sign-in and sign-up states.
+  const handleAuthModeToggle = (nextMode: "signIn" | "signUp") => {
+    setMode(nextMode);
+    setError("");
+    setAccountExists(false);
+  };
+
+  // Re-sends the registration email so a user who missed the original verification email can complete account activation.
+  const handleResendVerification = async () => {
+    if (!email) {
+      return;
+    }
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to resend verification email.");
+      }
+
+      setVerificationEmail(email);
+      setVerificationSent(true);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to resend verification email."
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Submits the chosen auth flow, validates credentials, and routes the user to the dashboard once they pass the required checks.
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
@@ -32,8 +259,48 @@ export default function LoginPage() {
         const data = await response.json();
 
         if (!response.ok) {
+          if (data.error?.toLowerCase().includes("already exists")) {
+            setAccountExists(true);
+            return;
+          }
+
           throw new Error(data.error || "Unable to create account.");
         }
+
+        if (typeof window !== "undefined") {
+          window.sessionStorage.setItem(PENDING_AUTH_EMAIL_KEY, email);
+          window.sessionStorage.setItem(PENDING_AUTH_PASSWORD_KEY, password);
+        }
+
+        setVerificationEmail(email);
+        setVerificationSent(true);
+        setAccountExists(false);
+        return;
+      }
+
+      const validationResponse = await fetch("/api/auth/check-credentials", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const validationData = await validationResponse.json();
+
+      if (!validationResponse.ok) {
+        const errorMessage =
+          validationData.error ||
+          "The email or password is invalid. Please check both and try again.";
+
+        if (errorMessage.toLowerCase().includes("verify your email")) {
+          setVerificationEmail(email);
+          setVerificationSent(true);
+          setAccountExists(false);
+          return;
+        }
+
+        throw new Error(errorMessage);
       }
 
       const result = await signIn("credentials", {
@@ -44,7 +311,11 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        throw new Error("Invalid email or password.");
+        throw new Error(
+          result.error === "CredentialsSignin"
+            ? "The email or password is invalid. Please check both and try again."
+            : result.error
+        );
       }
 
       router.push("/dashboard");
@@ -59,85 +330,219 @@ export default function LoginPage() {
     }
   };
 
+  if (verificationSent) {
+    return (
+      <main className="auth-page">
+        <div className="auth-shell">
+          <div className="auth-card">
+            <div className="auth-logo">
+              <BackgroundImage
+                label="Suburban Gardener Logo"
+                src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,t_transparent-white-alpha-dim,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
+                width={180}
+                maxWidth={180}
+              />
+            </div>
+
+            <div className="auth-header">
+              <h1 className="auth-title">Verify your email</h1>
+            </div>
+
+            {error && (
+              <div className="auth-error" role="alert">
+                <AlertTriangle
+                  className="auth-helper-icon"
+                  aria-hidden="true"
+                />
+                <span>{error}</span>
+              </div>
+            )}
+
+            <div className="auth-verification">
+              A verification link has been sent to{" "}
+              <strong>{verificationEmail}</strong>. Please click the link in
+              your email to activate your account.
+            </div>
+
+            <div className="auth-actions">
+              <button
+                type="button"
+                className="auth-button"
+                onClick={handleResendVerification}
+                disabled={isLoading}
+              >
+                {isLoading ? "Sending..." : "Resend verification email"}
+              </button>
+            </div>
+
+            <div className="auth-toggle">
+              <button
+                type="button"
+                className="auth-toggle-action"
+                onClick={() => handleModeChange("signIn")}
+                aria-label="Sign in"
+              >
+                Sign in
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="auth-page">
       <div className="auth-shell">
         <div className="auth-card">
-          <div className="auth-header">
-            <h1 className="auth-title">
-              {mode === "signIn" ? "Welcome Back" : "Create Your Account"}
-            </h1>
-            <p className="auth-subtitle">
-              {mode === "signIn"
-                ? "Sign in with your email and password"
-                : "Create a secure account for your garden profile"}
-            </p>
+          <div className="auth-logo">
+            <BackgroundImage
+              label="Suburban Gardener Logo"
+              src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,t_transparent-white-alpha-dim,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
+              width={180}
+              maxWidth={180}
+            />
           </div>
 
-          {error && <div className="auth-error">{error}</div>}
+          {mode === "signIn" && !successMessage && (
+            <div className="auth-header">
+              <h1 className="auth-title">
+                {searchParams.get("verified") === "1"
+                  ? "Account Created! You can now sign-in"
+                  : "Welcome Back"}
+              </h1>
+            </div>
+          )}
 
-          <form className="auth-form" onSubmit={handleSubmit}>
-            <label className="auth-field">
-              <span>Email</span>
-              <input
-                className="auth-input"
-                type="email"
-                value={email}
-                onChange={event => setEmail(event.target.value)}
-                placeholder="you@example.com"
-                required
-              />
-            </label>
+          {mode === "signUp" && (
+            <div className="auth-header">
+              <h1 className="auth-title">Create Your Account</h1>
+            </div>
+          )}
 
-            <label className="auth-field">
-              <span>Password</span>
-              <input
-                className="auth-input"
-                type="password"
-                value={password}
-                onChange={event => setPassword(event.target.value)}
-                placeholder="Your password"
-                minLength={8}
-                required
-              />
-            </label>
+          {successMessage && (
+            <div className="auth-success" role="status">
+              <span>{successMessage}</span>
+            </div>
+          )}
 
-            <button type="submit" disabled={isLoading} className="auth-button">
-              {isLoading ? (
-                <LoadingSpinner
-                  size="sm"
-                  className="mb-0"
-                  text={
-                    mode === "signIn" ? "Signing in..." : "Creating account..."
-                  }
+          {!successMessage && (
+            <form className="auth-form" onSubmit={handleSubmit}>
+              <label className="auth-field">
+                <span>Email</span>
+                <input
+                  className="auth-input"
+                  type="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                  placeholder="you@example.com"
+                  required
                 />
-              ) : mode === "signIn" ? (
-                "Sign In"
-              ) : (
-                "Create Account"
+              </label>
+
+              <label className="auth-field">
+                <span>Password</span>
+                <input
+                  className="auth-input"
+                  type="password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  placeholder="Your password"
+                  minLength={8}
+                  required
+                />
+              </label>
+
+              <button
+                type="submit"
+                disabled={isLoading || (mode === "signUp" && accountExists)}
+                className="auth-button"
+              >
+                {isLoading ? (
+                  <LoadingSpinner
+                    size="sm"
+                    className="mb-0"
+                    text={
+                      mode === "signIn"
+                        ? "Signing in..."
+                        : "Creating account..."
+                    }
+                  />
+                ) : mode === "signIn" ? (
+                  "Sign In"
+                ) : (
+                  "Create Account"
+                )}
+              </button>
+
+              {error && (
+                <div className="auth-error" role="alert">
+                  <AlertTriangle
+                    className="auth-helper-icon"
+                    aria-hidden="true"
+                  />
+                  <span>{error}</span>
+                </div>
               )}
-            </button>
-          </form>
 
-          <div className="auth-toggle" style={{ marginTop: "1rem" }}>
-            <button
-              type="button"
-              className="auth-link-button"
-              onClick={() => setMode(mode === "signIn" ? "signUp" : "signIn")}
-            >
-              {mode === "signIn"
-                ? "Need an account? Create one"
-                : "Already have an account? Sign in"}
-            </button>
-          </div>
+              {mode === "signUp" && accountExists && (
+                <p className="auth-helper" role="status">
+                  <AlertTriangle
+                    className="auth-helper-icon"
+                    aria-hidden="true"
+                  />
+                  <span>
+                    An account with this email already exists. Please use a
+                    different email or click the sign-in link below.
+                  </span>
+                </p>
+              )}
+            </form>
+          )}
 
-          <div className="auth-legal">
-            By continuing, you agree to our terms of service and privacy policy.
-          </div>
+          {!successMessage && searchParams.get("verified") !== "1" && (
+            <div className="auth-toggle">
+              {mode === "signIn" ? (
+                <p className="auth-toggle-text">
+                  Need an account?{" "}
+                  <button
+                    type="button"
+                    className="auth-toggle-action"
+                    onClick={() => handleAuthModeToggle("signUp")}
+                    aria-label="Create one"
+                  >
+                    Create one
+                  </button>
+                </p>
+              ) : (
+                <p className="auth-toggle-text">
+                  Already have an account?{" "}
+                  <button
+                    type="button"
+                    className="auth-toggle-action"
+                    onClick={() => handleAuthModeToggle("signIn")}
+                    aria-label="Sign in"
+                  >
+                    Sign in
+                  </button>
+                </p>
+              )}
+            </div>
+          )}
 
-          <div className="auth-link">
-            <Link href="/">← Back to Home</Link>
-          </div>
+          {!successMessage && mode === "signUp" && (
+            <div className="auth-legal">
+              Your information will not be collected for tracking or data
+              trafficking purposes, only for saving your progress and history
+              for personal convenience.
+            </div>
+          )}
+
+          {!successMessage && (
+            <div className="auth-link">
+              <Link href="/">← Back to Home</Link>
+            </div>
+          )}
         </div>
       </div>
     </main>

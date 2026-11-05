@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 import { authOptions } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 import { getUserProfile, upsertUserProfile } from "@/lib/profile";
 
 export async function GET() {
@@ -51,4 +52,20 @@ export async function PUT(request: Request) {
   const profile = await upsertUserProfile(session.user.id, payload);
 
   return NextResponse.json(profile);
+}
+
+export async function DELETE() {
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  await prisma.user.delete({
+    where: {
+      id: session.user.id,
+    },
+  });
+
+  return NextResponse.json({ success: true });
 }

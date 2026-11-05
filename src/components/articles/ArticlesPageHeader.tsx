@@ -5,6 +5,7 @@ interface ArticlesPageHeaderProps {
   className?: string;
 }
 
+// Renders the ArticlesPageHeader page and its page-specific behavior.
 export default function ArticlesPageHeader({
   className = "",
 }: ArticlesPageHeaderProps) {

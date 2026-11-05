@@ -20,6 +20,7 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
 });
 
+// Provides Auth Provider Content context to the component tree.
 function AuthProviderContent({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
 
@@ -41,6 +42,7 @@ function AuthProviderContent({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Provides Auth Provider context to the component tree.
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
@@ -49,6 +51,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Exposes the current auth state so protected UI can react to login status.
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

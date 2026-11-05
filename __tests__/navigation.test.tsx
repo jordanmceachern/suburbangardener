@@ -1,7 +1,34 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import Navigation from "@/components/Navigation";
+import { useAuth } from "@/lib/auth-nextauth";
+
+jest.mock("@/lib/auth-nextauth", () => ({
+  useAuth: jest.fn(),
+}));
+
+jest.mock("next/navigation", () => ({
+  usePathname: () => "/",
+}));
 
 describe("Navigation Component", () => {
+  beforeEach(() => {
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: jest.fn().mockImplementation(query => ({
+        matches: false,
+        media: query,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+      })),
+    });
+
+    (useAuth as jest.Mock).mockReturnValue({
+      isAuthenticated: false,
+      isLoading: false,
+      user: null,
+    });
+  });
+
   it("renders with correct structure and classes", () => {
     const { container } = render(<Navigation />);
 
@@ -26,5 +53,46 @@ describe("Navigation Component", () => {
 
     expect(hasFlexClasses).toBe(true);
     expect(hasNavigationHooks).toBe(true);
+  });
+
+  it("renders a theme toggle item with the opposite mode label", () => {
+    render(<Navigation />);
+
+    expect(
+      screen.getAllByRole("button", { name: /dark/i }).length
+    ).toBeGreaterThan(0);
+  });
+
+  it("hides Dashboard for logged out users", () => {
+    render(<Navigation />);
+
+    expect(
+      screen.queryByRole("link", { name: /dashboard/i })
+    ).not.toBeInTheDocument();
+  });
+
+  it("places Dashboard last when a user is authenticated", () => {
+    (useAuth as jest.Mock).mockReturnValue({
+      isAuthenticated: true,
+      isLoading: false,
+      user: { id: "u1", name: "Tester", email: "tester@example.com" },
+    });
+
+    render(<Navigation />);
+
+    const navNames = screen
+      .getAllByRole("link")
+      .map(
+        link =>
+          (link as HTMLAnchorElement).textContent?.trim() ||
+          (link as HTMLAnchorElement).getAttribute("title") ||
+          ""
+      )
+      .filter(Boolean);
+
+    const dashboardIndex = navNames.findIndex(name => /dashboard/i.test(name));
+    const storeIndex = navNames.findIndex(name => /store/i.test(name));
+
+    expect(dashboardIndex).toBeGreaterThan(storeIndex);
   });
 });

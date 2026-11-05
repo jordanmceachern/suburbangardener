@@ -8,6 +8,7 @@ interface ViewAllArticlesButtonProps {
   arrowDirection?: "left" | "right";
 }
 
+// Renders the ViewAllArticlesButton UI block.
 export default function ViewAllArticlesButton({
   className = "",
   variant = "primary",
@@ -16,7 +17,7 @@ export default function ViewAllArticlesButton({
   arrowDirection = "right",
 }: ViewAllArticlesButtonProps) {
   const baseClasses =
-    "font-medium rounded-lg transition-colors inline-flex items-center justify-center";
+    "font-medium text-lg rounded-lg transition-colors inline-flex items-center justify-center";
 
   const variantClasses = {
     primary:

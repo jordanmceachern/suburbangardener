@@ -11,6 +11,7 @@ interface ArticleDisplayListProps {
   className?: string;
 }
 
+// Renders the ArticleDisplayList article UI.
 export default function ArticleDisplayList({
   className = "",
 }: ArticleDisplayListProps) {

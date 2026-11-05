@@ -62,13 +62,16 @@ async function fetchFeaturedArticles(): Promise<ArticleDisplayData[]> {
   return sortedArticles.slice(0, 2);
 }
 
+// Renders the HomeArticlesSection UI block.
 export default function HomeArticlesSection({
   className = "",
 }: HomeArticlesSectionProps) {
   const [articles, setArticles] = useState<ArticleDisplayData[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Synchronizes local component state with browser events and external data changes.
   useEffect(() => {
+    // Loads Articles and keeps the component data up to date.
     const loadArticles = async () => {
       try {
         setLoading(true);

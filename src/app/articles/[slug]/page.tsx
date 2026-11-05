@@ -12,6 +12,7 @@ interface ArticlePageProps {
   params: { slug: string };
 }
 
+// Renders the Article Page page and its page-specific behavior.
 export default function ArticlePage({ params }: ArticlePageProps) {
   // Find the article by slug
   const article = mockArticles.find(a => a.slug === params.slug);

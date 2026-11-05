@@ -26,6 +26,7 @@ interface ArticleDisplayCardProps {
   imageClassName?: string;
 }
 
+// Renders the ArticleDisplayCard UI block.
 export default function ArticleDisplayCard({
   article,
   className = "",

@@ -8,6 +8,7 @@ interface SearchArticlesProps {
   className?: string;
 }
 
+// Renders the SearchArticles article UI.
 export default function SearchArticles({
   className = "",
 }: SearchArticlesProps) {
@@ -24,6 +25,7 @@ export default function SearchArticles({
 
   // Close dropdown when clicking outside
   useEffect(() => {
+    // Handles Click Outside for the current user interaction.
     function handleClickOutside(event: MouseEvent) {
       if (
         dropdownRef.current &&
@@ -39,6 +41,7 @@ export default function SearchArticles({
     };
   }, []);
 
+  // Handles Search for the current user interaction.
   const handleSearch = async () => {
     if (
       localSearchTerm.trim().length >= 4 ||
@@ -48,12 +51,14 @@ export default function SearchArticles({
     }
   };
 
+  // Handles Key Press for the current user interaction.
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       handleSearch();
     }
   };
 
+  // Handles Category Change for the current user interaction.
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
     setIsDropdownOpen(false);
@@ -64,6 +69,7 @@ export default function SearchArticles({
     return article.category === state.selectedCategory;
   });
 
+  // Toggles CategoryFilter to keep the UI state in sync with the user action.
   const toggleCategoryFilter = () => setIsDropdownOpen(!isDropdownOpen);
 
   return (

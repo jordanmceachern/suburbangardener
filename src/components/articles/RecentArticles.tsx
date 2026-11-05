@@ -6,6 +6,7 @@ interface RecentArticlesProps {
   className?: string;
 }
 
+// Renders the RecentArticles article UI.
 export default function RecentArticles({
   articles,
   className = "",

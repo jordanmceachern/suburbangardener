@@ -43,6 +43,7 @@ async function fetchArticles(
   return mockSidebarArticles.slice(0, maxArticles);
 }
 
+// Renders the ArticlesSidebar UI block.
 export default function ArticlesSidebar({
   className = "",
   maxArticles = 3,
@@ -80,6 +81,7 @@ export default function ArticlesSidebar({
     [isOpen]
   );
 
+  // Synchronizes local component state with browser events and external data changes.
   useEffect(() => {
     async function loadArticles() {
       try {
@@ -98,6 +100,7 @@ export default function ArticlesSidebar({
     loadArticles();
   }, [maxArticles]);
 
+  // Toggles Collapse to keep the UI state in sync with the user action.
   const toggleCollapse = () => {
     // Only allow toggling on screens smaller than large breakpoint
     if (window.innerWidth < 1024) {

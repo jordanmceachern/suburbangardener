@@ -1,10 +1,11 @@
+// Runs the cn logic for this component.
 export function cn(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
 
 export const appLayout = {
-  shell: "flex h-screen",
-  main: "flex-1 sm:ml-20 lg:ml-32",
+  shell: "min-h-screen",
+  main: "flex-1 sm:pl-24 lg:pl-40",
   content: "pb-20 sm:pb-0",
 } as const;
 
@@ -34,17 +35,18 @@ export const navStyles = {
   mobileIcon: "nav-mobile-icon",
 } as const;
 
-export const communityStyles = {
+export const customBuildStyles = {
   section:
     "p-6 rounded-lg bg-primary-100 dark:bg-slate-600 border border-primary-200 dark:border-slate-500",
   inner: "text-center",
-  title: "text-xl font-bold mb-3 text-neutral-900 dark:text-neutral-100",
+  title:
+    "text-2xl sm:text-3xl font-bold mb-3 text-neutral-900 dark:text-neutral-100",
   text: "text-start sm:text-center text-primary-700 dark:text-neutral-300 mb-6",
   actions: "flex flex-col sm:flex-row gap-4 justify-center",
   primaryButton:
-    "bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-6 rounded-lg transition-colors",
+    "bg-primary-500 hover:bg-primary-600 text-white font-medium py-3 px-6 rounded-lg transition-colors",
   secondaryButton:
-    "bg-white dark:bg-tertiary-800 hover:bg-neutral-50 dark:hover:bg-tertiary-900 text-neutral-600 dark:text-neutral-100 font-medium py-3 px-6 rounded-lg border border-primary-300 dark:border-none transition-colors",
+    "bg-white dark:bg-tertiary-500 hover:bg-primary-100 hover:text-primary-700 dark:hover:bg-tertiary-600 text-neutral-600 dark:text-neutral-900 font-medium py-3 px-6 rounded-lg border border-primary-300 dark:border-none transition-colors",
 } as const;
 
 export const searchStyles = {
@@ -92,7 +94,8 @@ export const homeArticleStyles = {
   sectionLoaded:
     "p-6 rounded-lg bg-secondary-100 dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700",
   titleWrap: "text-center mb-8",
-  title: "text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-4",
+  title:
+    "text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-4",
   description:
     "text-lg text-neutral-600 dark:text-neutral-200 max-w-2xl mx-auto",
   descriptionMobile:
@@ -152,10 +155,10 @@ export const bannerStyles = {
 
 export const greetingStyles = {
   wrapper:
-    "rounded-lg p-6 bg-tertiary-100 dark:bg-tertiary-800 border border-tertiary-200 dark:border-tertiary-700 flex flex-col items-start sm:items-center py-3 w-full",
+    "rounded-lg p-6 bg-tertiary-100 dark:bg-tertiary-800 border border-tertiary-200 dark:border-tertiary-700 flex flex-col items-start sm:items-center w-full",
   heading:
     "text-2xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-300 text-center",
-  text: "text-start sm:text-center text-lg text-neutral-900 dark:text-neutral-300 mt-1",
+  text: "text-start sm:text-center text-lg text-neutral-900 dark:text-neutral-300 mt-1 mb-4",
 } as const;
 
 export const errorStyles = {
@@ -193,6 +196,6 @@ export const articleCardStyles = {
   excerpt:
     "text-neutral-700 dark:text-neutral-200 text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3",
   button:
-    "bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center",
+    "bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-500 dark:hover:bg-tertiary-600 text-neutral-900 dark:text-neutral-900 px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center",
   buttonNarrow: "self-center",
 } as const;

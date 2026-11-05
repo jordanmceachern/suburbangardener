@@ -53,6 +53,7 @@ const initialState: ArticleState = {
   currentOffset: 0,
 };
 
+// Renders the articleReducer article UI.
 function articleReducer(
   state: ArticleState,
   action: ArticleAction
@@ -106,6 +107,7 @@ interface ArticleContextType {
 
 const ArticleContext = createContext<ArticleContextType | null>(null);
 
+// Exposes the article context so components can read and update article state.
 export function useArticles() {
   const context = useContext(ArticleContext);
   if (!context) {
@@ -118,6 +120,7 @@ interface ArticleProviderProps {
   children: React.ReactNode;
 }
 
+// Provides Article Provider context to the component tree.
 export function ArticleProvider({ children }: ArticleProviderProps) {
   const [state, dispatch] = useReducer(articleReducer, initialState);
 
