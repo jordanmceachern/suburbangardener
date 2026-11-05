@@ -153,7 +153,7 @@ export default function LoginPage() {
       window.removeEventListener("storage", handleStorageVerification);
       window.removeEventListener("message", handleMessageVerification);
     };
-  }, [searchParams, router]);
+  }, [email, password, searchParams, router]);
 
   const resetAccountForm = () => {
     setError("");

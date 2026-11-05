@@ -37,6 +37,7 @@ export function BackgroundImage({
       className={`flex w-full justify-center${className ? " " + className : ""}`}
       style={containerStyle}
     >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         alt={label || "Decorative image"}
         aria-label={label}
