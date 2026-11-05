@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../../lib/auth-nextauth";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
+// Renders the Dashboard Page page and its page-specific behavior.
 export default function DashboardPage() {
   const { user, isLoading } = useAuth();
   const router = useRouter();
@@ -18,6 +19,7 @@ export default function DashboardPage() {
   const isDeleteRedirectingRef = useRef(false);
   const deleteRedirectKey = "suburban-gardener-delete-home-redirect";
 
+  // Synchronizes local component state with browser events and external data changes.
   useEffect(() => {
     if (!deleteConfirmOpen) {
       return;
@@ -30,6 +32,7 @@ export default function DashboardPage() {
     return () => window.clearTimeout(timeoutId);
   }, [deleteConfirmOpen]);
 
+  // Synchronizes local component state with browser events and external data changes.
   useEffect(() => {
     if (!isLoading && !user) {
       const shouldSkipRedirect =
@@ -44,6 +47,7 @@ export default function DashboardPage() {
     }
   }, [isLoading, user, router, isDeleting]);
 
+  // Synchronizes local component state with browser events and external data changes.
   useEffect(() => {
     return () => {
       if (cooldownTimeoutRef.current) {
@@ -52,6 +56,7 @@ export default function DashboardPage() {
     };
   }, []);
 
+  // Runs the start Delete Cooldown logic for this component.
   const startDeleteCooldown = () => {
     if (cooldownTimeoutRef.current) {
       window.clearTimeout(cooldownTimeoutRef.current);
@@ -63,6 +68,7 @@ export default function DashboardPage() {
     }, 5000);
   };
 
+  // Handles Logout for the current user interaction.
   const handleLogout = async () => {
     await signOut({
       redirect: false,
@@ -71,6 +77,7 @@ export default function DashboardPage() {
     router.push("/login?mode=signIn");
   };
 
+  // Handles Delete Profile for the current user interaction.
   const handleDeleteProfile = async () => {
     if (isDeleting || deleteCooldown) {
       return;

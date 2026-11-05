@@ -4,6 +4,7 @@ interface FontStyleTestProps {
   className?: string;
 }
 
+// Runs the Font Style Test logic for this component.
 export default function FontStyleTest({ className = "" }: FontStyleTestProps) {
   return (
     <section

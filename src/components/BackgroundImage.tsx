@@ -11,6 +11,7 @@ export interface BackgroundImageProps {
   maxWidth?: number;
 }
 
+// Renders the BackgroundImage component.
 export function BackgroundImage({
   className,
   height,

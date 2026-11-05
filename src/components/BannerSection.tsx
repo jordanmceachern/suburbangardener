@@ -6,6 +6,7 @@ interface BannerSectionProps {
   className?: string;
 }
 
+// Renders the Banner Section UI block.
 export default function BannerSection({ className = "" }: BannerSectionProps) {
   return (
     <header className={cn(bannerStyles.header, className)}>

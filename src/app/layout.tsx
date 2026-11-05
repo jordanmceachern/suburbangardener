@@ -54,6 +54,7 @@ export const metadata: Metadata = {
   },
 };
 
+// Provides the Root Layout layout shell for the app.
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">

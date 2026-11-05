@@ -138,6 +138,7 @@ const navigation: NavItem[] = [
   },
 ];
 
+// Runs the Navigation logic for this component.
 export default function Navigation() {
   const pathname = usePathname();
   const { isAuthenticated } = useAuth();
@@ -149,6 +150,7 @@ export default function Navigation() {
     return true;
   });
 
+  // Determines whether the current state matches Active.
   const isActive = (href: string) => {
     if (href === "/") {
       return pathname === "/";

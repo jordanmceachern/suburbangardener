@@ -8,6 +8,7 @@ interface FeaturedArticleProps {
   className?: string;
 }
 
+// Renders the FeaturedArticle article UI.
 export default function FeaturedArticle({
   className = "",
 }: FeaturedArticleProps) {

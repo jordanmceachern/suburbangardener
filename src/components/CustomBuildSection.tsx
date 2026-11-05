@@ -9,6 +9,7 @@ interface CustomBuildSectionProps {
   className?: string;
 }
 
+// Renders the CustomBuildSection UI block.
 export default function CustomBuildSection({
   className = "",
 }: CustomBuildSectionProps) {

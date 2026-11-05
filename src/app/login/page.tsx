@@ -12,6 +12,7 @@ const VERIFICATION_STORAGE_KEY = "suburban-gardener-email-verified";
 const PENDING_AUTH_EMAIL_KEY = "suburban-gardener-pending-auth-email";
 const PENDING_AUTH_PASSWORD_KEY = "suburban-gardener-pending-auth-password";
 
+// Reads the email and password stored for a just-verified user so the app can sign them in automatically.
 const readPendingAuthCredentials = () => {
   if (typeof window === "undefined") {
     return { email: "", password: "" };
@@ -23,6 +24,7 @@ const readPendingAuthCredentials = () => {
   };
 };
 
+// Clears the temporary verification credentials once the sign-in flow has completed or failed.
 const clearPendingAuthCredentials = () => {
   if (typeof window === "undefined") {
     return;
@@ -32,6 +34,7 @@ const clearPendingAuthCredentials = () => {
   window.sessionStorage.removeItem(PENDING_AUTH_PASSWORD_KEY);
 };
 
+// Renders the sign-in and account-creation flow, including the email verification redirect logic and auth-state recovery.
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [mode, setMode] = useState<"signIn" | "signUp">("signIn");
@@ -45,7 +48,9 @@ export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  // Watches for verification and auth callbacks so a freshly verified user can be redirected into the authenticated dashboard state.
   useEffect(() => {
+    // Handles Verification State for the current user interaction.
     const handleVerificationState = async () => {
       const pendingCredentials = readPendingAuthCredentials();
       const activeEmail = email || pendingCredentials.email;
@@ -119,6 +124,7 @@ export default function LoginPage() {
       setSuccessMessage("");
     }
 
+    // Handles Storage Verification for the current user interaction.
     const handleStorageVerification = (event: StorageEvent) => {
       if (event.key === VERIFICATION_STORAGE_KEY && event.newValue) {
         window.localStorage.removeItem(VERIFICATION_STORAGE_KEY);
@@ -126,12 +132,14 @@ export default function LoginPage() {
       }
     };
 
+    // Handles Message Verification for the current user interaction.
     const handleMessageVerification = (event: MessageEvent) => {
       if (event.data?.type === "email-verified") {
         handleVerificationState();
       }
     };
 
+    // Runs the poll Verification Flag logic for this component.
     const pollVerificationFlag = () => {
       const verificationFlag = window.localStorage.getItem(
         VERIFICATION_STORAGE_KEY
@@ -155,6 +163,7 @@ export default function LoginPage() {
     };
   }, [email, password, searchParams, router]);
 
+  // Resets the auth form state to clear validation, success, and verification messaging between mode switches.
   const resetAccountForm = () => {
     setError("");
     setSuccessMessage("");
@@ -163,6 +172,38 @@ export default function LoginPage() {
     setVerificationEmail("");
   };
 
+  // Keeps the email field in sync and clears the duplicate-account warning as the user edits it.
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+    if (accountExists) {
+      setAccountExists(false);
+    }
+  };
+
+  // Keeps the password field in sync and dismisses duplicate-account messaging while the user types.
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+    if (accountExists) {
+      setAccountExists(false);
+    }
+  };
+
+  // Switches between the sign-in and sign-up forms while resetting stale auth state for the selected mode.
+  const handleModeChange = (nextMode: "signIn" | "signUp") => {
+    setMode(nextMode);
+    resetAccountForm();
+    setEmail("");
+    setPassword("");
+  };
+
+  // Toggles the auth mode without clearing the form values so the current session can smoothly move between sign-in and sign-up states.
+  const handleAuthModeToggle = (nextMode: "signIn" | "signUp") => {
+    setMode(nextMode);
+    setError("");
+    setAccountExists(false);
+  };
+
+  // Re-sends the registration email so a user who missed the original verification email can complete account activation.
   const handleResendVerification = async () => {
     if (!email) {
       return;
@@ -199,6 +240,7 @@ export default function LoginPage() {
     }
   };
 
+  // Submits the chosen auth flow, validates credentials, and routes the user to the dashboard once they pass the required checks.
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
@@ -337,12 +379,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 className="auth-toggle-action"
-                onClick={() => {
-                  setMode("signIn");
-                  resetAccountForm();
-                  setEmail("");
-                  setPassword("");
-                }}
+                onClick={() => handleModeChange("signIn")}
                 aria-label="Sign in"
               >
                 Sign in
@@ -397,12 +434,7 @@ export default function LoginPage() {
                   className="auth-input"
                   type="email"
                   value={email}
-                  onChange={event => {
-                    setEmail(event.target.value);
-                    if (accountExists) {
-                      setAccountExists(false);
-                    }
-                  }}
+                  onChange={handleEmailChange}
                   placeholder="you@example.com"
                   required
                 />
@@ -414,12 +446,7 @@ export default function LoginPage() {
                   className="auth-input"
                   type="password"
                   value={password}
-                  onChange={event => {
-                    setPassword(event.target.value);
-                    if (accountExists) {
-                      setAccountExists(false);
-                    }
-                  }}
+                  onChange={handlePasswordChange}
                   placeholder="Your password"
                   minLength={8}
                   required
@@ -481,11 +508,7 @@ export default function LoginPage() {
                   <button
                     type="button"
                     className="auth-toggle-action"
-                    onClick={() => {
-                      setMode("signUp");
-                      setError("");
-                      setAccountExists(false);
-                    }}
+                    onClick={() => handleAuthModeToggle("signUp")}
                     aria-label="Create one"
                   >
                     Create one
@@ -497,11 +520,7 @@ export default function LoginPage() {
                   <button
                     type="button"
                     className="auth-toggle-action"
-                    onClick={() => {
-                      setMode("signIn");
-                      setError("");
-                      setAccountExists(false);
-                    }}
+                    onClick={() => handleAuthModeToggle("signIn")}
                     aria-label="Sign in"
                   >
                     Sign in

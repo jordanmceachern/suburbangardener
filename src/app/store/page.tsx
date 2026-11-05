@@ -1,5 +1,6 @@
 import React from "react";
 
+// Renders the Store Page page and its page-specific behavior.
 export default function StorePage() {
   return (
     <main className="store-page">

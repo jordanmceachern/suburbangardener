@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+// Runs the Error Tester logic for this component.
 export default function ErrorTester() {
   const [shouldThrowError, setShouldThrowError] = useState(false);
 
@@ -10,6 +11,7 @@ export default function ErrorTester() {
     throw new Error("Test error for ErrorBoundary component");
   }
 
+  // Runs the trigger Error logic for this component.
   const triggerError = () => {
     setShouldThrowError(true);
   };

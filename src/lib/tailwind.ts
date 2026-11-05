@@ -1,3 +1,4 @@
+// Runs the cn logic for this component.
 export function cn(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
 }

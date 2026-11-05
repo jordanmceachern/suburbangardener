@@ -8,6 +8,7 @@ interface ViewAllArticlesButtonProps {
   arrowDirection?: "left" | "right";
 }
 
+// Renders the ViewAllArticlesButton UI block.
 export default function ViewAllArticlesButton({
   className = "",
   variant = "primary",

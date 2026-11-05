@@ -10,6 +10,7 @@ interface ProtectedRouteProps {
   redirectTo?: string;
 }
 
+// Renders the ProtectedRoute component.
 export default function ProtectedRoute({
   children,
   redirectTo = "/login",
@@ -17,6 +18,7 @@ export default function ProtectedRoute({
   const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
 
+  // Synchronizes local component state with browser events and external data changes.
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       router.push(redirectTo);

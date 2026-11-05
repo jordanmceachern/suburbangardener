@@ -1,5 +1,6 @@
 import React from "react";
 
+// Renders the Tutorials Page page and its page-specific behavior.
 export default function TutorialsPage() {
   return (
     <main className="tutorials-page">

@@ -23,16 +23,19 @@ export type ProfileInput = {
 const MAX_DISPLAY_NAME_LENGTH = 80;
 const MAX_PROFILE_JSON_BYTES = 25000;
 
+// Determines whether the current state matches PlainObject.
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
+// Determines whether the current state matches JsonPayload.
 function isJsonPayload(
   value: unknown
 ): value is Record<string, unknown> | unknown[] {
   return typeof value === "object" && value !== null;
 }
 
+// Sanitizes JSON field values before they are stored in the profile.
 function sanitizeJsonField(value: unknown) {
   if (!isJsonPayload(value)) {
     return undefined;
@@ -50,6 +53,7 @@ function sanitizeJsonField(value: unknown) {
   }
 }
 
+// Sanitizes ProfileInput to keep incoming data safe and predictable.
 export function sanitizeProfileInput(input: unknown): Partial<ProfileInput> {
   if (!isPlainObject(input)) {
     return {};

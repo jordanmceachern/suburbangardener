@@ -5,6 +5,7 @@ import CustomBuildSection from "../components/CustomBuildSection";
 import HomeArticlesSection from "../components/articles/HomeArticlesSection";
 import FontStyleTest from "../components/FontStyleTest";
 
+// Renders the Home home-area UI.
 export default function Home() {
   return (
     <main className="min-h-screen p-8 bg-background-light dark:bg-background-dark">

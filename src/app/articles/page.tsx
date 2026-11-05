@@ -7,9 +7,11 @@ import ArticlesPageHeader from "../../components/articles/ArticlesPageHeader";
 import FeaturedArticle from "../../components/articles/FeaturedArticle";
 import ArticleDisplayList from "../../components/articles/ArticleDisplayList";
 
+// Renders the Articles Page Content page and its page-specific behavior.
 function ArticlesPageContent() {
   const { loadArticles } = useArticles();
 
+  // Synchronizes local component state with browser events and external data changes.
   useEffect(() => {
     // Load initial articles on mount
     loadArticles();
@@ -40,6 +42,7 @@ function ArticlesPageContent() {
   );
 }
 
+// Renders the Articles Page page and its page-specific behavior.
 export default function ArticlesPage() {
   return (
     <ArticleProvider>

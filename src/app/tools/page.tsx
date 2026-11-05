@@ -1,5 +1,6 @@
 import React from "react";
 
+// Renders the Tools Page page and its page-specific behavior.
 export default function ToolsPage() {
   return (
     <main className="tools-page">

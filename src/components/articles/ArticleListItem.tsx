@@ -8,6 +8,7 @@ interface ArticleListItemProps {
   className?: string;
 }
 
+// Renders the ArticleListItem article UI.
 export default function ArticleListItem({
   article,
   showBorder = true,
