@@ -22,7 +22,7 @@ exports[`CommunitySection Component should match DOM snapshot 1`] = `
         Select the piping and accessories that fit your needs and meet your budget.
       </li>
       <li>
-        Provide dimensions, upload an overhead image, or provide gps coords to start sending water where it's needed!
+        Provide dimensions, GPS coordinates, or upload an overhead image to start sending water where it's needed!
       </li>
     </ul>
     <div
@@ -35,7 +35,7 @@ exports[`CommunitySection Component should match DOM snapshot 1`] = `
         Create Account
       </a>
       <a
-        class="bg-white dark:bg-tertiary-800 hover:bg-neutral-50 dark:hover:bg-tertiary-900 text-neutral-600 dark:text-neutral-100 font-medium py-3 px-6 rounded-lg border border-primary-300 dark:border-none transition-colors"
+        class="bg-white dark:bg-tertiary-800 hover:bg-primary-100 hover:text-primary-700 dark:hover:bg-tertiary-900 text-neutral-600 dark:text-neutral-100 font-medium py-3 px-6 rounded-lg border border-primary-300 dark:border-none transition-colors"
         href="/login"
       >
         Log In

@@ -16,10 +16,6 @@
 }
 
 @layer components {
-  .theme-transition {
-    @apply transition-colors duration-300 ease-in-out;
-  }
-
   .store-page {
     @apply min-h-screen bg-background-light dark:bg-background-dark;
   }
@@ -145,10 +141,6 @@
     @apply text-2xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-300 text-center;
   }
 
-  .auth-subtitle {
-    @apply text-start sm:text-center text-lg sm:text-xl text-neutral-900 dark:text-neutral-300 mt-1;
-  }
-
   .auth-error {
     @apply mb-6 flex items-start gap-3 text-left text-lg font-bold text-white;
     background: transparent;
@@ -248,14 +240,6 @@
     @apply no-underline;
   }
 
-  .auth-link-button {
-    @apply w-full text-center text-lg text-neutral-900 hover:text-neutral-800 dark:text-neutral-100 dark:hover:text-neutral-200 transition-colors;
-  }
-
-  .auth-button-icon {
-    @apply w-5 h-5;
-  }
-
   .auth-legal {
     @apply mt-6 text-left text-neutral-700 dark:text-neutral-300 text-lg;
   }
@@ -281,9 +265,7 @@
   }
 
   .dashboard-header {
-    background: rgb(90 77 104 / var(--tw-bg-opacity, 1)) !important;
-    border-bottom: 1px solid rgb(90 77 104 / var(--tw-bg-opacity, 1)) !important;
-    @apply shadow-sm;
+    @apply shadow-sm border-b border-primary-200 bg-primary-100 dark:border-slate-500 dark:bg-slate-600;
   }
 
   .dashboard-header-inner {
@@ -295,13 +277,11 @@
   }
 
   .dashboard-title {
-    @apply text-3xl sm:text-4xl font-bold;
-    color: #ffffff !important;
+    @apply text-3xl sm:text-4xl font-bold text-neutral-900 dark:text-white;
   }
 
   .dashboard-subtitle {
-    @apply text-lg;
-    color: rgba(255, 255, 255, 0.9);
+    @apply text-lg text-neutral-700 dark:text-white/90;
   }
 
   .dashboard-user-meta {
@@ -309,8 +289,7 @@
   }
 
   .dashboard-email {
-    @apply text-lg;
-    color: #ffffff;
+    @apply text-lg text-neutral-700 dark:text-white;
   }
 
   .dashboard-content {
@@ -326,9 +305,7 @@
   }
 
   .dashboard-settings-card {
-    background: rgb(161 98 7 / var(--tw-bg-opacity, 1)) !important;
-    border: 1px solid rgb(161 98 7 / var(--tw-bg-opacity, 1)) !important;
-    @apply rounded-2xl shadow-sm p-4;
+    @apply rounded-2xl shadow-sm p-4 border bg-secondary-100 text-neutral-900 border-secondary-200 dark:bg-secondary-800 dark:text-white dark:border-secondary-700;
   }
 
   .dashboard-settings-heading {
@@ -337,8 +314,7 @@
   }
 
   .dashboard-settings-icon {
-    @apply inline-flex h-12 w-12 items-center justify-center rounded-xl text-[2rem] leading-none;
-    color: #ffffff;
+    @apply inline-flex h-12 w-12 items-center justify-center rounded-xl text-[2rem] leading-none text-neutral-900 dark:text-white;
   }
 
   .dashboard-settings-icon svg {
@@ -348,13 +324,11 @@
   }
 
   .dashboard-settings-title {
-    @apply text-[1.6rem] font-bold;
-    color: #ffffff !important;
+    @apply text-[1.6rem] font-bold text-neutral-900 dark:text-white;
   }
 
   .dashboard-settings-subtitle {
-    @apply text-lg;
-    color: rgba(255, 255, 255, 0.9);
+    @apply text-lg text-neutral-700 dark:text-white/90;
   }
 
   .dashboard-settings-body {
@@ -362,9 +336,7 @@
   }
 
   .dashboard-settings-column {
-    @apply rounded-xl p-4;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    @apply rounded-xl border p-4 bg-white/80 text-neutral-900 border-primary-200 dark:bg-white/10 dark:text-white dark:border-white/15;
   }
 
   .dashboard-settings-column--danger {
@@ -373,19 +345,23 @@
     padding: 0;
   }
 
-  .dashboard-settings-label {
-    @apply text-sm font-semibold uppercase tracking-[0.12em];
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-  .dashboard-settings-meta {
-    @apply mt-2 text-lg break-words;
-    color: #ffffff;
-  }
-
   .dashboard-delete-button {
-    @apply flex w-full items-center justify-center rounded-lg border-0 px-4 py-3 text-lg font-bold text-white transition-colors hover:bg-red-900 disabled:cursor-not-allowed disabled:opacity-70;
-    background: #8f241d;
+    @apply flex w-full items-center justify-center rounded-lg border-0 px-4 py-3 text-lg font-bold text-white transition-colors disabled:cursor-not-allowed disabled:opacity-70;
+    background-color: #dc2626;
+  }
+
+  .dashboard-delete-button:hover {
+    background-color: #b91c1c;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .dashboard-delete-button {
+      background-color: #7f1d1d;
+    }
+
+    .dashboard-delete-button:hover {
+      background-color: #5b1010;
+    }
   }
 
   .dashboard-delete-content {
@@ -397,8 +373,7 @@
   }
 
   .dashboard-delete-warning {
-    @apply mt-3 text-base font-bold leading-relaxed;
-    color: #ffffff;
+    @apply mt-3 text-base font-bold leading-relaxed text-neutral-800 dark:text-white;
   }
 
   .dashboard-delete-error {
@@ -407,119 +382,21 @@
 
   .dashboard-logout-button {
     @apply text-white px-4 py-2 rounded-lg transition-colors text-base font-medium;
-    background: #8f241d;
+    background-color: #dc2626;
   }
 
   .dashboard-logout-button:hover {
-    background: #7a1f1a;
+    background-color: #b91c1c;
   }
 
-  .dashboard-grid {
-    @apply hidden;
-  }
+  @media (prefers-color-scheme: dark) {
+    .dashboard-logout-button {
+      background-color: #7f1d1d;
+    }
 
-  .dashboard-card {
-    @apply hidden;
-  }
-
-  .dashboard-status--growing {
-    @apply text-green-600 dark:text-green-400;
-  }
-
-  .dashboard-status--warning {
-    @apply text-yellow-600 dark:text-yellow-400;
-  }
-
-  .dashboard-tool-button {
-    @apply w-full text-left p-3 rounded-lg transition-colors;
-  }
-
-  .dashboard-tool-button--primary {
-    @apply bg-primary-50 dark:bg-primary-900 hover:bg-primary-100 dark:hover:bg-primary-800;
-  }
-
-  .dashboard-tool-button--secondary {
-    @apply bg-secondary-50 dark:bg-secondary-900 hover:bg-secondary-100 dark:hover:bg-secondary-800;
-  }
-
-  .dashboard-tool-button--neutral {
-    @apply bg-neutral-50 dark:bg-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-600;
-  }
-
-  .dashboard-tool-label {
-    @apply text-primary-700 dark:text-primary-300;
-  }
-
-  .dashboard-tool-label--secondary {
-    @apply text-secondary-700 dark:text-secondary-300;
-  }
-
-  .dashboard-tool-label--neutral {
-    @apply text-neutral-700 dark:text-neutral-300;
-  }
-
-  .dashboard-stat-group {
-    @apply space-y-4;
-  }
-
-  .dashboard-stat-row {
-    @apply flex justify-between text-sm mb-1;
-  }
-
-  .dashboard-stat-label {
-    @apply text-neutral-600 dark:text-neutral-400;
-  }
-
-  .dashboard-stat-value {
-    @apply text-neutral-900 dark:text-neutral-100;
-  }
-
-  .dashboard-progress {
-    @apply w-full bg-neutral-200 dark:bg-neutral-700 rounded-full h-2;
-  }
-
-  .dashboard-progress-bar {
-    @apply h-2 rounded-full;
-  }
-
-  .dashboard-progress-bar--green {
-    @apply bg-green-600;
-  }
-
-  .dashboard-progress-bar--primary {
-    @apply bg-primary-600;
-  }
-
-  .dashboard-weather {
-    @apply text-center;
-  }
-
-  .dashboard-weather-icon {
-    @apply text-3xl mb-2;
-  }
-
-  .dashboard-weather-temp {
-    @apply text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-1;
-  }
-
-  .dashboard-weather-copy {
-    @apply text-neutral-600 dark:text-neutral-400 text-sm;
-  }
-
-  .dashboard-link-card {
-    @apply block p-3 bg-neutral-50 dark:bg-neutral-700 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-600 transition-colors;
-  }
-
-  .dashboard-link-label {
-    @apply text-neutral-700 dark:text-neutral-300;
-  }
-
-  .dashboard-mini-card {
-    @apply p-3 bg-neutral-50 dark:bg-neutral-700 rounded-lg;
-  }
-
-  .dashboard-mini-copy {
-    @apply text-neutral-500 dark:text-neutral-400 text-sm;
+    .dashboard-logout-button:hover {
+      background-color: #5b1010;
+    }
   }
 
   .tools-page {
@@ -775,7 +652,7 @@
   }
 
   .nav-mobile-link--inactive {
-    @apply text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100;
+    @apply text-neutral-700 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100;
   }
 
   .nav-mobile-home-logo-wrap {
@@ -783,7 +660,7 @@
   }
 
   .nav-mobile-icon {
-    @apply flex-shrink-0 mb-1;
+    @apply flex-shrink-0 mb-1 text-neutral-700 dark:text-neutral-400;
   }
 
   .nav-mobile-label {

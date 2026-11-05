@@ -45,7 +45,7 @@ export const communityStyles = {
   primaryButton:
     "bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-6 rounded-lg transition-colors",
   secondaryButton:
-    "bg-white dark:bg-tertiary-800 hover:bg-neutral-50 dark:hover:bg-tertiary-900 text-neutral-600 dark:text-neutral-100 font-medium py-3 px-6 rounded-lg border border-primary-300 dark:border-none transition-colors",
+    "bg-white dark:bg-tertiary-800 hover:bg-primary-100 hover:text-primary-700 dark:hover:bg-tertiary-900 text-neutral-600 dark:text-neutral-100 font-medium py-3 px-6 rounded-lg border border-primary-300 dark:border-none transition-colors",
 } as const;
 
 export const searchStyles = {

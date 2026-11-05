@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { useAuth } from "../lib/auth-nextauth";
 import { cn, communityStyles } from "../lib/tailwind";
 
 interface CommunitySectionProps {
@@ -9,6 +12,8 @@ interface CommunitySectionProps {
 export default function CommunitySection({
   className = "",
 }: CommunitySectionProps) {
+  const { isAuthenticated } = useAuth();
+
   return (
     <section className={cn(communityStyles.section, className)}>
       <div className={communityStyles.inner}>
@@ -23,20 +28,28 @@ export default function CommunitySection({
             budget.
           </li>
           <li>
-            Provide dimensions, upload an overhead image, or provide gps coords
-            to start sending water where it&apos;s needed!
+            Provide dimensions, GPS coordinates, or upload an overhead image to
+            start sending water where it&apos;s needed!
           </li>
         </ul>
         <div className={communityStyles.actions}>
-          <Link
-            href="/login?mode=signUp"
-            className={communityStyles.primaryButton}
-          >
-            Create Account
-          </Link>
-          <Link href="/login" className={communityStyles.secondaryButton}>
-            Log In
-          </Link>
+          {isAuthenticated ? (
+            <Link href="/tools" className={communityStyles.primaryButton}>
+              Explore Tools
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/login?mode=signUp"
+                className={communityStyles.primaryButton}
+              >
+                Create Account
+              </Link>
+              <Link href="/login" className={communityStyles.secondaryButton}>
+                Log In
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </section>

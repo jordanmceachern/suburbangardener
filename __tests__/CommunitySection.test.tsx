@@ -1,13 +1,46 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import CommunitySection from "@/components/CommunitySection";
+import { useAuth } from "@/lib/auth-nextauth";
 import { communityStyles, homeArticleStyles } from "@/lib/tailwind";
 
+jest.mock("@/lib/auth-nextauth", () => ({
+  useAuth: jest.fn(),
+}));
+
 describe("CommunitySection Component", () => {
+  beforeEach(() => {
+    (useAuth as jest.Mock).mockReturnValue({
+      isAuthenticated: false,
+      isLoading: false,
+      user: null,
+    });
+  });
+
   it("routes the primary CTA to the sign-up flow and uses the correct label", () => {
-    const { getByRole } = render(<CommunitySection />);
-    const primaryAction = getByRole("link", { name: /create account/i });
+    render(<CommunitySection />);
+    const primaryAction = screen.getByRole("link", { name: /create account/i });
 
     expect(primaryAction).toHaveAttribute("href", "/login?mode=signUp");
+  });
+
+  it("shows explore tools instead of account prompts when a user is logged in", () => {
+    (useAuth as jest.Mock).mockReturnValue({
+      isAuthenticated: true,
+      isLoading: false,
+      user: { id: "1", name: "Test User", email: "test@example.com" },
+    });
+
+    render(<CommunitySection />);
+
+    expect(
+      screen.getByRole("link", { name: /explore tools/i })
+    ).toHaveAttribute("href", "/tools");
+    expect(
+      screen.queryByRole("link", { name: /create account/i })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: /log in/i })
+    ).not.toBeInTheDocument();
   });
 
   it("should match DOM snapshot", () => {

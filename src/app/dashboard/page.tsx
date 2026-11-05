@@ -153,9 +153,7 @@ export default function DashboardPage() {
     <main className="dashboard-page">
       <header className="dashboard-header">
         <div className="dashboard-header-inner">
-          <div className="dashboard-header-copy">
-            <h1 className="dashboard-title">Suburban Gardener Dashboard</h1>
-          </div>
+          <div className="dashboard-header-copy" aria-hidden="true" />
 
           <div className="dashboard-user-meta">
             <span className="dashboard-email">{user.email}</span>
