@@ -34,7 +34,7 @@ export const navStyles = {
   mobileIcon: "nav-mobile-icon",
 } as const;
 
-export const communityStyles = {
+export const customBuildStyles = {
   section:
     "p-6 rounded-lg bg-primary-100 dark:bg-slate-600 border border-primary-200 dark:border-slate-500",
   inner: "text-center",

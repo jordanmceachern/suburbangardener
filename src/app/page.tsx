@@ -1,7 +1,7 @@
 import ErrorTester from "../components/ErrorTester";
 import Greeting from "../components/Greeting";
 import BannerSection from "../components/BannerSection";
-import CommunitySection from "../components/CommunitySection";
+import CustomBuildSection from "../components/CustomBuildSection";
 import HomeArticlesSection from "../components/articles/HomeArticlesSection";
 import FontStyleTest from "../components/FontStyleTest";
 
@@ -13,7 +13,7 @@ export default function Home() {
 
         <Greeting />
 
-        <CommunitySection className="mt-8" />
+        <CustomBuildSection className="mt-8" />
 
         <HomeArticlesSection className="mt-12" />
 

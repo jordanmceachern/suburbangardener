@@ -1,13 +1,13 @@
 import { render, screen } from "@testing-library/react";
-import CommunitySection from "@/components/CommunitySection";
+import CustomBuildSection from "@/components/CustomBuildSection";
 import { useAuth } from "@/lib/auth-nextauth";
-import { communityStyles, homeArticleStyles } from "@/lib/tailwind";
+import { customBuildStyles, homeArticleStyles } from "@/lib/tailwind";
 
 jest.mock("@/lib/auth-nextauth", () => ({
   useAuth: jest.fn(),
 }));
 
-describe("CommunitySection Component", () => {
+describe("CustomBuildSection Component", () => {
   beforeEach(() => {
     (useAuth as jest.Mock).mockReturnValue({
       isAuthenticated: false,
@@ -17,7 +17,7 @@ describe("CommunitySection Component", () => {
   });
 
   it("routes the primary CTA to the sign-up flow and uses the correct label", () => {
-    render(<CommunitySection />);
+    render(<CustomBuildSection />);
     const primaryAction = screen.getByRole("link", { name: /create account/i });
 
     expect(primaryAction).toHaveAttribute("href", "/login?mode=signUp");
@@ -30,7 +30,7 @@ describe("CommunitySection Component", () => {
       user: { id: "1", name: "Test User", email: "test@example.com" },
     });
 
-    render(<CommunitySection />);
+    render(<CustomBuildSection />);
 
     expect(
       screen.getByRole("link", { name: /explore tools/i })
@@ -44,12 +44,12 @@ describe("CommunitySection Component", () => {
   });
 
   it("should match DOM snapshot", () => {
-    const { container } = render(<CommunitySection />);
+    const { container } = render(<CustomBuildSection />);
     expect(container.firstChild).toMatchSnapshot();
   });
 
-  it("should maintain CSS classes for community section layout", () => {
-    const { container } = render(<CommunitySection />);
+  it("should maintain CSS classes for the custom build section layout", () => {
+    const { container } = render(<CustomBuildSection />);
 
     // Check for section-related classes
     const hasSectionClasses =
@@ -63,9 +63,9 @@ describe("CommunitySection Component", () => {
   });
 
   it("keeps home section headings no larger than the hero text on mobile", () => {
-    expect(communityStyles.title.startsWith("text-2xl")).toBe(true);
+    expect(customBuildStyles.title.startsWith("text-2xl")).toBe(true);
     expect(homeArticleStyles.title.startsWith("text-2xl")).toBe(true);
-    expect(communityStyles.title).toContain("sm:text-3xl");
+    expect(customBuildStyles.title).toContain("sm:text-3xl");
     expect(homeArticleStyles.title).toContain("sm:text-3xl");
   });
 });

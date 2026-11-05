@@ -3,21 +3,21 @@
 import React from "react";
 import Link from "next/link";
 import { useAuth } from "../lib/auth-nextauth";
-import { cn, communityStyles } from "../lib/tailwind";
+import { cn, customBuildStyles } from "../lib/tailwind";
 
-interface CommunitySectionProps {
+interface CustomBuildSectionProps {
   className?: string;
 }
 
-export default function CommunitySection({
+export default function CustomBuildSection({
   className = "",
-}: CommunitySectionProps) {
+}: CustomBuildSectionProps) {
   const { isAuthenticated } = useAuth();
 
   return (
-    <section className={cn(communityStyles.section, className)}>
-      <div className={communityStyles.inner}>
-        <h2 className={communityStyles.title}>Custom Build Your Own</h2>
+    <section className={cn(customBuildStyles.section, className)}>
+      <div className={customBuildStyles.inner}>
+        <h2 className={customBuildStyles.title}>Custom Build Your Own</h2>
         <ul className="list-disc space-y-3 pl-6 text-left text-primary-700 dark:text-neutral-300 mb-6">
           <li>
             Use our free, easy-to-use tools to build out your own custom
@@ -32,20 +32,20 @@ export default function CommunitySection({
             start sending water where it&apos;s needed!
           </li>
         </ul>
-        <div className={communityStyles.actions}>
+        <div className={customBuildStyles.actions}>
           {isAuthenticated ? (
-            <Link href="/tools" className={communityStyles.primaryButton}>
+            <Link href="/tools" className={customBuildStyles.primaryButton}>
               Explore Tools
             </Link>
           ) : (
             <>
               <Link
                 href="/login?mode=signUp"
-                className={communityStyles.primaryButton}
+                className={customBuildStyles.primaryButton}
               >
                 Create Account
               </Link>
-              <Link href="/login" className={communityStyles.secondaryButton}>
+              <Link href="/login" className={customBuildStyles.secondaryButton}>
                 Log In
               </Link>
             </>

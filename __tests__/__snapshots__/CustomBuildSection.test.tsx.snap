@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`CommunitySection Component should match DOM snapshot 1`] = `
+exports[`CustomBuildSection Component should match DOM snapshot 1`] = `
 <section
   class="p-6 rounded-lg bg-primary-100 dark:bg-slate-600 border border-primary-200 dark:border-slate-500"
 >
