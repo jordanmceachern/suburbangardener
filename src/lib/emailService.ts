@@ -5,6 +5,9 @@ const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
+const logoUrl =
+  "https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png";
+
 export async function sendVerificationEmail({
   email,
   name,
@@ -26,6 +29,9 @@ export async function sendVerificationEmail({
     const emailText = `Hello ${displayName},\n\nThanks for creating an account with Suburban Gardener. Please verify your email by visiting:\n\n${verificationUrl}\n\nIf you did not create this account, you can ignore this message.`;
     const emailHtml = `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #1f2937; max-width: 600px; margin: 0 auto; padding: 24px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <img src="${logoUrl}" alt="Suburban Gardener" style="display: block; width: 180px; max-width: 100%; height: auto; margin: 0 auto 12px;" />
+        </div>
         <h2 style="margin: 0 0 16px; color: #111827;">Verify your Suburban Gardener account</h2>
         <p style="margin: 0 0 16px;">Hello ${displayName},</p>
         <p style="margin: 0 0 20px;">Thanks for creating an account with Suburban Gardener. Please confirm your email address to secure your account.</p>
@@ -55,6 +61,13 @@ export async function sendVerificationEmail({
 }
 
 export async function sendErrorEmail(errorData: any) {
+  if (!resend) {
+    console.warn(
+      "RESEND_API_KEY is not configured. Error report email was not sent."
+    );
+    return { success: false, skipped: true };
+  }
+
   try {
     const emailBody = `
 Error Report for Suburban Gardener
@@ -76,7 +89,7 @@ ${errorData.errorInfo.componentStack}
 
     // Send email using Resend
     const result = await resend.emails.send({
-      from: "onboarding@resend.dev", // Resend's verified testing domain
+      from: process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev",
       to: "jormceachern@gmail.com",
       subject: `[Suburban Gardener] Error Report: ${errorData.error.name}`,
       text: emailBody,
