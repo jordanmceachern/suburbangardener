@@ -46,7 +46,7 @@ export const customBuildStyles = {
   primaryButton:
     "bg-primary-500 hover:bg-primary-600 text-white font-medium py-3 px-6 rounded-lg transition-colors",
   secondaryButton:
-    "bg-white dark:bg-tertiary-800 hover:bg-primary-100 hover:text-primary-700 dark:hover:bg-tertiary-900 dark:hover:text-neutral-100 text-neutral-600 dark:text-neutral-100 font-medium py-3 px-6 rounded-lg border border-primary-300 dark:border-none transition-colors",
+    "bg-white dark:bg-tertiary-500 hover:bg-primary-100 hover:text-primary-700 dark:hover:bg-tertiary-600 text-neutral-600 dark:text-neutral-900 font-medium py-3 px-6 rounded-lg border border-primary-300 dark:border-none transition-colors",
 } as const;
 
 export const searchStyles = {
@@ -196,6 +196,6 @@ export const articleCardStyles = {
   excerpt:
     "text-neutral-700 dark:text-neutral-200 text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3",
   button:
-    "bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-600 dark:hover:bg-tertiary-700 text-neutral-900 dark:text-white px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center",
+    "bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-500 dark:hover:bg-tertiary-600 text-neutral-900 dark:text-neutral-900 px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center",
   buttonNarrow: "self-center",
 } as const;

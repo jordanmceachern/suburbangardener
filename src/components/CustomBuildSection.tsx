@@ -47,7 +47,7 @@ export default function CustomBuildSection({
                 Create Account
               </Link>
               <Link href="/login" className={customBuildStyles.secondaryButton}>
-                Log In
+                Sign In
               </Link>
             </>
           )}

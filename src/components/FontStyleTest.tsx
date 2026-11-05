@@ -42,7 +42,7 @@ export default function FontStyleTest({ className = "" }: FontStyleTestProps) {
           <button className="px-4 py-2 bg-secondary-500 hover:bg-secondary-600 text-white rounded-md transition-colors">
             Secondary Button
           </button>
-          <button className="px-4 py-2 bg-tertiary-500 hover:bg-tertiary-600 text-white rounded-md transition-colors">
+          <button className="px-4 py-2 bg-tertiary-500 hover:bg-tertiary-600 text-neutral-900 rounded-md transition-colors">
             Tertiary Button
           </button>
           <button className="px-4 py-2 border border-neutral-300 dark:border-neutral-600 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-md transition-colors">

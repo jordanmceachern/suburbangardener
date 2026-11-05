@@ -425,13 +425,15 @@ describe("credentials auth flow", () => {
     jest.useRealTimers();
   });
 
-  it("shows a single login CTA on the home page", () => {
+  it("shows a single sign-in CTA on the home page", () => {
     render(<HomePage />);
 
-    const loginLinks = screen.getAllByRole("link", { name: /log in|login/i });
+    const signInLinks = screen.getAllByRole("link", {
+      name: /sign in|signin/i,
+    });
 
-    expect(loginLinks).toHaveLength(1);
-    expect(loginLinks[0]).toHaveAttribute("href", "/login");
+    expect(signInLinks).toHaveLength(1);
+    expect(signInLinks[0]).toHaveAttribute("href", "/login");
   });
 
   it("renders the branded logo and auth heading on the login page", () => {

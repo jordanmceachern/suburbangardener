@@ -125,11 +125,11 @@
   }
 
   .auth-logo {
-    @apply w-full max-w-[180px] mx-auto mb-5;
+    @apply w-full max-w-[180px] mx-auto mb-5 rounded-xl bg-primary-100 dark:bg-primary-800/60 p-2 shadow-sm;
   }
 
   .auth-card {
-    @apply w-full bg-tertiary-100 dark:bg-tertiary-800 rounded-2xl shadow-xl border border-tertiary-200 dark:border-tertiary-700 p-6 sm:p-8;
+    @apply w-full bg-primary-100 dark:bg-tertiary-800 rounded-2xl shadow-xl border border-primary-200 dark:border-tertiary-700 p-6 sm:p-8;
     min-height: 520px;
   }
 
@@ -584,7 +584,7 @@
   }
 
   .nav-sidebar {
-    @apply flex flex-col flex-grow pt-6 bg-slate-100 dark:bg-slate-800 border-r border-slate-300 dark:border-slate-600 overflow-y-auto;
+    @apply flex flex-col flex-grow pt-6 bg-slate-200 dark:bg-slate-800 border-r border-slate-300 dark:border-slate-600 overflow-y-auto;
   }
 
   .nav-sidebar-inner {
@@ -604,11 +604,11 @@
   }
 
   .nav-link--active {
-    @apply bg-primary-100 dark:bg-primary-900 text-primary-900 dark:text-primary-100;
+    @apply bg-primary-200 dark:bg-primary-900 text-primary-900 dark:text-primary-100;
   }
 
   .nav-link--inactive {
-    @apply text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100;
+    @apply text-neutral-700 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100;
   }
 
   .nav-link--desktop {
@@ -620,7 +620,7 @@
   }
 
   .nav-link-home {
-    @apply flex items-center md:px-1 md:py-px lg:px-3 lg:py-2 font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500;
+    @apply flex items-center justify-center md:px-1 md:py-px lg:px-3 lg:py-2 font-medium rounded-xl border border-primary-200/80 bg-primary-100 shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-primary-700/80 dark:bg-primary-800/60;
   }
 
   .nav-link-label {
@@ -628,11 +628,11 @@
   }
 
   .nav-home-logo-wrap {
-    @apply md:h-8 lg:h-16 w-full flex;
+    @apply md:h-8 lg:h-16 w-full flex items-center justify-center overflow-hidden rounded-lg bg-transparent p-0;
   }
 
   .nav-mobile-bar {
-    @apply sm:hidden fixed bottom-0 left-0 right-0 bg-slate-200 dark:bg-slate-700 border-slate-300 dark:border-slate-600 z-50;
+    @apply sm:hidden fixed bottom-0 left-0 right-0 bg-slate-300 dark:bg-slate-700 border-slate-300 dark:border-slate-600 z-50;
   }
 
   .nav-mobile-inner {
@@ -640,7 +640,7 @@
   }
 
   .nav-mobile-home-link {
-    @apply flex items-center transition-colors py-2 px-2 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded;
+    @apply flex items-center justify-center rounded-lg border border-primary-200/80 bg-primary-100 shadow-sm transition-colors py-2 px-2 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-primary-700/80 dark:bg-primary-800/60;
   }
 
   .nav-mobile-link {
@@ -648,19 +648,19 @@
   }
 
   .nav-mobile-link--active {
-    @apply text-primary-600 dark:text-primary-400;
+    @apply text-primary-700 dark:text-primary-400;
   }
 
   .nav-mobile-link--inactive {
-    @apply text-neutral-700 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100;
+    @apply text-neutral-800 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100;
   }
 
   .nav-mobile-home-logo-wrap {
-    @apply h-8 w-12 flex;
+    @apply h-8 w-12 flex items-center justify-center overflow-hidden rounded-md bg-transparent p-0;
   }
 
   .nav-mobile-icon {
-    @apply flex-shrink-0 mb-1 text-neutral-700 dark:text-neutral-400;
+    @apply flex-shrink-0 mb-1 text-neutral-800 dark:text-neutral-400;
   }
 
   .nav-mobile-label {
