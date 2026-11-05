@@ -1,5 +1,11 @@
 import bcrypt from "bcryptjs";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import HomePage from "../src/app/page";
 import LoginPage from "../src/app/login/page";
 import {
@@ -9,17 +15,25 @@ import {
 } from "../src/lib/auth-user";
 
 const mockSearchParams = jest.fn();
+const mockPush = jest.fn();
+let currentSearchParams = new URLSearchParams();
 
 jest.mock("next/navigation", () => ({
-  useRouter: () => ({ push: jest.fn() }),
+  useRouter: () => ({ push: mockPush }),
   useSearchParams: () => mockSearchParams(),
 }));
 
 jest.mock("next-auth/react", () => ({
   signIn: jest.fn(),
+  signOut: jest.fn(),
 }));
 
-const { signIn } = jest.requireMock("next-auth/react");
+jest.mock("../src/lib/auth-nextauth", () => ({
+  useAuth: jest.fn(),
+}));
+
+const { signIn, signOut } = jest.requireMock("next-auth/react");
+const { useAuth } = jest.requireMock("../src/lib/auth-nextauth");
 
 jest.mock("../src/lib/prisma", () => {
   const mockPrismaUser = {
@@ -40,7 +54,14 @@ const { __mockPrismaUser: prismaUser } = jest.requireMock("../src/lib/prisma");
 describe("credentials auth flow", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockSearchParams.mockReturnValue(new URLSearchParams());
+    mockPush.mockClear();
+    currentSearchParams = new URLSearchParams();
+    mockSearchParams.mockImplementation(() => currentSearchParams);
+    window.localStorage.clear();
+    useAuth.mockReturnValue({
+      user: { id: "user_1", email: "gardener@example.com", name: "Gardener" },
+      isLoading: false,
+    });
   });
 
   it("creates a user with a hashed password and rejects duplicate emails", async () => {
@@ -183,6 +204,115 @@ describe("credentials auth flow", () => {
     );
   });
 
+  it("redirects a logged out user to the sign-in page instead of home", async () => {
+    const DashboardPage = (await import("../src/app/dashboard/page")).default;
+    render(<DashboardPage />);
+
+    fireEvent.click(screen.getByRole("button", { name: /logout/i }));
+
+    await waitFor(() => {
+      expect(signOut).toHaveBeenCalledWith({
+        redirect: false,
+        callbackUrl: "/login?mode=signIn",
+      });
+    });
+
+    expect(mockPush).toHaveBeenCalledWith("/login?mode=signIn");
+  });
+
+  it("redirects verified users from the sign-in page to the dashboard", async () => {
+    currentSearchParams = new URLSearchParams("verified=1");
+    mockSearchParams.mockImplementation(() => currentSearchParams);
+
+    render(<LoginPage />);
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith("/dashboard");
+    });
+  });
+
+  it("redirects the open sign-in page when another tab confirms email verification", async () => {
+    currentSearchParams = new URLSearchParams();
+    mockSearchParams.mockImplementation(() => currentSearchParams);
+
+    render(<LoginPage />);
+
+    act(() => {
+      window.dispatchEvent(
+        new StorageEvent("storage", {
+          key: "suburban-gardener-email-verified",
+          newValue: "true",
+        })
+      );
+    });
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith("/dashboard");
+    });
+  });
+
+  it("redirects the open account page when the verification popup posts a verified signal", async () => {
+    currentSearchParams = new URLSearchParams();
+    mockSearchParams.mockImplementation(() => currentSearchParams);
+
+    render(<LoginPage />);
+
+    act(() => {
+      window.dispatchEvent(
+        new MessageEvent("message", {
+          data: { type: "email-verified" },
+        })
+      );
+    });
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith("/dashboard");
+    });
+  });
+
+  it("disables delete profile immediately after the first click and blocks double-click deletion", async () => {
+    jest.useFakeTimers();
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ success: true }),
+    }) as jest.Mock;
+    signOut.mockResolvedValue({ ok: true });
+
+    const DashboardPage = (await import("../src/app/dashboard/page")).default;
+    render(<DashboardPage />);
+
+    fireEvent.click(screen.getByRole("button", { name: /delete profile/i }));
+
+    expect(
+      screen.getByRole("button", { name: /deleting profile/i })
+    ).toBeDisabled();
+    expect(global.fetch).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole("button", { name: /deleting profile/i }));
+    expect(global.fetch).not.toHaveBeenCalled();
+
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /are you sure\? delete profile/i })
+    );
+
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith(
+        "/api/profile",
+        expect.objectContaining({ method: "DELETE" })
+      );
+    });
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith("/");
+    });
+
+    jest.useRealTimers();
+  });
+
   it("shows a single login CTA on the home page", () => {
     render(<HomePage />);
 
@@ -278,21 +408,25 @@ describe("credentials auth flow", () => {
   });
 
   it("updates the current auth window when the verification link succeeds", async () => {
-    mockSearchParams.mockReturnValue(new URLSearchParams("verified=1"));
+    currentSearchParams = new URLSearchParams("verified=1");
+    mockSearchParams.mockImplementation(() => currentSearchParams);
 
     render(<LoginPage />);
 
     await waitFor(() => {
       expect(
         screen.getByText(
-          /your email has been verified\. you can sign in now\./i
+          /your email has been verified\. you can close this window\./i
         )
       ).toBeInTheDocument();
     });
 
     expect(
-      screen.getByRole("button", { name: /^sign in$/i })
-    ).toBeInTheDocument();
+      screen.queryByRole("heading", { name: /welcome back/i })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /^sign in$/i })
+    ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: /resend verification email/i })
     ).not.toBeInTheDocument();

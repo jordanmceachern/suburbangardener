@@ -134,6 +134,7 @@
 
   .auth-card {
     @apply w-full bg-tertiary-100 dark:bg-tertiary-800 rounded-2xl shadow-xl border border-tertiary-200 dark:border-tertiary-700 p-6 sm:p-8;
+    min-height: 520px;
   }
 
   .auth-header {
@@ -155,7 +156,7 @@
   }
 
   .auth-success {
-    @apply mb-6 flex items-start gap-3 text-left text-lg font-bold text-white;
+    @apply mb-6 flex min-h-[280px] items-center justify-center text-center text-lg font-bold text-white;
     background: transparent;
     color: #ffffff;
   }
@@ -171,7 +172,8 @@
   .auth-input {
     @apply w-full rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-3 text-lg text-neutral-900 dark:text-neutral-100 placeholder:text-lg placeholder:text-neutral-500 dark:placeholder:text-neutral-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20;
     background-color: #ffffff !important;
-    -webkit-text-fill-color: #111827;
+    color: #111827 !important;
+    -webkit-text-fill-color: #111827 !important;
     -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
     caret-color: #111827;
     transition: background-color 5000s ease-in-out 0s;
@@ -179,8 +181,11 @@
 
   .auth-input:hover,
   .auth-input:focus,
+  .auth-input:focus-visible,
   .auth-input:active {
     background-color: #ffffff !important;
+    color: #111827 !important;
+    -webkit-text-fill-color: #111827 !important;
     -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
   }
 
@@ -269,6 +274,10 @@
 
   .dashboard-page {
     @apply min-h-screen bg-background-light dark:bg-background-dark;
+  }
+
+  .dashboard-loading {
+    @apply min-h-screen flex items-center justify-center bg-background-light dark:bg-background-dark;
   }
 
   .dashboard-header {
@@ -375,8 +384,16 @@
   }
 
   .dashboard-delete-button {
-    @apply w-full rounded-lg border-0 px-4 py-3 text-lg font-bold text-white transition-colors hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-70;
-    background: #b82d24;
+    @apply flex w-full items-center justify-center rounded-lg border-0 px-4 py-3 text-lg font-bold text-white transition-colors hover:bg-red-900 disabled:cursor-not-allowed disabled:opacity-70;
+    background: #8f241d;
+  }
+
+  .dashboard-delete-content {
+    @apply inline-flex items-center justify-center gap-2;
+  }
+
+  .dashboard-delete-icon {
+    @apply h-5 w-5 shrink-0;
   }
 
   .dashboard-delete-warning {
@@ -389,7 +406,12 @@
   }
 
   .dashboard-logout-button {
-    @apply bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded-lg transition-colors text-base font-medium;
+    @apply text-white px-4 py-2 rounded-lg transition-colors text-base font-medium;
+    background: #8f241d;
+  }
+
+  .dashboard-logout-button:hover {
+    background: #7a1f1a;
   }
 
   .dashboard-grid {

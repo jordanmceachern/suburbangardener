@@ -5,7 +5,8 @@ export const Greeting = () => (
   <div className={greetingStyles.wrapper}>
     <h1 className={greetingStyles.heading}>Welcome to Suburban Gardener</h1>
     <p className={greetingStyles.text}>
-      Begin your backyard gardening journey today!
+      Nourish your garden with mother nature&apos;s provided dew and rain using
+      our sustainable energy fueled systems.
     </p>
   </div>
 );

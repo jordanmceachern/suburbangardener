@@ -1,0 +1,575 @@
+import bcrypt from "bcryptjs";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
+import HomePage from "../src/app/page";
+import LoginPage from "../src/app/login/page";
+import {
+  createUserWithPassword,
+  getCredentialFailureReason,
+  verifyUserCredentials,
+} from "../src/lib/auth-user";
+
+const mockSearchParams = jest.fn();
+const mockPush = jest.fn();
+let currentSearchParams = new URLSearchParams();
+
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: mockPush }),
+  useSearchParams: () => mockSearchParams(),
+}));
+
+jest.mock("next-auth/react", () => ({
+  signIn: jest.fn(),
+  signOut: jest.fn(),
+}));
+
+jest.mock("../src/lib/auth-nextauth", () => ({
+  useAuth: jest.fn(),
+}));
+
+const { signIn, signOut } = jest.requireMock("next-auth/react");
+const { useAuth } = jest.requireMock("../src/lib/auth-nextauth");
+
+jest.mock("../src/lib/prisma", () => {
+  const mockPrismaUser = {
+    findUnique: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
+  };
+
+  return {
+    prisma: {
+      user: mockPrismaUser,
+    },
+    __mockPrismaUser: mockPrismaUser,
+  };
+});
+
+const { __mockPrismaUser: prismaUser } = jest.requireMock("../src/lib/prisma");
+
+describe("credentials auth flow", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockPush.mockClear();
+    currentSearchParams = new URLSearchParams();
+    mockSearchParams.mockImplementation(() => currentSearchParams);
+    window.localStorage.clear();
+    useAuth.mockReturnValue({
+      user: { id: "user_1", email: "gardener@example.com", name: "Gardener" },
+      isLoading: false,
+    });
+  });
+
+  it("creates a user with a hashed password and rejects duplicate emails", async () => {
+    prismaUser.findUnique.mockResolvedValue(null);
+    prismaUser.create.mockResolvedValue({
+      id: "user_123",
+      email: "gardener@example.com",
+      name: null,
+      passwordHash: "hashed-value",
+    });
+
+    const user = await createUserWithPassword({
+      email: "gardener@example.com",
+      password: "gardenpass",
+    });
+
+    expect(user).toMatchObject({
+      id: "user_123",
+      email: "gardener@example.com",
+      name: null,
+    });
+    expect(prismaUser.create).toHaveBeenCalledTimes(1);
+
+    const args = prismaUser.create.mock.calls[0][0];
+    expect(args.data.email).toBe("gardener@example.com");
+    expect(args.data.passwordHash).not.toBe("gardenpass");
+
+    prismaUser.findUnique.mockResolvedValue({ id: "existing-user" });
+
+    await expect(
+      createUserWithPassword({
+        email: "gardener@example.com",
+        password: "gardenpass",
+      })
+    ).rejects.toThrow("already exists");
+  });
+
+  it("verifies valid credentials and rejects invalid or unverified ones", async () => {
+    prismaUser.findUnique.mockResolvedValue({
+      id: "user_456",
+      email: "grower@example.com",
+      name: "Grower",
+      passwordHash: bcrypt.hashSync("gardenpass", 12),
+      emailVerified: new Date("2024-01-01T00:00:00.000Z"),
+    });
+
+    const validUser = await verifyUserCredentials({
+      email: "grower@example.com",
+      password: "gardenpass",
+    });
+
+    expect(validUser).toMatchObject({
+      id: "user_456",
+      email: "grower@example.com",
+      name: "Grower",
+    });
+
+    prismaUser.findUnique.mockResolvedValue({
+      id: "user_789",
+      email: "pending@example.com",
+      name: "Pending",
+      passwordHash: bcrypt.hashSync("gardenpass", 12),
+      emailVerified: null,
+    });
+
+    const unverifiedUser = await verifyUserCredentials({
+      email: "pending@example.com",
+      password: "gardenpass",
+    });
+
+    expect(unverifiedUser).toBeNull();
+
+    const invalidUser = await verifyUserCredentials({
+      email: "grower@example.com",
+      password: "wrongpass",
+    });
+
+    expect(invalidUser).toBeNull();
+  });
+
+  it("explains why an email or password is invalid", async () => {
+    prismaUser.findUnique.mockResolvedValue(null);
+
+    await expect(
+      getCredentialFailureReason({
+        email: "missing@example.com",
+        password: "gardenpass",
+      })
+    ).resolves.toBe("No account was found for that email.");
+
+    prismaUser.findUnique.mockResolvedValue({
+      id: "user_999",
+      email: "grower@example.com",
+      name: "Grower",
+      passwordHash: bcrypt.hashSync("gardenpass", 12),
+      emailVerified: new Date("2024-01-01T00:00:00.000Z"),
+    });
+
+    await expect(
+      getCredentialFailureReason({
+        email: "grower@example.com",
+        password: "wrongpass",
+      })
+    ).resolves.toBe("The password is incorrect.");
+  });
+
+  it("validates credentials via the server before signing in", async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ valid: true }),
+    }) as jest.Mock;
+    signIn.mockResolvedValue({ ok: true, url: "/dashboard" });
+
+    render(<LoginPage />);
+
+    fireEvent.change(screen.getByLabelText(/^email$/i), {
+      target: { value: "grower@example.com" },
+    });
+    fireEvent.change(screen.getByLabelText(/^password$/i), {
+      target: { value: "gardenpass" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /sign in/i }));
+
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith(
+        "/api/auth/check-credentials",
+        expect.objectContaining({
+          method: "POST",
+        })
+      );
+    });
+
+    expect(signIn).toHaveBeenCalledWith(
+      "credentials",
+      expect.objectContaining({
+        email: "grower@example.com",
+        password: "gardenpass",
+        redirect: false,
+      })
+    );
+  });
+
+  it("redirects a logged out user to the sign-in page instead of home", async () => {
+    const DashboardPage = (await import("../src/app/dashboard/page")).default;
+    render(<DashboardPage />);
+
+    fireEvent.click(screen.getByRole("button", { name: /logout/i }));
+
+    await waitFor(() => {
+      expect(signOut).toHaveBeenCalledWith({
+        redirect: false,
+        callbackUrl: "/login?mode=signIn",
+      });
+    });
+
+    expect(mockPush).toHaveBeenCalledWith("/login?mode=signIn");
+  });
+
+  it("always redirects the verification page and notifies the opener instead of leaving a blank tab", async () => {
+    const hashVerificationToken = require("crypto")
+      .createHash("sha256")
+      .update("test-token")
+      .digest("hex");
+
+    prismaUser.findUnique.mockResolvedValue({
+      id: "user_verify_1",
+      email: "verify@example.com",
+      name: "Verify User",
+      passwordHash: "hashed-value",
+      emailVerified: null,
+      emailVerificationToken: hashVerificationToken,
+      emailVerificationExpires: new Date(Date.now() + 60000).toISOString(),
+    });
+
+    global.Request = class {
+      url: string;
+      constructor(url: string) {
+        this.url = url;
+      }
+    } as any;
+
+    global.Headers = class {
+      map: Record<string, string> = {};
+      constructor(init?: Record<string, string>) {
+        this.map = { ...(init || {}) };
+      }
+      set(name: string, value: string) {
+        this.map[name] = value;
+      }
+      get(name: string) {
+        return this.map[name] || null;
+      }
+      append(name: string, value: string) {
+        this.map[name] = `${this.map[name] || ""}${value}`;
+      }
+    } as any;
+
+    global.Response = class {
+      body: string;
+      headers: Headers;
+      constructor(body: string, init?: { headers?: Record<string, string> }) {
+        this.body = body;
+        this.headers = new global.Headers(init?.headers || {});
+      }
+      async text() {
+        return this.body;
+      }
+    } as any;
+
+    const { GET } = await import("../src/app/api/auth/verify-email/route");
+    const response = await GET(
+      new (global.Request as any)(
+        "https://app.example.com/api/auth/verify-email?token=test-token&email=verify@example.com"
+      )
+    );
+
+    const html = await response.text();
+    expect(html).toContain("window.opener");
+    expect(html).toContain("postMessage");
+    expect(html).toContain("window.location.href =");
+  });
+
+  it("redirects verified users from the sign-in page to the dashboard", async () => {
+    currentSearchParams = new URLSearchParams("verified=1");
+    mockSearchParams.mockImplementation(() => currentSearchParams);
+
+    render(<LoginPage />);
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith("/dashboard");
+    });
+  });
+
+  it("hides the account-toggle copy after a verified account is created", () => {
+    currentSearchParams = new URLSearchParams("verified=1");
+    mockSearchParams.mockImplementation(() => currentSearchParams);
+
+    render(<LoginPage />);
+
+    expect(screen.queryByText(/need an account\?/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /create one/i })
+    ).not.toBeInTheDocument();
+  });
+
+  it("signs a verified user in automatically so the dashboard loads with a real session", async () => {
+    currentSearchParams = new URLSearchParams("mode=signUp");
+    mockSearchParams.mockImplementation(() => currentSearchParams);
+    signIn.mockResolvedValue({ ok: true, url: "/dashboard" });
+
+    render(<LoginPage />);
+
+    fireEvent.change(screen.getByLabelText(/^email$/i), {
+      target: { value: "newuser@example.com" },
+    });
+    fireEvent.change(screen.getByLabelText(/^password$/i), {
+      target: { value: "gardenpass" },
+    });
+
+    act(() => {
+      window.dispatchEvent(
+        new StorageEvent("storage", {
+          key: "suburban-gardener-email-verified",
+          newValue: "true",
+        })
+      );
+    });
+
+    await waitFor(() => {
+      expect(signIn).toHaveBeenCalledWith(
+        "credentials",
+        expect.objectContaining({
+          email: "newuser@example.com",
+          password: "gardenpass",
+          redirect: false,
+        })
+      );
+    });
+  });
+
+  it("redirects the open sign-in page when another tab confirms email verification", async () => {
+    currentSearchParams = new URLSearchParams();
+    mockSearchParams.mockImplementation(() => currentSearchParams);
+
+    render(<LoginPage />);
+
+    act(() => {
+      window.dispatchEvent(
+        new StorageEvent("storage", {
+          key: "suburban-gardener-email-verified",
+          newValue: "true",
+        })
+      );
+    });
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith("/dashboard");
+    });
+  });
+
+  it("redirects the open account page when the verification popup posts a verified signal", async () => {
+    currentSearchParams = new URLSearchParams();
+    mockSearchParams.mockImplementation(() => currentSearchParams);
+
+    render(<LoginPage />);
+
+    act(() => {
+      window.dispatchEvent(
+        new MessageEvent("message", {
+          data: { type: "email-verified" },
+        })
+      );
+    });
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith("/dashboard");
+    });
+  });
+
+  it("disables delete profile immediately after the first click and blocks double-click deletion", async () => {
+    jest.useFakeTimers();
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ success: true }),
+    }) as jest.Mock;
+    signOut.mockResolvedValue({ ok: true });
+
+    const DashboardPage = (await import("../src/app/dashboard/page")).default;
+    render(<DashboardPage />);
+
+    fireEvent.click(screen.getByRole("button", { name: /delete profile/i }));
+
+    expect(
+      screen.getByRole("button", { name: /deleting profile/i })
+    ).toBeDisabled();
+    expect(global.fetch).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole("button", { name: /deleting profile/i }));
+    expect(global.fetch).not.toHaveBeenCalled();
+
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+
+    fireEvent.click(
+      screen.getByRole("button", { name: /are you sure\? delete profile/i })
+    );
+
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith(
+        "/api/profile",
+        expect.objectContaining({ method: "DELETE" })
+      );
+    });
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith("/");
+    });
+
+    jest.useRealTimers();
+  });
+
+  it("shows a single login CTA on the home page", () => {
+    render(<HomePage />);
+
+    const loginLinks = screen.getAllByRole("link", { name: /log in|login/i });
+
+    expect(loginLinks).toHaveLength(1);
+    expect(loginLinks[0]).toHaveAttribute("href", "/login");
+  });
+
+  it("renders the branded logo and auth heading on the login page", () => {
+    render(<LoginPage />);
+
+    expect(
+      screen.getByLabelText(/suburban gardener logo/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /welcome back/i })
+    ).toBeInTheDocument();
+  });
+
+  it("makes only the action phrase clickable in the auth toggle", () => {
+    render(<LoginPage />);
+
+    const toggleText = screen.getByText(/need an account\?/i);
+    expect(toggleText).toBeInTheDocument();
+    expect(toggleText).toHaveTextContent("Need an account?");
+
+    const actionButton = screen.getByRole("button", { name: /create one/i });
+    expect(actionButton).toBeInTheDocument();
+    expect(actionButton).toHaveTextContent("Create one");
+
+    expect(
+      screen.queryByRole("button", { name: /need an account\? create one/i })
+    ).not.toBeInTheDocument();
+  });
+
+  it("disables create account when the email already exists and shows a helper message", async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: false,
+      json: async () => ({
+        error: "An account with that email already exists.",
+      }),
+    }) as jest.Mock;
+
+    render(<LoginPage />);
+
+    fireEvent.click(screen.getByRole("button", { name: /create one/i }));
+    fireEvent.change(screen.getByLabelText(/^email$/i), {
+      target: { value: "existing@example.com" },
+    });
+    fireEvent.change(screen.getByLabelText(/^password$/i), {
+      target: { value: "gardenpass" },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /create account/i }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: /create account/i })
+      ).toBeDisabled();
+    });
+
+    expect(
+      screen.getByText(/an account with this email already exists/i)
+    ).toBeInTheDocument();
+  });
+
+  it("shows a verification step after a successful sign-up and allows resending", async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ success: true }),
+    }) as jest.Mock;
+
+    render(<LoginPage />);
+
+    fireEvent.click(screen.getByRole("button", { name: /create one/i }));
+    fireEvent.change(screen.getByLabelText(/^email$/i), {
+      target: { value: "new@example.com" },
+    });
+    fireEvent.change(screen.getByLabelText(/^password$/i), {
+      target: { value: "gardenpass" },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /create account/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/verification link/i)).toBeInTheDocument();
+    });
+
+    expect(
+      screen.getByRole("button", { name: /resend verification email/i })
+    ).toBeInTheDocument();
+  });
+
+  it("updates the current auth window when the verification link succeeds", async () => {
+    currentSearchParams = new URLSearchParams("verified=1");
+    mockSearchParams.mockImplementation(() => currentSearchParams);
+
+    render(<LoginPage />);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          /your email has been verified\. you can close this window\./i
+        )
+      ).toBeInTheDocument();
+    });
+
+    expect(
+      screen.queryByRole("heading", { name: /welcome back/i })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /^sign in$/i })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /resend verification email/i })
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows the verification step when a user tries to sign in before verifying their email", async () => {
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: false,
+      json: async () => ({
+        error:
+          "Please verify your email before signing in. Check your inbox for the confirmation link.",
+      }),
+    }) as jest.Mock;
+
+    render(<LoginPage />);
+
+    fireEvent.change(screen.getByLabelText(/^email$/i), {
+      target: { value: "pending@example.com" },
+    });
+    fireEvent.change(screen.getByLabelText(/^password$/i), {
+      target: { value: "gardenpass" },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /^sign in$/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText(/verify your email/i)).toBeInTheDocument();
+    });
+
+    expect(
+      screen.getByRole("button", { name: /resend verification email/i })
+    ).toBeInTheDocument();
+  });
+});

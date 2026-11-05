@@ -10,21 +10,29 @@ exports[`CommunitySection Component should match DOM snapshot 1`] = `
     <h2
       class="text-2xl sm:text-3xl font-bold mb-3 text-neutral-900 dark:text-neutral-100"
     >
-      Join Our Gardening Community
+      Custom Build Your Own
     </h2>
-    <p
-      class="text-start sm:text-center text-primary-700 dark:text-neutral-300 mb-6"
+    <ul
+      class="list-disc space-y-3 pl-6 text-left text-primary-700 dark:text-neutral-300 mb-6"
     >
-      Sign up for exclusive access to premium gardening tools, personalized plant care guides, and more!
-    </p>
+      <li>
+        Use our free, easy-to-use tools to build out your own custom irrigation system.
+      </li>
+      <li>
+        Select the piping and accessories that fit your needs and meet your budget.
+      </li>
+      <li>
+        Provide dimensions, upload an overhead image, or provide gps coords to start sending water where it's needed!
+      </li>
+    </ul>
     <div
       class="flex flex-col sm:flex-row gap-4 justify-center"
     >
       <a
         class="bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-6 rounded-lg transition-colors"
-        href="/register"
+        href="/login?mode=signUp"
       >
-        Get Started - Sign Up
+        Create Account
       </a>
       <a
         class="bg-white dark:bg-tertiary-800 hover:bg-neutral-50 dark:hover:bg-tertiary-900 text-neutral-600 dark:text-neutral-100 font-medium py-3 px-6 rounded-lg border border-primary-300 dark:border-none transition-colors"

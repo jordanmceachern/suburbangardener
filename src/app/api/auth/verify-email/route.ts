@@ -20,7 +20,44 @@ export async function GET(request: Request) {
     );
   }
 
-  return NextResponse.redirect(
-    new URL("/login?mode=signIn&verified=1", request.url)
+  const redirectUrl = new URL("/login?mode=signIn&verified=1", request.url);
+
+  return new NextResponse(
+    `<!doctype html><html><body><script>
+      const dashboardUrl = ${JSON.stringify("/dashboard")};
+      const loginUrl = ${JSON.stringify(redirectUrl.toString())};
+
+      try {
+        if (window.opener && window.opener !== window) {
+          try {
+            window.opener.postMessage({ type: "email-verified" }, window.location.origin);
+          } catch (postMessageError) {}
+          try {
+            window.opener.location.href = dashboardUrl;
+          } catch (openerError) {}
+        }
+
+        try {
+          window.localStorage.setItem("suburban-gardener-email-verified", String(Date.now()));
+        } catch (storageError) {}
+
+        try {
+          window.close();
+        } catch (closeError) {}
+      } catch (error) {}
+
+      try {
+        window.location.href = loginUrl;
+      } catch (redirectError) {
+        try {
+          window.location.assign(loginUrl);
+        } catch (assignError) {}
+      }
+    </script></body></html>`,
+    {
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+      },
+    }
   );
 }

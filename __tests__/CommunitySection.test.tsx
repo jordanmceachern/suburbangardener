@@ -3,6 +3,13 @@ import CommunitySection from "@/components/CommunitySection";
 import { communityStyles, homeArticleStyles } from "@/lib/tailwind";
 
 describe("CommunitySection Component", () => {
+  it("routes the primary CTA to the sign-up flow and uses the correct label", () => {
+    const { getByRole } = render(<CommunitySection />);
+    const primaryAction = getByRole("link", { name: /create account/i });
+
+    expect(primaryAction).toHaveAttribute("href", "/login?mode=signUp");
+  });
+
   it("should match DOM snapshot", () => {
     const { container } = render(<CommunitySection />);
     expect(container.firstChild).toMatchSnapshot();

@@ -154,10 +154,10 @@ export const bannerStyles = {
 
 export const greetingStyles = {
   wrapper:
-    "rounded-lg p-6 bg-tertiary-100 dark:bg-tertiary-800 border border-tertiary-200 dark:border-tertiary-700 flex flex-col items-start sm:items-center py-3 w-full",
+    "rounded-lg p-6 bg-tertiary-100 dark:bg-tertiary-800 border border-tertiary-200 dark:border-tertiary-700 flex flex-col items-start sm:items-center w-full",
   heading:
     "text-2xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-300 text-center",
-  text: "text-start sm:text-center text-lg text-neutral-900 dark:text-neutral-300 mt-1",
+  text: "text-start sm:text-center text-lg text-neutral-900 dark:text-neutral-300 mt-1 mb-4",
 } as const;
 
 export const errorStyles = {
