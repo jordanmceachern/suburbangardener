@@ -2,16 +2,30 @@
 
 import React from "react";
 import Link from "next/link";
+import { Moon, Sun } from "lucide-react";
 import BackgroundImage from "./BackgroundImage";
 import { usePathname } from "next/navigation";
 import { useAuth } from "../lib/auth-nextauth";
 import { cn, navStyles } from "../lib/tailwind";
+
+type ThemeMode = "light" | "dark";
 
 interface NavItem {
   name: string;
   href: string;
   icon: React.ReactNode;
   requiresAuth?: boolean;
+  isThemeToggle?: boolean;
+}
+
+const THEME_STORAGE_KEY = "suburban-gardener-theme";
+
+function normalizeThemeMode(value: unknown): ThemeMode | null {
+  if (value === "dark" || value === "light") {
+    return value;
+  }
+
+  return null;
 }
 
 const navigation: NavItem[] = [
@@ -141,7 +155,73 @@ const navigation: NavItem[] = [
 // Runs the Navigation logic for this component.
 export default function Navigation() {
   const pathname = usePathname();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user, isLoading } = useAuth();
+  const [themeMode, setThemeMode] = React.useState<ThemeMode>("light");
+
+  const applyThemeMode = React.useCallback((mode: ThemeMode) => {
+    if (typeof document === "undefined") {
+      return;
+    }
+
+    document.documentElement.classList.toggle("dark", mode === "dark");
+    document.documentElement.dataset.theme = mode;
+  }, []);
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const mediaQuery = window.matchMedia
+      ? window.matchMedia("(prefers-color-scheme: dark)")
+      : null;
+    const systemDark = mediaQuery?.matches ?? false;
+    const fallbackTheme: ThemeMode = systemDark ? "dark" : "light";
+
+    const loadThemePreference = async () => {
+      if (isAuthenticated && user?.id) {
+        try {
+          const response = await fetch("/api/profile", { method: "GET" });
+          if (response.ok) {
+            const profile = await response.json();
+            const profileTheme = normalizeThemeMode(
+              profile?.preferences?.theme
+            );
+            if (profileTheme) {
+              setThemeMode(profileTheme);
+              applyThemeMode(profileTheme);
+              return;
+            }
+          }
+        } catch {
+          // Fall back to the system preference.
+        }
+      }
+
+      const storedTheme =
+        typeof window !== "undefined"
+          ? normalizeThemeMode(window.localStorage.getItem(THEME_STORAGE_KEY))
+          : null;
+      const nextTheme = storedTheme ?? fallbackTheme;
+      setThemeMode(nextTheme);
+      applyThemeMode(nextTheme);
+    };
+
+    if (!isLoading) {
+      loadThemePreference();
+    }
+  }, [applyThemeMode, isAuthenticated, isLoading, user?.id]);
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    if (!isLoading) {
+      applyThemeMode(themeMode);
+      window.localStorage.setItem(THEME_STORAGE_KEY, themeMode);
+    }
+  }, [applyThemeMode, isLoading, themeMode]);
 
   const filteredNavigation = navigation.filter(item => {
     if (item.requiresAuth && !isAuthenticated) {
@@ -149,6 +229,48 @@ export default function Navigation() {
     }
     return true;
   });
+
+  const themeToggle = {
+    name: themeMode === "dark" ? "light" : "dark",
+    href: "#",
+    icon:
+      themeMode === "dark" ? (
+        <Sun className="h-6 w-6" />
+      ) : (
+        <Moon className="h-6 w-6" />
+      ),
+    isThemeToggle: true,
+  } satisfies NavItem;
+
+  const navItems = [...filteredNavigation, themeToggle];
+
+  const handleThemeToggle = async () => {
+    const nextTheme: ThemeMode = themeMode === "dark" ? "light" : "dark";
+    setThemeMode(nextTheme);
+    applyThemeMode(nextTheme);
+
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    }
+
+    if (isAuthenticated && user?.id) {
+      try {
+        await fetch("/api/profile", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            preferences: {
+              theme: nextTheme,
+            },
+          }),
+        });
+      } catch (error) {
+        console.error("Unable to save theme preference:", error);
+      }
+    }
+  };
 
   // Determines whether the current state matches Active.
   const isActive = (href: string) => {
@@ -164,8 +286,34 @@ export default function Navigation() {
         <div className={navStyles.sidebar}>
           <div className={navStyles.sidebarInner}>
             <nav className={navStyles.list}>
-              {filteredNavigation.map(item => {
-                const active = isActive(item.href);
+              {navItems.map(item => {
+                const active = item.isThemeToggle ? false : isActive(item.href);
+
+                if (item.isThemeToggle) {
+                  return (
+                    <div className={navStyles.item} key={item.name}>
+                      <button
+                        type="button"
+                        title={item.name}
+                        aria-label={
+                          item.name === "light"
+                            ? "Switch to light mode"
+                            : "Switch to dark mode"
+                        }
+                        onClick={handleThemeToggle}
+                        className={cn(
+                          navStyles.linkInactive,
+                          navStyles.desktopModifier,
+                          "border-0 bg-transparent px-3 py-2 text-left select-none"
+                        )}
+                      >
+                        <span className={navStyles.icon}>{item.icon}</span>
+                        <span className={navStyles.label}>{item.name}</span>
+                      </button>
+                    </div>
+                  );
+                }
+
                 return (
                   <div className={navStyles.item} key={item.name}>
                     {item.name === "Home" ? (
@@ -216,8 +364,30 @@ export default function Navigation() {
 
       <nav className={navStyles.mobileShell}>
         <div className={navStyles.mobileInner}>
-          {filteredNavigation.map(item => {
-            const active = isActive(item.href);
+          {navItems.map(item => {
+            const active = item.isThemeToggle ? false : isActive(item.href);
+
+            if (item.isThemeToggle) {
+              return (
+                <button
+                  key={item.name}
+                  type="button"
+                  aria-label={
+                    item.name === "light"
+                      ? "Switch to light mode"
+                      : "Switch to dark mode"
+                  }
+                  onClick={handleThemeToggle}
+                  className={cn(
+                    navStyles.mobileLinkInactive,
+                    "border-0 bg-transparent px-0 select-none"
+                  )}
+                >
+                  <span className={navStyles.mobileIcon}>{item.icon}</span>
+                  <span className={navStyles.mobileLabel}>{item.name}</span>
+                </button>
+              );
+            }
 
             if (item.name === "Home") {
               return (

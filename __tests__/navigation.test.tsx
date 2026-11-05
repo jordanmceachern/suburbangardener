@@ -12,6 +12,16 @@ jest.mock("next/navigation", () => ({
 
 describe("Navigation Component", () => {
   beforeEach(() => {
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: jest.fn().mockImplementation(query => ({
+        matches: false,
+        media: query,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+      })),
+    });
+
     (useAuth as jest.Mock).mockReturnValue({
       isAuthenticated: false,
       isLoading: false,
@@ -43,6 +53,14 @@ describe("Navigation Component", () => {
 
     expect(hasFlexClasses).toBe(true);
     expect(hasNavigationHooks).toBe(true);
+  });
+
+  it("renders a theme toggle item with the opposite mode label", () => {
+    render(<Navigation />);
+
+    expect(
+      screen.getAllByRole("button", { name: /dark/i }).length
+    ).toBeGreaterThan(0);
   });
 
   it("hides Dashboard for logged out users", () => {
