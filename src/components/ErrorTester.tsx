@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { errorTesterStyles } from "../lib/tailwind";
 
 // Runs the Error Tester logic for this component.
 export default function ErrorTester() {
@@ -17,38 +18,36 @@ export default function ErrorTester() {
   };
 
   return (
-    <div className="p-6 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
-      <div className="space-y-4">
+    <div className={errorTesterStyles.shell}>
+      <div className={errorTesterStyles.content}>
         <div>
-          <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
-            🧪 Error Boundary Tester
-          </h3>
-          <p className="text-neutral-600 dark:text-neutral-200">
+          <h3 className={errorTesterStyles.title}>🧪 Error Boundary Tester</h3>
+          <p className={errorTesterStyles.text}>
             Click the button below to trigger an error and test the error
             boundary system. This will display the branded error page and send
             an email notification.
           </p>
         </div>
 
-        <div className="flex gap-3">
+        <div className={errorTesterStyles.actions}>
           <button
             onClick={triggerError}
-            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors font-medium"
+            className={errorTesterStyles.primaryButton}
           >
             🚨 Trigger Error
           </button>
 
           <button
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-neutral-600 hover:bg-neutral-700 text-white rounded-lg transition-colors font-medium"
+            className={errorTesterStyles.secondaryButton}
           >
             🔄 Reset Page
           </button>
         </div>
 
-        <div className="text-xs text-neutral-500 dark:text-neutral-200 space-y-1">
+        <div className={errorTesterStyles.meta}>
           <p>• The error will be caught by the ErrorBoundary component</p>
-          <p>• An email will be sent to jormceachern@gmail.com</p>
+          <p>• An email will be sent to jormceachern@proton.me</p>
           <p>• Anti-spam protection prevents duplicate emails</p>
           <p>• Only visible in development mode</p>
         </div>

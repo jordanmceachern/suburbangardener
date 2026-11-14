@@ -90,7 +90,7 @@ ${errorData.errorInfo.componentStack}
     // Send email using Resend
     const result = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev",
-      to: "jormceachern@gmail.com",
+      to: "jormceachern@proton.me",
       subject: `[Suburban Gardener] Error Report: ${errorData.error.name}`,
       text: emailBody,
     });

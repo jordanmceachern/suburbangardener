@@ -338,7 +338,7 @@ export default function LoginPage() {
             <div className="auth-logo">
               <BackgroundImage
                 label="Suburban Gardener Logo"
-                src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,t_transparent-white-alpha-dim,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
+                src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
                 width={180}
                 maxWidth={180}
               />
@@ -398,7 +398,7 @@ export default function LoginPage() {
           <div className="auth-logo">
             <BackgroundImage
               label="Suburban Gardener Logo"
-              src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,t_transparent-white-alpha-dim,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
+              src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,q_auto,f_auto/v1755011510/SuburbanGardener/suburban_gardener_s4c8gy.png"
               width={180}
               maxWidth={180}
             />

@@ -50,7 +50,7 @@ exports[`ArticlesPage renders with correct structure and classes 1`] = `
               width="400"
             />
             <p
-              class="text-xl text-neutral-900 dark:text-neutral-100"
+              class="text-xl text-foreground-light dark:text-foreground-dark"
             >
               Sorry! We encountered an issue while trying to fetch our articles for you, please come back to check again later.
             </p>
@@ -185,7 +185,7 @@ exports[`ArticlesPage renders with correct structure and classes 1`] = `
             class="border-t border-slate-300 dark:border-slate-500 mb-6"
           />
           <h3
-            class="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4"
+            class="text-lg font-semibold text-foreground-light dark:text-foreground-dark mb-4"
           >
             Recent Articles
           </h3>

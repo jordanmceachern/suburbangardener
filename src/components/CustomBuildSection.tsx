@@ -19,7 +19,7 @@ export default function CustomBuildSection({
     <section className={cn(customBuildStyles.section, className)}>
       <div className={customBuildStyles.inner}>
         <h2 className={customBuildStyles.title}>Custom Build Your Own</h2>
-        <ul className="list-disc space-y-3 pl-6 text-left text-primary-700 dark:text-neutral-300 mb-6">
+        <ul className={customBuildStyles.list}>
           <li>
             Use our free, easy-to-use tools to build out your own custom
             irrigation system.
@@ -34,11 +34,7 @@ export default function CustomBuildSection({
           </li>
         </ul>
         <div className={customBuildStyles.actions}>
-          {isAuthenticated ? (
-            <Link href="/tools" className={customBuildStyles.primaryButton}>
-              Explore Tools
-            </Link>
-          ) : (
+          {!isAuthenticated && (
             <>
               <Link
                 href="/login?mode=signUp"
@@ -51,6 +47,9 @@ export default function CustomBuildSection({
               </Link>
             </>
           )}
+          <Link href="/tools" className={customBuildStyles.tertiaryButton}>
+            Explore Tools
+          </Link>
         </div>
       </div>
     </section>

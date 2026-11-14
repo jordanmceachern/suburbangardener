@@ -9,6 +9,17 @@ export const appLayout = {
   content: "pb-20 sm:pb-0",
 } as const;
 
+export const buttonStyles = {
+  primary:
+    "px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-md transition-colors",
+  secondary:
+    "px-4 py-2 bg-secondary-500 hover:bg-secondary-600 text-white rounded-md transition-colors",
+  tertiary:
+    "px-4 py-2 bg-tertiary-500 hover:bg-tertiary-600 text-neutral-900 rounded-md transition-colors",
+  danger:
+    "px-4 py-2 text-white rounded-md transition-colors disabled:cursor-not-allowed disabled:opacity-70 bg-[#dc2626] hover:bg-[#b91c1c] dark:bg-[#7f1d1d] dark:hover:bg-[#5b1010]",
+} as const;
+
 export const navStyles = {
   shell: "nav-shell-desktop",
   sidebar: "nav-sidebar",
@@ -20,12 +31,14 @@ export const navStyles = {
   linkInactive: "nav-link nav-link--inactive",
   linkActive: "nav-link nav-link--active",
   desktopModifier: "nav-link--desktop nav-link--desktop-item",
+  toggleButton: "nav-link--toggle",
   homeModifier: "nav-link-home",
   mobileShell: "nav-mobile-bar",
   mobileInner: "nav-mobile-inner",
   mobileLinkBase: "nav-mobile-link",
   mobileLinkInactive: "nav-mobile-link nav-mobile-link--inactive",
   mobileLinkActive: "nav-mobile-link nav-mobile-link--active",
+  mobileToggleButton: "nav-mobile-link--toggle",
   mobileHomeInactive: "nav-mobile-home-link nav-mobile-link--inactive group",
   mobileHomeActive: "nav-mobile-home-link nav-mobile-link--active group",
   mobileHomeLogo: "nav-mobile-home-logo-wrap",
@@ -40,13 +53,13 @@ export const customBuildStyles = {
     "p-6 rounded-lg bg-primary-100 dark:bg-slate-600 border border-primary-200 dark:border-slate-500",
   inner: "text-center",
   title:
-    "text-2xl sm:text-3xl font-bold mb-3 text-neutral-900 dark:text-neutral-100",
-  text: "text-start sm:text-center text-primary-700 dark:text-neutral-300 mb-6",
+    "text-2xl sm:text-3xl font-bold mb-3 text-foreground-light dark:text-foreground-dark",
+  text: "text-start sm:text-center text-foreground-light dark:text-foreground-dark mb-6",
+  list: "list-disc space-y-3 pl-6 text-left text-foreground-light dark:text-foreground-dark mb-6",
   actions: "flex flex-col sm:flex-row gap-4 justify-center",
-  primaryButton:
-    "bg-primary-500 hover:bg-primary-600 text-white font-medium py-3 px-6 rounded-lg transition-colors",
-  secondaryButton:
-    "bg-white dark:bg-tertiary-500 hover:bg-primary-100 hover:text-primary-700 dark:hover:bg-tertiary-600 text-neutral-600 dark:text-neutral-900 font-medium py-3 px-6 rounded-lg border border-primary-300 dark:border-none transition-colors",
+  primaryButton: buttonStyles.primary,
+  secondaryButton: buttonStyles.secondary,
+  tertiaryButton: buttonStyles.tertiary,
 } as const;
 
 export const searchStyles = {
@@ -81,7 +94,7 @@ export const articleListStyles = {
   skeletonMetaShort: "bg-neutral-200 dark:bg-neutral-700 rounded h-4 w-2/3",
   emptyWrapper: "text-center py-12",
   emptyImage: "flex justify-center mb-8 rounded-lg mx-auto",
-  emptyText: "text-xl text-neutral-900 dark:text-neutral-100",
+  emptyText: "text-xl text-foreground-light dark:text-foreground-dark",
   loadMoreWrap: "mt-8 text-center",
   loadMoreButton:
     "bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 text-white px-8 py-3 rounded-lg font-medium transition-colors inline-flex items-center gap-2",
@@ -95,11 +108,11 @@ export const homeArticleStyles = {
     "p-6 rounded-lg bg-secondary-100 dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700",
   titleWrap: "text-center mb-8",
   title:
-    "text-2xl sm:text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-4",
+    "text-2xl sm:text-3xl font-bold text-foreground-light dark:text-foreground-dark mb-4",
   description:
-    "text-lg text-neutral-600 dark:text-neutral-200 max-w-2xl mx-auto",
+    "text-lg text-foreground-light dark:text-foreground-dark max-w-2xl mx-auto",
   descriptionMobile:
-    "sm:mx-auto text-lg text-start sm:text-center text-neutral-600 dark:text-neutral-200 max-w-2xl",
+    "sm:mx-auto text-lg text-start sm:text-center text-foreground-light dark:text-foreground-dark max-w-2xl",
   grid: "grid grid-cols-1 md:grid-cols-2 gap-6",
   skeletonCard: "animate-pulse",
   skeletonBlock:
@@ -124,7 +137,8 @@ export const articleSidebarStyles = {
   collapseButtonClosed: "border border-slate-300 dark:border-slate-600",
   collapseIcon: "w-4 h-4 text-slate-600 dark:text-slate-300",
   content: "p-6 pt-6 h-full overflow-y-auto",
-  sectionTitle: "text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4",
+  sectionTitle:
+    "text-lg font-semibold text-foreground-light dark:text-foreground-dark mb-4",
   skeletonWrap: "space-y-4",
   skeletonItem: "animate-pulse",
   skeletonDivider:
@@ -157,8 +171,29 @@ export const greetingStyles = {
   wrapper:
     "rounded-lg p-6 bg-tertiary-100 dark:bg-tertiary-800 border border-tertiary-200 dark:border-tertiary-700 flex flex-col items-start sm:items-center w-full",
   heading:
-    "text-2xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-300 text-center",
-  text: "text-start sm:text-center text-lg text-neutral-900 dark:text-neutral-300 mt-1 mb-4",
+    "text-2xl sm:text-4xl font-bold text-foreground-light dark:text-foreground-dark text-center",
+  text: "text-start sm:text-center text-lg text-foreground-light dark:text-foreground-dark mt-1 mb-4",
+} as const;
+
+export const fontStyleTestStyles = {
+  section:
+    "p-6 rounded-lg bg-primary-100 dark:bg-slate-600 border border-primary-200 dark:border-slate-500",
+  title:
+    "text-2xl font-bold mb-4 text-foreground-light dark:text-foreground-dark",
+  stack: "space-y-4",
+  caption: "text-xs text-foreground-light/80 dark:text-foreground-dark/80",
+  secondary: "text-sm italic text-foreground-light dark:text-foreground-dark",
+  defaultText: "text-base text-foreground-light dark:text-foreground-dark",
+  largeText: "text-lg text-foreground-light dark:text-foreground-dark",
+  extraLargeText:
+    "text-xl font-bold text-foreground-light dark:text-foreground-dark",
+  accentText:
+    "text-lg font-semibold text-foreground-light dark:text-foreground-dark",
+  actions: "flex gap-4 flex-wrap",
+  primaryButton: buttonStyles.primary,
+  secondaryButton: buttonStyles.secondary,
+  tertiaryButton: buttonStyles.tertiary,
+  dangerButton: buttonStyles.danger,
 } as const;
 
 export const errorStyles = {
@@ -168,20 +203,31 @@ export const errorStyles = {
   image: "flex justify-center mb-8 rounded-lg",
   section: "space-y-4",
   title: "text-2xl font-bold text-foreground-light dark:text-foreground-dark",
-  text: "text-lg leading-relaxed text-neutral-700 dark:text-neutral-300",
+  text: "text-lg leading-relaxed text-foreground-light dark:text-foreground-dark",
   actions: "flex flex-col sm:flex-row gap-4 justify-center pt-6",
-  primaryButton:
-    "px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors",
-  secondaryButton:
-    "px-6 py-3 bg-secondary-600 hover:bg-secondary-700 text-white rounded-lg transition-colors",
+  primaryButton: buttonStyles.primary,
+  secondaryButton: buttonStyles.secondary,
   details:
     "w-full mt-8 p-4 bg-neutral-100 dark:bg-neutral-800 rounded-lg text-left",
   summary:
-    "cursor-pointer font-medium text-neutral-800 dark:text-neutral-200 mb-2",
+    "cursor-pointer font-medium text-foreground-light dark:text-foreground-dark mb-2",
   detailBlock:
-    "space-y-2 text-sm font-mono text-neutral-700 dark:text-neutral-300",
+    "space-y-2 text-sm font-mono text-foreground-light dark:text-foreground-dark",
   codeBlock:
-    "whitespace-pre-wrap text-xs mt-1 p-2 bg-neutral-200 dark:bg-neutral-700 rounded text-neutral-800 dark:text-neutral-200",
+    "whitespace-pre-wrap text-xs mt-1 p-2 bg-neutral-200 dark:bg-neutral-700 rounded text-foreground-light dark:text-foreground-dark",
+} as const;
+
+export const errorTesterStyles = {
+  shell:
+    "p-6 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700",
+  content: "space-y-4",
+  title:
+    "text-lg font-semibold text-foreground-light dark:text-foreground-dark mb-2",
+  text: "text-foreground-light dark:text-foreground-dark",
+  actions: "flex gap-3",
+  primaryButton: buttonStyles.danger,
+  secondaryButton: buttonStyles.secondary,
+  meta: "text-xs text-foreground-light dark:text-foreground-dark space-y-1",
 } as const;
 
 export const articleCardStyles = {
@@ -192,9 +238,9 @@ export const articleCardStyles = {
   meta: "flex items-center mb-2",
   metaText: "text-neutral-700 dark:text-neutral-200 text-sm",
   title:
-    "text-xl lg:text-2xl xl:text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3",
+    "text-xl lg:text-2xl xl:text-3xl font-bold text-foreground-light dark:text-foreground-dark mb-3",
   excerpt:
-    "text-neutral-700 dark:text-neutral-200 text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3",
+    "text-foreground-light dark:text-foreground-dark text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3",
   button:
     "bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-500 dark:hover:bg-tertiary-600 text-neutral-900 dark:text-neutral-900 px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center",
   buttonNarrow: "self-center",

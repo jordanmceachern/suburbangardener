@@ -125,7 +125,8 @@
   }
 
   .auth-logo {
-    @apply w-full max-w-[180px] mx-auto mb-5 rounded-xl bg-primary-100 dark:bg-primary-800/60 p-2 shadow-sm;
+    @apply w-full max-w-[180px] mx-auto mb-5 rounded-xl border border-primary-200/80 p-2 shadow-sm dark:border-primary-700/80;
+    background-color: #fff;
   }
 
   .auth-card {
@@ -138,7 +139,7 @@
   }
 
   .auth-title {
-    @apply text-2xl sm:text-4xl font-bold text-neutral-900 dark:text-neutral-300 text-center;
+    @apply text-2xl sm:text-4xl font-bold text-center text-foreground-light dark:text-foreground-dark;
   }
 
   .auth-error {
@@ -158,7 +159,7 @@
   }
 
   .auth-field {
-    @apply flex flex-col gap-2 text-left text-lg font-medium text-neutral-700 dark:text-neutral-200;
+    @apply flex flex-col gap-2 text-left text-lg font-medium text-foreground-light dark:text-foreground-dark;
   }
 
   .auth-input {
@@ -229,11 +230,11 @@
   }
 
   .auth-toggle-text {
-    @apply text-neutral-900 dark:text-neutral-100 text-lg;
+    @apply text-lg text-foreground-light dark:text-foreground-dark;
   }
 
   .auth-toggle-action {
-    @apply underline decoration-2 underline-offset-4 text-neutral-900 dark:text-neutral-100 font-medium bg-transparent border-0 p-0 cursor-pointer align-baseline;
+    @apply underline decoration-2 underline-offset-4 font-medium bg-transparent border-0 p-0 cursor-pointer align-baseline text-foreground-light dark:text-foreground-dark;
   }
 
   .auth-toggle-action:hover {
@@ -241,15 +242,15 @@
   }
 
   .auth-legal {
-    @apply mt-6 text-left text-neutral-700 dark:text-neutral-300 text-lg;
+    @apply mt-6 text-left text-lg text-foreground-light dark:text-foreground-dark;
   }
 
   .auth-link {
-    @apply mt-6 text-center text-neutral-700 hover:text-neutral-900 dark:text-neutral-200 dark:hover:text-neutral-100 text-lg;
+    @apply mt-6 text-center text-lg text-foreground-light dark:text-foreground-dark;
   }
 
   .auth-link a {
-    @apply inline-flex items-center justify-center gap-1 underline decoration-2 underline-offset-4 text-neutral-900 dark:text-neutral-100 leading-none pt-[2px];
+    @apply inline-flex items-center justify-center gap-1 underline decoration-2 underline-offset-4 leading-none pt-[2px] text-foreground-light dark:text-foreground-dark;
   }
 
   .auth-link a:hover {
@@ -604,11 +605,11 @@
   }
 
   .nav-link--active {
-    @apply bg-primary-200 dark:bg-primary-900 text-primary-900 dark:text-primary-100;
+    @apply bg-primary-200 dark:bg-primary-900 text-foreground-light dark:text-foreground-dark;
   }
 
   .nav-link--inactive {
-    @apply text-neutral-700 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100;
+    @apply text-foreground-light dark:text-foreground-dark hover:bg-neutral-50 dark:hover:bg-neutral-700 hover:text-foreground-light dark:hover:text-foreground-dark;
   }
 
   .nav-link--desktop {
@@ -619,8 +620,12 @@
     @apply justify-center lg:justify-start items-center px-3 py-2;
   }
 
+  .nav-link--toggle {
+    @apply w-full;
+  }
+
   .nav-link-home {
-    @apply flex items-center justify-center md:px-1 md:py-px lg:px-3 lg:py-2 font-medium rounded-xl border border-primary-200/80 bg-primary-100 shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-primary-700/80 dark:bg-primary-800/60;
+    @apply flex items-center justify-center md:px-1 md:py-px lg:px-3 lg:py-2 font-medium rounded-xl border border-primary-200/80 bg-white shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-primary-700/80 dark:bg-primary-800/60;
   }
 
   .nav-link-label {
@@ -640,19 +645,23 @@
   }
 
   .nav-mobile-home-link {
-    @apply flex items-center justify-center rounded-lg border border-primary-200/80 bg-primary-100 shadow-sm transition-colors py-2 px-2 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-primary-700/80 dark:bg-primary-800/60;
+    @apply flex items-center justify-center rounded-lg border border-primary-200/80 bg-white shadow-sm transition-colors py-2 px-2 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-primary-700/80 dark:bg-primary-800/60;
   }
 
   .nav-mobile-link {
     @apply flex flex-col items-center justify-center min-w-0 py-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 rounded;
   }
 
+  .nav-mobile-link--toggle {
+    @apply sm:w-full;
+  }
+
   .nav-mobile-link--active {
-    @apply text-primary-700 dark:text-primary-400;
+    @apply text-foreground-light dark:text-foreground-dark;
   }
 
   .nav-mobile-link--inactive {
-    @apply text-neutral-800 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100;
+    @apply text-foreground-light dark:text-foreground-dark hover:text-foreground-light dark:hover:text-foreground-dark;
   }
 
   .nav-mobile-home-logo-wrap {
@@ -660,7 +669,7 @@
   }
 
   .nav-mobile-icon {
-    @apply flex-shrink-0 mb-1 text-neutral-800 dark:text-neutral-400;
+    @apply flex-shrink-0 mb-1 text-foreground-light dark:text-foreground-dark;
   }
 
   .nav-mobile-label {

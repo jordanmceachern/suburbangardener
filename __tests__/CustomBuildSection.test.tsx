@@ -16,11 +16,15 @@ describe("CustomBuildSection Component", () => {
     });
   });
 
-  it("routes the primary CTA to the sign-up flow and uses the correct label", () => {
+  it("keeps the explore tools CTA visible for logged-out users while showing sign-up options", () => {
     render(<CustomBuildSection />);
-    const primaryAction = screen.getByRole("link", { name: /create account/i });
 
-    expect(primaryAction).toHaveAttribute("href", "/login?mode=signUp");
+    expect(
+      screen.getByRole("link", { name: /explore tools/i })
+    ).toHaveAttribute("href", "/tools");
+    expect(
+      screen.getByRole("link", { name: /create account/i })
+    ).toHaveAttribute("href", "/login?mode=signUp");
   });
 
   it("shows explore tools instead of account prompts when a user is logged in", () => {

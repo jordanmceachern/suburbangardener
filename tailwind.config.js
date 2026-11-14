@@ -21,8 +21,8 @@ module.exports = {
         // Light theme colors
         "background-light": "#fffaf0", // even lighter warm cream from the modal accent
         "background-dark": "#0d2d12", // darkest primary green
-        "foreground-light": "#2a2621", // dark text on light bg
-        "foreground-dark": "#f0f9f1", // light text on dark bg
+        "foreground-light": "#4d4743", // lighter default text on light bg
+        "foreground-dark": "#F2F4F0", // lighter default text on dark bg
         // Primary accent colors based on #195221 (forest green)
         primary: {
           50: "#f0f9f1",

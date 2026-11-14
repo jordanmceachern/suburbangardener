@@ -28,7 +28,7 @@ exports[`ErrorBoundary Component should match DOM snapshot when error occurs 1`]
         Sorry, something went wrong!
       </h1>
       <p
-        class="text-lg leading-relaxed text-neutral-700 dark:text-neutral-300"
+        class="text-lg leading-relaxed text-foreground-light dark:text-foreground-dark"
       >
         The website has sent me a notification to let me know. If the issue is coming from our end, I'll be working on resolving it ASAP - please come back soon!
       </p>
@@ -37,12 +37,12 @@ exports[`ErrorBoundary Component should match DOM snapshot when error occurs 1`]
       class="flex flex-col sm:flex-row gap-4 justify-center pt-6"
     >
       <button
-        class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
+        class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-md transition-colors"
       >
         Refresh this Page
       </button>
       <button
-        class="px-6 py-3 bg-secondary-600 hover:bg-secondary-700 text-white rounded-lg transition-colors"
+        class="px-4 py-2 bg-secondary-500 hover:bg-secondary-600 text-white rounded-md transition-colors"
       >
         Go to Home Page
       </button>

@@ -304,6 +304,7 @@ export default function Navigation() {
                         className={cn(
                           navStyles.linkInactive,
                           navStyles.desktopModifier,
+                          navStyles.toggleButton,
                           "border-0 bg-transparent px-3 py-2 text-left select-none"
                         )}
                       >
@@ -380,6 +381,7 @@ export default function Navigation() {
                   onClick={handleThemeToggle}
                   className={cn(
                     navStyles.mobileLinkInactive,
+                    navStyles.mobileToggleButton,
                     "border-0 bg-transparent px-0 select-none"
                   )}
                 >

@@ -20,7 +20,7 @@ exports[`ArticleDisplayList Component should match DOM snapshot 1`] = `
       width="400"
     />
     <p
-      class="text-xl text-neutral-900 dark:text-neutral-100"
+      class="text-xl text-foreground-light dark:text-foreground-dark"
     >
       Sorry! We encountered an issue while trying to fetch our articles for you, please come back to check again later.
     </p>
