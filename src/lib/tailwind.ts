@@ -120,8 +120,8 @@ export const homeArticleStyles = {
   skeletonLine: "bg-neutral-200 dark:bg-neutral-700 rounded h-6 mb-2",
   skeletonMeta: "bg-neutral-200 dark:bg-neutral-700 rounded h-4 mb-2",
   skeletonMetaShort: "bg-neutral-200 dark:bg-neutral-700 rounded h-4 w-2/3",
-  ctaWrap: "text-center mt-8",
-  ctaButton: "block w-full",
+  ctaWrap: "mt-8 flex justify-center",
+  ctaButton: "inline-flex w-fit",
 } as const;
 
 export const articleSidebarStyles = {

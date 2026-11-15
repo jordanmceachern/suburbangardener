@@ -17,7 +17,7 @@ export default function ViewAllArticlesButton({
   arrowDirection = "right",
 }: ViewAllArticlesButtonProps) {
   const baseClasses =
-    "font-medium text-lg rounded-lg transition-colors inline-flex items-center justify-center";
+    "w-fit self-start font-medium text-lg rounded-lg transition-colors inline-flex items-center justify-center";
 
   const variantClasses = {
     primary:
