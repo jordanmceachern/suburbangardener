@@ -1,5 +1,6 @@
 import React from "react";
-import { articlePageHeaderStyles, cn } from "../../lib/tailwind";
+import Link from "next/link";
+import { articlePageHeaderStyles, buttonStyles, cn } from "../../lib/tailwind";
 
 interface ArticlesPageHeaderProps {
   className?: string;
@@ -16,6 +17,11 @@ export default function ArticlesPageHeader({
         Discover expert insights, seasonal tips, and in-depth guides for
         successful suburban gardening.
       </p>
+      <div className={articlePageHeaderStyles.actions}>
+        <Link href="/articles/new" className={buttonStyles.primary}>
+          Write an Article
+        </Link>
+      </div>
     </div>
   );
 }

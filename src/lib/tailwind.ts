@@ -156,6 +156,7 @@ export const articlePageHeaderStyles = {
   wrapper: "text-center mb-12",
   title: "text-4xl font-bold text-primary-900 dark:text-primary-100 mb-4",
   copy: "text-lg text-start text-neutral-600 dark:text-neutral-200 max-w-2xl mx-auto",
+  actions: "mt-6 flex justify-center",
 } as const;
 
 export const bannerStyles = {
@@ -244,4 +245,85 @@ export const articleCardStyles = {
   button:
     "bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-500 dark:hover:bg-tertiary-600 text-neutral-900 dark:text-neutral-900 px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center",
   buttonNarrow: "self-center",
+} as const;
+
+export const articleFormStyles = {
+  shell:
+    "mx-auto max-w-4xl space-y-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800",
+  header: "space-y-2",
+  title: "text-3xl font-bold text-foreground-light dark:text-foreground-dark",
+  intro: "text-foreground-light/80 dark:text-foreground-dark/80",
+  error:
+    "rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300",
+  grid: "grid gap-6 md:grid-cols-2",
+  field: "space-y-2",
+  fieldFull: "space-y-2 md:col-span-2",
+  label: "text-sm font-medium text-foreground-light dark:text-foreground-dark",
+  input:
+    "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100",
+  textarea:
+    "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100",
+  editorWrap: "space-y-3",
+  editorToolbar: "flex flex-wrap gap-2",
+  editorButton:
+    "rounded-md border border-slate-300 bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600",
+  editor:
+    "min-h-[240px] rounded-md border border-slate-300 bg-white px-3 py-3 text-slate-900 shadow-inner outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100",
+  previewWrap:
+    "mt-3 overflow-hidden rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900",
+  previewImage: "h-48 w-full object-cover",
+  previewHint: "text-sm text-foreground-light/80 dark:text-foreground-dark/80",
+  actions: "flex justify-end gap-3",
+  cancelButton: buttonStyles.secondary,
+  submitButton: cn(
+    buttonStyles.primary,
+    "inline-flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-60"
+  ),
+  emptyState:
+    "rounded-lg border border-slate-200 bg-slate-50 p-8 text-foreground-light dark:border-slate-700 dark:bg-slate-800 dark:text-foreground-dark",
+} as const;
+
+export const articleDetailStyles = {
+  shell: "min-h-screen bg-background-light dark:bg-background-dark",
+  content: "lg:pr-80 relative",
+  inner: "mx-auto max-w-screen-2xl px-6 py-12",
+  banner:
+    "relative mb-8 h-96 overflow-hidden rounded-lg bg-slate-800 md:h-[500px]",
+  bannerImage: "w-full h-full object-cover",
+  backLink:
+    "inline-flex items-center text-neutral-700 transition-colors duration-200 hover:text-primary-900 dark:text-neutral-200 dark:hover:text-primary-100",
+  badge:
+    "mb-4 inline-block rounded-full bg-tertiary-500 px-3 py-1 text-sm font-medium text-white dark:text-neutral-950",
+  title:
+    "mb-4 text-4xl font-bold leading-tight text-primary-900 dark:text-primary-100 md:text-5xl",
+  meta: "flex items-center text-lg text-neutral-700 dark:text-neutral-200",
+  summary:
+    "mb-12 text-xl font-medium leading-relaxed text-neutral-700 italic dark:text-gray-300",
+  body: "prose prose-lg max-w-none",
+  articleBody: "article-content",
+  sectionTitle:
+    "mb-2 text-lg font-semibold text-primary-900 dark:text-primary-100",
+  bio: "mb-6 text-neutral-700 dark:text-neutral-200",
+  buttonRow: "flex justify-center",
+  commentsSection:
+    "mt-12 rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800",
+  commentsHeader:
+    "mb-4 text-2xl font-bold text-foreground-light dark:text-foreground-dark",
+  commentList: "space-y-4",
+  commentItem:
+    "rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-700/60",
+  commentMeta: "mb-2 text-sm text-neutral-700 dark:text-neutral-200",
+  commentBody: "text-foreground-light dark:text-foreground-dark",
+  commentComposer:
+    "mb-6 space-y-3 rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-700/60",
+  textarea:
+    "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100",
+  mutedText: "text-sm text-foreground-light/80 dark:text-foreground-dark/80",
+  inlineAction: "inline-flex items-center justify-center",
+  voteRow: "mb-8 flex gap-3",
+  voteButton:
+    "inline-flex items-center justify-center rounded-md border border-slate-300 bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600",
+  voteButtonActive:
+    "border-primary-500 bg-primary-500 text-white hover:bg-primary-600 dark:border-primary-500 dark:bg-primary-500 dark:hover:bg-primary-600",
+  sidebarWrap: "fixed right-0 top-0 z-40 w-80",
 } as const;

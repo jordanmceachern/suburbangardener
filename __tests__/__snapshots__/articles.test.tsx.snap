@@ -26,6 +26,16 @@ exports[`ArticlesPage renders with correct structure and classes 1`] = `
           >
             Discover expert insights, seasonal tips, and in-depth guides for successful suburban gardening.
           </p>
+          <div
+            class="mt-6 flex justify-center"
+          >
+            <a
+              class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-md transition-colors"
+              href="/articles/new"
+            >
+              Write an Article
+            </a>
+          </div>
         </div>
       </div>
       <div

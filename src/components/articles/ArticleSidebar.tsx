@@ -14,9 +14,6 @@ interface ArticleSidebarProps {
   currentArticle?: ArticleDisplayData;
 }
 
-// Placeholder API URL for production
-const PRODUCTION_API_URL = "https://api.suburbangardener.com/articles/recent";
-
 async function fetchArticles(
   maxArticles: number = 3,
   currentArticle?: ArticleDisplayData
@@ -24,49 +21,23 @@ async function fetchArticles(
   recentArticles: ArticleMetadata[];
   relatedArticles: ArticleMetadata[];
 }> {
-  // In production, this would make an API call
-  if (process.env.NODE_ENV === "production") {
-    try {
-      const response = await fetch(
-        `${PRODUCTION_API_URL}?limit=${maxArticles}&current=${currentArticle?.id || ""}`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch articles");
-      }
-      const allArticles = await response.json();
+  const response = await fetch(`/api/articles?limit=20&offset=0`);
 
-      // Filter out current article and categorize
-      const filteredArticles = allArticles.filter(
-        (article: ArticleMetadata) => article.id !== currentArticle?.id
-      );
-
-      const relatedArticles = currentArticle
-        ? filteredArticles
-            .filter(
-              (article: ArticleMetadata) =>
-                article.category === currentArticle.category
-            )
-            .slice(0, maxArticles)
-        : [];
-
-      const recentArticles = filteredArticles.slice(0, maxArticles);
-
-      return { recentArticles, relatedArticles };
-    } catch (error) {
-      console.error("Error fetching articles:", error);
-      // In production, return empty arrays instead of mock data, never show fake information to users
-      return { recentArticles: [], relatedArticles: [] };
-    }
+  if (!response.ok) {
+    throw new Error("Failed to fetch articles");
   }
 
-  // In development, use mock data
-  const { mockSidebarArticles } = await import("../../mock_data/articles");
-  const filteredMockArticles = mockSidebarArticles.filter(
+  const data = await response.json();
+  const allArticles: ArticleMetadata[] = Array.isArray(data.articles)
+    ? data.articles
+    : [];
+
+  const filteredArticles = allArticles.filter(
     (article: ArticleMetadata) => article.id !== currentArticle?.id
   );
 
   const relatedArticles = currentArticle
-    ? filteredMockArticles
+    ? filteredArticles
         .filter(
           (article: ArticleMetadata) =>
             article.category === currentArticle.category
@@ -74,7 +45,7 @@ async function fetchArticles(
         .slice(0, maxArticles)
     : [];
 
-  const recentArticles = filteredMockArticles.slice(0, maxArticles);
+  const recentArticles = filteredArticles.slice(0, maxArticles);
 
   return { recentArticles, relatedArticles };
 }

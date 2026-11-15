@@ -1,103 +1,203 @@
 "use client";
 
-import React from "react";
-import { notFound } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import BackgroundImage from "../../../components/BackgroundImage";
-import ArticleSidebar from "../../../components/articles/ArticleSidebar";
-import ViewAllArticlesButton from "../../../components/articles/ViewAllArticlesButton";
-import { mockArticles } from "../../../mock_data/articles";
+import { useParams } from "next/navigation";
+import BackgroundImage from "@/components/BackgroundImage";
+import ArticleSidebar from "@/components/articles/ArticleSidebar";
+import ArticleComments from "@/components/articles/ArticleComments";
+import ViewAllArticlesButton from "@/components/articles/ViewAllArticlesButton";
+import { articleDetailStyles, cn } from "@/lib/tailwind";
 
-interface ArticlePageProps {
-  params: { slug: string };
+type ArticleRecord = {
+  id: string;
+  title: string;
+  excerpt: string;
+  summary?: string;
+  publishedDate: string;
+  author: string;
+  slug: string;
+  imageUrl: string;
+  youtubeUrl?: string;
+  category: string;
+  content?: string;
+  contentHtml?: string;
+  voteScore?: number;
+  voteCount?: number;
+};
+
+function getEmbedUrl(youtubeUrl: string) {
+  try {
+    const url = new URL(youtubeUrl);
+
+    if (url.hostname.includes("youtu.be")) {
+      return `https://www.youtube.com/embed/${url.pathname.replace("/", "")}`;
+    }
+
+    if (url.hostname.includes("youtube.com")) {
+      const videoId = url.searchParams.get("v");
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+    }
+
+    return youtubeUrl;
+  } catch {
+    return youtubeUrl;
+  }
 }
 
-// Renders the Article Page page and its page-specific behavior.
-export default function ArticlePage({ params }: ArticlePageProps) {
-  // Find the article by slug
-  const article = mockArticles.find(a => a.slug === params.slug);
+export default function ArticlePage() {
+  const params = useParams<{ slug: string }>();
+  const slug = Array.isArray(params?.slug)
+    ? params.slug[0]
+    : (params?.slug ?? "");
+  const [article, setArticle] = useState<ArticleRecord | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [databaseNotice, setDatabaseNotice] = useState<string | null>(null);
+  const [vote, setVote] = useState<"UP" | "DOWN" | null>(null);
+  const [votePending, setVotePending] = useState(false);
 
-  if (!article) {
-    notFound();
+  useEffect(() => {
+    let isActive = true;
+
+    async function loadArticle() {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/articles?limit=100&offset=0");
+
+        if (!response.ok) {
+          const errorJson = await response.json().catch(() => ({}));
+          throw new Error(
+            errorJson.error ||
+              "The article database is currently unavailable. Please try again later."
+          );
+        }
+
+        const data = await response.json();
+        const foundArticle = Array.isArray(data.articles)
+          ? data.articles.find((item: ArticleRecord) => item.slug === slug)
+          : null;
+
+        if (isActive) {
+          setArticle(foundArticle ?? null);
+          setDatabaseNotice(foundArticle ? null : "Article not found.");
+        }
+      } catch (error) {
+        if (isActive) {
+          setArticle(null);
+          setDatabaseNotice(
+            error instanceof Error
+              ? error.message
+              : "The article database is currently unavailable. Please try again later."
+          );
+        }
+      } finally {
+        if (isActive) {
+          setLoading(false);
+        }
+      }
+    }
+
+    if (slug) {
+      loadArticle();
+    }
+
+    return () => {
+      isActive = false;
+    };
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className={articleDetailStyles.shell}>
+        <div className={articleDetailStyles.content}>
+          <div className={articleDetailStyles.inner}>
+            <p className={articleDetailStyles.mutedText}>Loading article...</p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  // Convert content to HTML (basic markdown-like conversion)
-  const formatContent = (content: string) => {
-    if (!content) return "";
+  if (!article) {
+    return (
+      <div className={articleDetailStyles.shell}>
+        <div className={articleDetailStyles.content}>
+          <div className={articleDetailStyles.inner}>
+            <p className={articleDetailStyles.mutedText}>
+              {databaseNotice ||
+                "The article database is currently unavailable. Please try again later."}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-    return content
-      .split("\n")
-      .map((line, index) => {
-        // Handle headers
-        if (line.startsWith("### ")) {
-          return `<h3 key="${index}" class="text-xl font-semibold text-primary-900 dark:text-primary-100 mt-8 mb-4">${line.replace("### ", "")}</h3>`;
-        }
-        if (line.startsWith("## ")) {
-          return `<h2 key="${index}" class="text-2xl font-bold text-primary-900 dark:text-primary-100 mt-10 mb-6">${line.replace("## ", "")}</h2>`;
-        }
-        if (line.startsWith("# ")) {
-          return `<h1 key="${index}" class="text-3xl font-bold text-primary-900 dark:text-primary-100 mt-12 mb-8">${line.replace("# ", "")}</h1>`;
-        }
+  const articleBody = article.contentHtml || article.content || "";
+  const summaryText = article.summary || article.excerpt || "";
+  const voteScore =
+    typeof article.voteScore === "number" ? article.voteScore : 0;
+  const voteCount =
+    typeof article.voteCount === "number" ? article.voteCount : 0;
 
-        // Handle lists
-        if (line.startsWith("- **") && line.includes("**:")) {
-          const parts = line.split("**:");
-          const term = parts[0].replace("- **", "");
-          const definition = parts[1];
-          return `<li key="${index}" class="mb-2"><strong class="text-primary-900 dark:text-primary-100">${term}:</strong><span class="text-neutral-700 dark:text-neutral-200">${definition}</span></li>`;
-        }
-        if (line.startsWith("- ")) {
-          return `<li key="${index}" class="mb-1 text-neutral-700 dark:text-neutral-200">${line.replace("- ", "")}</li>`;
-        }
+  const handleVote = async (nextVote: "UP" | "DOWN") => {
+    if (!article) return;
 
-        // Handle numbered lists
-        if (/^\d+\./.test(line)) {
-          return `<li key="${index}" class="mb-2 text-neutral-700 dark:text-neutral-200">${line.replace(/^\d+\.\s*/, "")}</li>`;
-        }
+    setVotePending(true);
 
-        // Handle paragraphs
-        if (
-          line.trim() &&
-          !line.startsWith("#") &&
-          !line.startsWith("-") &&
-          !/^\d+\./.test(line)
-        ) {
-          return `<p key="${index}" class="mb-4 text-neutral-700 dark:text-neutral-200 leading-relaxed">${line}</p>`;
-        }
+    try {
+      const response = await fetch(`/api/articles/${article.id}/vote`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: nextVote }),
+      });
 
-        // Empty lines
-        if (!line.trim()) {
-          return `<div key="${index}" class="mb-2"></div>`;
-        }
+      if (!response.ok) {
+        const errorJson = await response.json().catch(() => ({}));
+        throw new Error(
+          errorJson.error || "You must be logged in to vote on articles."
+        );
+      }
 
-        return line;
-      })
-      .join("");
+      setVote(nextVote);
+      setArticle(current =>
+        current
+          ? {
+              ...current,
+              voteScore:
+                (current.voteScore ?? 0) + (nextVote === "UP" ? 1 : -1),
+              voteCount: (current.voteCount ?? 0) + 1,
+            }
+          : current
+      );
+    } catch (error) {
+      setDatabaseNotice(
+        error instanceof Error ? error.message : "Unable to register your vote."
+      );
+    } finally {
+      setVotePending(false);
+    }
   };
 
   return (
-    <div className="min-h-screen  bg-background-light dark:bg-background-dark">
-      {/* Main Content Area with Sidebar */}
-      <div className="lg:pr-80 relative">
-        <div className="mx-auto px-6 py-12 max-w-screen-2xl">
+    <div className={articleDetailStyles.shell}>
+      <div className={articleDetailStyles.content}>
+        <div className={articleDetailStyles.inner}>
           <div>
-            {/* Banner Image */}
-            <div className="relative h-96 md:h-[500px] overflow-hidden rounded-lg mb-8 bg-slate-800">
+            <div className={articleDetailStyles.banner}>
               <BackgroundImage
                 src={article.imageUrl}
-                className="w-full h-full object-cover"
+                className={articleDetailStyles.bannerImage}
               />
             </div>
 
-            {/* Article Header */}
             <div className="mb-12">
               <div className="mb-4">
-                <Link
-                  href="/articles"
-                  className="inline-flex items-center text-neutral-700 dark:text-neutral-200 hover:text-primary-900 dark:hover:text-primary-100 transition-colors duration-200"
-                >
+                <Link href="/articles" className={articleDetailStyles.backLink}>
                   <svg
-                    className="w-5 h-5 mr-2"
+                    className="mr-2 h-5 w-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -112,61 +212,93 @@ export default function ArticlePage({ params }: ArticlePageProps) {
                   Back to Articles
                 </Link>
               </div>
-              <span className="inline-block px-3 py-1 bg-tertiary-500 text-white dark:text-neutral-950 text-sm font-medium rounded-full mb-4">
+
+              <span className={articleDetailStyles.badge}>
                 {article.category}
               </span>
-              <h1 className="text-4xl md:text-5xl font-bold text-primary-900 dark:text-primary-100 mb-4 leading-tight">
-                {article.title}
-              </h1>
-              <div className="flex items-center text-neutral-700 dark:text-neutral-200 text-lg">
+              <h1 className={articleDetailStyles.title}>{article.title}</h1>
+              <div className={articleDetailStyles.meta}>
                 <span>By {article.author}</span>
                 <span className="mx-3">•</span>
                 <span>{article.publishedDate}</span>
               </div>
             </div>
 
-            {/* Article Excerpt */}
-            <div className="mb-12">
-              <p className="text-xl text-neutral-700 dark:text-gray-300 leading-relaxed italic font-medium">
-                {article.excerpt}
-              </p>
+            <div className={articleDetailStyles.summary}>
+              <p>{summaryText}</p>
             </div>
 
-            {/* Article Content */}
-            <div className="prose prose-lg max-w-none">
+            <div className={articleDetailStyles.voteRow}>
+              <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-100">
+                Score: {voteScore} · {voteCount} votes
+              </span>
+              <button
+                type="button"
+                disabled={votePending}
+                onClick={() => handleVote("UP")}
+                className={cn(
+                  articleDetailStyles.voteButton,
+                  vote === "UP" && articleDetailStyles.voteButtonActive
+                )}
+              >
+                ▲ Upvote
+              </button>
+              <button
+                type="button"
+                disabled={votePending}
+                onClick={() => handleVote("DOWN")}
+                className={cn(
+                  articleDetailStyles.voteButton,
+                  vote === "DOWN" && articleDetailStyles.voteButtonActive
+                )}
+              >
+                ▼ Downvote
+              </button>
+            </div>
+
+            {article.youtubeUrl ? (
+              <div className="mb-10 overflow-hidden rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+                <iframe
+                  src={getEmbedUrl(article.youtubeUrl)}
+                  title={`${article.title} video`}
+                  className="h-[320px] w-full md:h-[420px]"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            ) : null}
+
+            <div className={articleDetailStyles.body}>
               <div
-                className="article-content"
-                dangerouslySetInnerHTML={{
-                  __html: formatContent(article.content || ""),
-                }}
+                className={articleDetailStyles.articleBody}
+                dangerouslySetInnerHTML={{ __html: articleBody }}
               />
             </div>
 
-            {/* Author Bio */}
-            <div className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-primary-900 dark:text-primary-100 mb-2">
+            <div className="mt-16 border-t border-gray-200 pt-8 dark:border-gray-700">
+              <h3 className={articleDetailStyles.sectionTitle}>
                 About {article.author}
               </h3>
-              <p className="text-neutral-700 dark:text-neutral-200 mb-6">
+              <p className={articleDetailStyles.bio}>
                 {article.author === "Jordan McEachern"
                   ? "Passionate suburban gardener and founder of SuburbanGardener, sharing practical tips for growing food and beauty in small spaces."
                   : "Experienced organic gardener and writer, specializing in sustainable growing practices and soil health."}
               </p>
 
-              {/* Back to Articles Button */}
-              <div className="flex justify-center">
+              <div className={articleDetailStyles.buttonRow}>
                 <ViewAllArticlesButton
                   text="Back to Articles"
                   arrowDirection="left"
                 />
               </div>
             </div>
+
+            <ArticleComments articleId={article.id} />
           </div>
         </div>
       </div>
 
-      {/* Fixed Sidebar - Matches articles page layout */}
-      <div className="fixed top-0 right-0 w-80 z-40">
+      <div className={articleDetailStyles.sidebarWrap}>
         <ArticleSidebar currentArticle={article} />
       </div>
     </div>
