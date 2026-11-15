@@ -2,6 +2,34 @@
 @import "@fontsource/libertinus-sans/400-italic.css";
 @import "@fontsource/libertinus-sans/700.css";
 
+:root {
+  color-scheme: light;
+  background-color: #fffaf0;
+}
+
+html {
+  background-color: #fffaf0;
+  color-scheme: light;
+}
+
+html[data-theme="dark"],
+html.dark {
+  background-color: #0d2d12;
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  background-color: #fffaf0;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    background-color: #0d2d12;
+    color-scheme: dark;
+  }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,6 +40,17 @@
     font-feature-settings:
       "rlig" 1,
       "calt" 1;
+  }
+
+  html.dark body,
+  html[data-theme="dark"] body {
+    @apply bg-background-dark text-foreground-dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) body {
+      @apply bg-background-dark text-foreground-dark;
+    }
   }
 }
 

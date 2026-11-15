@@ -1,6 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import Navigation from "@/components/Navigation";
 import { useAuth } from "@/lib/auth-nextauth";
+import {
+  applyThemeMode,
+  resolveInitialTheme,
+  THEME_STORAGE_KEY,
+} from "@/lib/theme";
 
 jest.mock("@/lib/auth-nextauth", () => ({
   useAuth: jest.fn(),
@@ -94,5 +99,56 @@ describe("Navigation Component", () => {
     const storeIndex = navNames.findIndex(name => /store/i.test(name));
 
     expect(dashboardIndex).toBeGreaterThan(storeIndex);
+  });
+
+  it("prefers the system dark theme when there is no saved override", () => {
+    window.localStorage.clear();
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: jest.fn().mockImplementation(query => ({
+        matches: true,
+        media: query,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+      })),
+    });
+
+    expect(resolveInitialTheme()).toBe("dark");
+
+    applyThemeMode("dark");
+    expect(document.documentElement.classList.contains("dark")).toBe(true);
+    expect(document.documentElement.dataset.theme).toBe("dark");
+  });
+
+  it("keeps a saved light preference ahead of the system dark preference", () => {
+    window.localStorage.setItem(THEME_STORAGE_KEY, "light");
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: jest.fn().mockImplementation(query => ({
+        matches: true,
+        media: query,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+      })),
+    });
+
+    expect(resolveInitialTheme()).toBe("light");
+  });
+
+  it("does not write a temporary light theme on initial mount when the system is dark", () => {
+    window.localStorage.clear();
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: jest.fn().mockImplementation(query => ({
+        matches: true,
+        media: query,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+      })),
+    });
+
+    render(<Navigation />);
+
+    expect(window.localStorage.getItem(THEME_STORAGE_KEY)).toBe("dark");
   });
 });

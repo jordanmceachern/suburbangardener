@@ -60,13 +60,14 @@ model Post {
 
   @@index([authorId])
   @@index([publishedAt])
+  @@map("posts")
 }
 
 model Comment {
   id        String   @id @default(cuid())
-  PostId  String
-  Post    Post  @relation(fields: [PostId], references: [id], onDelete: Cascade)
-  authorId  String
+  PostId    String   @map("post_id")
+  Post      Post     @relation(fields: [PostId], references: [id], onDelete: Cascade)
+  authorId  String   @map("author_id")
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   bodyHtml  String
   createdAt DateTime @default(now())
@@ -75,6 +76,7 @@ model Comment {
 
   @@index([PostId])
   @@index([authorId])
+  @@map("comments")
 }
 
 enum VoteType {
@@ -84,12 +86,12 @@ enum VoteType {
 
 model Vote {
   id        String    @id @default(cuid())
-  userId    String
+  userId    String    @map("user_id")
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  PostId String?
-  Post   Post?  @relation(fields: [PostId], references: [id], onDelete: Cascade)
-  commentId String?
-  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  PostId    String?   @map("post_id")
+  Post      Post?     @relation(fields: [PostId], references: [id], onDelete: Cascade)
+  commentId String?   @map("comment_id")
+  comment   Comment?  @relation(fields: [commentId], references: [id], onDelete: Cascade)
   type      VoteType
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -98,4 +100,5 @@ model Vote {
   @@unique([userId, commentId])
   @@index([PostId])
   @@index([commentId])
+  @@map("votes")
 }

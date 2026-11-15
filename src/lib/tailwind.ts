@@ -105,16 +105,16 @@ export const articleListStyles = PostListStyles;
 
 export const homePostStyles = {
   sectionLoading:
-    "p-6 rounded-lg bg-tertiary-100 dark:bg-tertiary-800 border border-tertiary-200 dark:border-tertiary-700",
+    "p-6 rounded-lg bg-secondary-100 dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700",
   sectionLoaded:
     "p-6 rounded-lg bg-secondary-100 dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700",
-  titleWrap: "text-center mb-8",
+  titleWrap: "text-center mb-2",
   title:
-    "text-2xl sm:text-3xl font-bold text-foreground-light dark:text-foreground-dark mb-4",
+    "text-2xl sm:text-3xl font-bold text-foreground-light dark:text-foreground-dark mb-2",
   description:
-    "text-lg text-foreground-light dark:text-foreground-dark max-w-2xl mx-auto",
+    "text-lg text-foreground-light dark:text-foreground-dark max-w-2xl mx-auto mt-1 mb-4",
   descriptionMobile:
-    "mx-auto text-lg text-start text-foreground-light dark:text-foreground-dark max-w-2xl",
+    "text-lg text-start text-foreground-light dark:text-foreground-dark max-w-2xl mx-auto mt-1 mb-4",
   grid: "grid grid-cols-1 md:grid-cols-2 gap-6",
   skeletonCard: "animate-pulse",
   skeletonBlock:
