@@ -4,7 +4,15 @@ import { authOptions } from "@/lib/auth";
 import { sanitizeHtml } from "@/lib/articleSecurity";
 import { prisma } from "@/lib/prisma";
 
-function mapComment(comment: any) {
+type CommentMapEntry = {
+  id: string;
+  articleId: string;
+  bodyHtml: string;
+  createdAt: Date | string;
+  author?: { email?: string | null; name?: string | null } | null;
+};
+
+function mapComment(comment: CommentMapEntry) {
   return {
     id: comment.id,
     articleId: comment.articleId,
@@ -12,7 +20,10 @@ function mapComment(comment: any) {
       ? comment.author.email.split("@")[0]
       : comment.author?.name || "Anonymous",
     bodyHtml: comment.bodyHtml,
-    createdAt: comment.createdAt.toISOString(),
+    createdAt:
+      comment.createdAt instanceof Date
+        ? comment.createdAt.toISOString()
+        : new Date(comment.createdAt).toISOString(),
   };
 }
 
@@ -59,7 +70,7 @@ export async function POST(
     return NextResponse.json({ error: "Article not found" }, { status: 404 });
   }
 
-  let payload: any;
+  let payload: unknown;
 
   try {
     payload = await request.json();
@@ -70,7 +81,11 @@ export async function POST(
     );
   }
 
-  const bodyHtml = sanitizeHtml(String(payload?.bodyHtml || "")).trim();
+  const bodyHtml = sanitizeHtml(
+    typeof payload === "object" && payload && "bodyHtml" in payload
+      ? String((payload as { bodyHtml?: unknown }).bodyHtml || "")
+      : ""
+  ).trim();
 
   if (!bodyHtml) {
     return NextResponse.json(

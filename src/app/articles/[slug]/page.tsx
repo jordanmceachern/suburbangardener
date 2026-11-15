@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import BackgroundImage from "@/components/BackgroundImage";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import ArticleSidebar from "@/components/articles/ArticleSidebar";
 import ArticleComments from "@/components/articles/ArticleComments";
 import ViewAllArticlesButton from "@/components/articles/ViewAllArticlesButton";
@@ -113,7 +114,13 @@ export default function ArticlePage() {
       <div className={articleDetailStyles.shell}>
         <div className={articleDetailStyles.content}>
           <div className={articleDetailStyles.inner}>
-            <p className={articleDetailStyles.mutedText}>Loading article...</p>
+            <div className="flex min-h-[220px] items-center justify-center">
+              <LoadingSpinner
+                size="md"
+                text="Loading article..."
+                className={articleDetailStyles.mutedText}
+              />
+            </div>
           </div>
         </div>
       </div>

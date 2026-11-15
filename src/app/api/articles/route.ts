@@ -1,3 +1,4 @@
+import type { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -7,6 +8,21 @@ import {
   maskDisplayName,
   sanitizeHtml,
 } from "@/lib/articleSecurity";
+
+type ArticleMapEntry = {
+  id: string;
+  title: string;
+  excerpt?: string | null;
+  createdAt: Date | string;
+  publishedAt?: Date | string | null;
+  coverUrl?: string | null;
+  youtubeUrl?: string | null;
+  category?: string | null;
+  contentHtml?: string | null;
+  slug: string;
+  author?: { email?: string | null; name?: string | null } | null;
+  votes?: Array<{ type: "UP" | "DOWN" }>;
+};
 
 function slugify(value: string) {
   return value
@@ -25,10 +41,10 @@ function formatDate(value: Date | string) {
   }).format(new Date(value));
 }
 
-function mapArticle(article: any) {
+function mapArticle(article: ArticleMapEntry) {
   const publishedDate = article.publishedAt ?? article.createdAt ?? new Date();
   const votes = Array.isArray(article.votes) ? article.votes : [];
-  const voteScore = votes.reduce((total: number, vote: any) => {
+  const voteScore = votes.reduce((total: number, vote) => {
     if (vote.type === "UP") return total + 1;
     if (vote.type === "DOWN") return total - 1;
     return total;
@@ -61,7 +77,7 @@ async function fetchArticleListFromDb(
   limit: number,
   offset: number
 ) {
-  const where: any = {};
+  const where: Prisma.ArticleWhereInput = {};
 
   if (search) {
     where.OR = [
@@ -211,11 +227,9 @@ export async function POST(request: NextRequest) {
 
     const usedSlugs = new Set(existingSlugs.map(item => item.slug));
     let slug = articleBaseSlug;
-    let suffix = 2;
 
-    while (usedSlugs.has(slug)) {
+    for (let suffix = 2; usedSlugs.has(slug); suffix += 1) {
       slug = `${articleBaseSlug}-${suffix}`;
-      suffix += 1;
     }
 
     const article = await prisma.article.create({

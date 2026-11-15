@@ -21,7 +21,7 @@ export async function POST(
     return NextResponse.json({ error: "Article not found" }, { status: 404 });
   }
 
-  let payload: any;
+  let payload: unknown;
 
   try {
     payload = await request.json();
@@ -32,7 +32,11 @@ export async function POST(
     );
   }
 
-  const voteType = String(payload?.type || "").toUpperCase();
+  const voteType = (
+    typeof payload === "object" && payload && "type" in payload
+      ? String((payload as { type?: unknown }).type || "")
+      : ""
+  ).toUpperCase();
 
   if (voteType !== "UP" && voteType !== "DOWN") {
     return NextResponse.json(

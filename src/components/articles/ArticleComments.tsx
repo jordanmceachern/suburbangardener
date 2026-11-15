@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { useAuth } from "@/lib/auth-nextauth";
 import { articleDetailStyles, buttonStyles, cn } from "@/lib/tailwind";
 
@@ -127,7 +128,13 @@ export default function ArticleComments({ articleId }: { articleId: string }) {
       ) : null}
 
       {loading ? (
-        <p className={articleDetailStyles.mutedText}>Loading comments...</p>
+        <div className="flex justify-center py-4">
+          <LoadingSpinner
+            size="sm"
+            text="Loading comments..."
+            className={articleDetailStyles.mutedText}
+          />
+        </div>
       ) : comments.length === 0 ? (
         <p className={articleDetailStyles.mutedText}>
           No comments yet. Be the first to respond.
