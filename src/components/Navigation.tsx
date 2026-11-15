@@ -68,8 +68,8 @@ const navigation: NavItem[] = [
     ),
   },
   {
-    name: "Articles",
-    href: "/articles",
+    name: "Posts",
+    href: "/posts",
     icon: (
       <svg
         className="w-6 h-6"
@@ -157,6 +157,7 @@ export default function Navigation() {
   const pathname = usePathname();
   const { isAuthenticated, user, isLoading } = useAuth();
   const [themeMode, setThemeMode] = React.useState<ThemeMode>("light");
+  const themeToggleLockRef = React.useRef(false);
 
   const applyThemeMode = React.useCallback((mode: ThemeMode) => {
     if (typeof document === "undefined") {
@@ -245,6 +246,15 @@ export default function Navigation() {
   const navItems = [...filteredNavigation, themeToggle];
 
   const handleThemeToggle = async () => {
+    if (themeToggleLockRef.current) {
+      return;
+    }
+
+    themeToggleLockRef.current = true;
+    window.setTimeout(() => {
+      themeToggleLockRef.current = false;
+    }, 500);
+
     const nextTheme: ThemeMode = themeMode === "dark" ? "light" : "dark";
     setThemeMode(nextTheme);
     applyThemeMode(nextTheme);
@@ -301,11 +311,12 @@ export default function Navigation() {
                             : "Switch to dark mode"
                         }
                         onClick={handleThemeToggle}
+                        disabled={themeToggleLockRef.current}
                         className={cn(
                           navStyles.linkInactive,
                           navStyles.desktopModifier,
                           navStyles.toggleButton,
-                          "border-0 bg-transparent px-3 py-2 text-left select-none"
+                          "border-0 bg-transparent px-3 py-2 text-left select-none disabled:cursor-not-allowed disabled:opacity-60"
                         )}
                       >
                         <span className={navStyles.icon}>{item.icon}</span>
@@ -379,10 +390,11 @@ export default function Navigation() {
                       : "Switch to dark mode"
                   }
                   onClick={handleThemeToggle}
+                  disabled={themeToggleLockRef.current}
                   className={cn(
                     navStyles.mobileLinkInactive,
                     navStyles.mobileToggleButton,
-                    "border-0 bg-transparent px-0 select-none"
+                    "border-0 bg-transparent px-0 select-none disabled:cursor-not-allowed disabled:opacity-60"
                   )}
                 >
                   <span className={navStyles.mobileIcon}>{item.icon}</span>

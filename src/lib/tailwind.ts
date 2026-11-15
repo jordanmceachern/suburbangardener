@@ -84,7 +84,7 @@ export const searchStyles = {
   results: "text-xs text-slate-600 dark:text-slate-300",
 } as const;
 
-export const articleListStyles = {
+export const PostListStyles = {
   section: "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6",
   skeletonCard: "animate-pulse",
   skeletonBlock:
@@ -101,7 +101,9 @@ export const articleListStyles = {
   errorText: "text-red-600 dark:text-red-400",
 } as const;
 
-export const homeArticleStyles = {
+export const articleListStyles = PostListStyles;
+
+export const homePostStyles = {
   sectionLoading:
     "p-6 rounded-lg bg-tertiary-100 dark:bg-tertiary-800 border border-tertiary-200 dark:border-tertiary-700",
   sectionLoaded:
@@ -112,7 +114,7 @@ export const homeArticleStyles = {
   description:
     "text-lg text-foreground-light dark:text-foreground-dark max-w-2xl mx-auto",
   descriptionMobile:
-    "sm:mx-auto text-lg text-start sm:text-center text-foreground-light dark:text-foreground-dark max-w-2xl",
+    "mx-auto text-lg text-start text-foreground-light dark:text-foreground-dark max-w-2xl",
   grid: "grid grid-cols-1 md:grid-cols-2 gap-6",
   skeletonCard: "animate-pulse",
   skeletonBlock:
@@ -124,7 +126,7 @@ export const homeArticleStyles = {
   ctaButton: "inline-flex w-fit",
 } as const;
 
-export const articleSidebarStyles = {
+export const PostSidebarStyles = {
   panelBase:
     "bg-slate-100 dark:bg-slate-800 shadow-lg transition-all duration-300 ease-in-out relative h-screen pb-20 sm:pb-0",
   panelOpen:
@@ -152,7 +154,7 @@ export const articleSidebarStyles = {
   listWrap: "space-y-4",
 } as const;
 
-export const articlePageHeaderStyles = {
+export const PostPageHeaderStyles = {
   wrapper: "text-center mb-12",
   title: "text-4xl font-bold text-primary-900 dark:text-primary-100 mb-4",
   copy: "text-lg text-start text-neutral-600 dark:text-neutral-200 max-w-2xl mx-auto",
@@ -231,7 +233,7 @@ export const errorTesterStyles = {
   meta: "text-xs text-foreground-light dark:text-foreground-dark space-y-1",
 } as const;
 
-export const articleCardStyles = {
+export const PostCardStyles = {
   card: "bg-primary-50 dark:bg-slate-500 rounded-lg shadow-lg overflow-hidden min-w-0 flex flex-col",
   imageWrap: "h-48 sm:h-64 bg-slate-800",
   image: "w-full h-full rounded-b-none",
@@ -247,7 +249,7 @@ export const articleCardStyles = {
   buttonNarrow: "self-center",
 } as const;
 
-export const articleFormStyles = {
+export const PostFormStyles = {
   shell:
     "mx-auto max-w-4xl space-y-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800",
   header: "space-y-2",
@@ -283,7 +285,9 @@ export const articleFormStyles = {
     "rounded-lg border border-slate-200 bg-slate-50 p-8 text-foreground-light dark:border-slate-700 dark:bg-slate-800 dark:text-foreground-dark",
 } as const;
 
-export const articleDetailStyles = {
+export const articleFormStyles = PostFormStyles;
+
+export const PostDetailStyles = {
   shell: "min-h-screen bg-background-light dark:bg-background-dark",
   content: "lg:pr-80 relative",
   inner: "mx-auto max-w-screen-2xl px-6 py-12",
@@ -300,7 +304,7 @@ export const articleDetailStyles = {
   summary:
     "mb-12 text-xl font-medium leading-relaxed text-neutral-700 italic dark:text-gray-300",
   body: "prose prose-lg max-w-none",
-  articleBody: "article-content",
+  PostBody: "Post-content",
   sectionTitle:
     "mb-2 text-lg font-semibold text-primary-900 dark:text-primary-100",
   bio: "mb-6 text-neutral-700 dark:text-neutral-200",
@@ -327,3 +331,9 @@ export const articleDetailStyles = {
     "border-primary-500 bg-primary-500 text-white hover:bg-primary-600 dark:border-primary-500 dark:bg-primary-500 dark:hover:bg-primary-600",
   sidebarWrap: "fixed right-0 top-0 z-40 w-80",
 } as const;
+
+export const articlePageHeaderStyles = PostPageHeaderStyles;
+export const articleSidebarStyles = PostSidebarStyles;
+export const articleDetailStyles = PostDetailStyles;
+export const homeArticleStyles = homePostStyles;
+export const articleCardStyles = PostCardStyles;

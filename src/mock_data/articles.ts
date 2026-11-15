@@ -1,4 +1,4 @@
-import type { ArticleDisplayData } from "../components/articles/ArticleDisplayCard";
+import type { ArticleDisplayData } from "../components/posts/PostDisplayCard";
 
 // Article based on the markdown file in this directory
 export const organicTomatoesArticle: ArticleDisplayData = {

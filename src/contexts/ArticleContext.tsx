@@ -6,11 +6,14 @@ import React, {
   useReducer,
   useCallback,
 } from "react";
-import type { ArticleDisplayData } from "../components/articles/ArticleDisplayCard";
+import type { PostDisplayData } from "../components/posts/PostDisplayCard";
 
-interface ArticleState {
-  articles: ArticleDisplayData[];
-  featuredArticle: ArticleDisplayData | null;
+interface PostState {
+  posts: PostDisplayData[];
+  Posts: PostDisplayData[];
+  articles: PostDisplayData[];
+  featuredPost: PostDisplayData | null;
+  featuredArticle: PostDisplayData | null;
   total: number;
   hasMore: boolean;
   loading: boolean;
@@ -20,29 +23,33 @@ interface ArticleState {
   currentOffset: number;
 }
 
-type ArticleAction =
+type PostAction =
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_ERROR"; payload: string | null }
   | {
-      type: "SET_ARTICLES";
+      type: "SET_PostS";
       payload: {
-        articles: ArticleDisplayData[];
+        Posts: PostDisplayData[];
         total: number;
         hasMore: boolean;
       };
     }
   | {
-      type: "APPEND_ARTICLES";
-      payload: { articles: ArticleDisplayData[]; hasMore: boolean };
+      type: "APPEND_PostS";
+      payload: { Posts: PostDisplayData[]; hasMore: boolean };
     }
-  | { type: "SET_FEATURED_ARTICLE"; payload: ArticleDisplayData | null }
+  | { type: "SET_FEATURED_Post"; payload: PostDisplayData | null }
+  | { type: "SET_FEATURED_ARTICLE"; payload: PostDisplayData | null }
   | { type: "SET_SEARCH_TERM"; payload: string }
   | { type: "SET_SELECTED_CATEGORY"; payload: string }
   | { type: "SET_OFFSET"; payload: number }
   | { type: "RESET_PAGINATION" };
 
-const initialState: ArticleState = {
+const initialState: PostState = {
+  posts: [],
+  Posts: [],
   articles: [],
+  featuredPost: null,
   featuredArticle: null,
   total: 0,
   hasMore: false,
@@ -53,36 +60,47 @@ const initialState: ArticleState = {
   currentOffset: 0,
 };
 
-// Renders the articleReducer article UI.
-function articleReducer(
-  state: ArticleState,
-  action: ArticleAction
-): ArticleState {
+// Renders the PostReducer Post UI.
+function PostReducer(state: PostState, action: PostAction): PostState {
   switch (action.type) {
     case "SET_LOADING":
       return { ...state, loading: action.payload };
     case "SET_ERROR":
       return { ...state, error: action.payload, loading: false };
-    case "SET_ARTICLES":
+    case "SET_PostS":
       return {
         ...state,
-        articles: action.payload.articles,
+        posts: action.payload.Posts,
+        Posts: action.payload.Posts,
+        articles: action.payload.Posts,
         total: action.payload.total,
         hasMore: action.payload.hasMore,
         loading: false,
         error: null,
-        currentOffset: action.payload.articles.length,
+        currentOffset: action.payload.Posts.length,
       };
-    case "APPEND_ARTICLES":
+    case "APPEND_PostS":
       return {
         ...state,
-        articles: [...state.articles, ...action.payload.articles],
+        posts: [...state.posts, ...action.payload.Posts],
+        Posts: [...state.Posts, ...action.payload.Posts],
+        articles: [...state.articles, ...action.payload.Posts],
         hasMore: action.payload.hasMore,
         loading: false,
-        currentOffset: state.currentOffset + action.payload.articles.length,
+        currentOffset: state.currentOffset + action.payload.Posts.length,
+      };
+    case "SET_FEATURED_Post":
+      return {
+        ...state,
+        featuredPost: action.payload,
+        featuredArticle: action.payload,
       };
     case "SET_FEATURED_ARTICLE":
-      return { ...state, featuredArticle: action.payload };
+      return {
+        ...state,
+        featuredPost: action.payload,
+        featuredArticle: action.payload,
+      };
     case "SET_SEARCH_TERM":
       return { ...state, searchTerm: action.payload };
     case "SET_SELECTED_CATEGORY":
@@ -96,35 +114,40 @@ function articleReducer(
   }
 }
 
-interface ArticleContextType {
-  state: ArticleState;
-  loadArticles: () => Promise<void>;
+interface PostContextType {
+  state: PostState;
+  loadPosts: () => Promise<void>;
+  loadMorePosts: () => Promise<void>;
   loadMoreArticles: () => Promise<void>;
+  searchPosts: (_searchTerm: string) => Promise<void>;
   searchArticles: (_searchTerm: string) => Promise<void>;
   setSelectedCategory: (_category: string) => void;
-  getFilteredArticles: () => ArticleDisplayData[];
+  getFilteredPosts: () => PostDisplayData[];
+  getFilteredArticles: () => PostDisplayData[];
 }
 
-const ArticleContext = createContext<ArticleContextType | null>(null);
+const PostContext = createContext<PostContextType | null>(null);
 
-// Exposes the article context so components can read and update article state.
-export function useArticles() {
-  const context = useContext(ArticleContext);
+// Exposes the Post context so components can read and update Post state.
+export function usePosts() {
+  const context = useContext(PostContext);
   if (!context) {
-    throw new Error("useArticles must be used within an ArticleProvider");
+    throw new Error("usePosts must be used within an PostProvider");
   }
   return context;
 }
 
-interface ArticleProviderProps {
+interface PostProviderProps {
   children: React.ReactNode;
 }
 
-// Provides Article Provider context to the component tree.
-export function ArticleProvider({ children }: ArticleProviderProps) {
-  const [state, dispatch] = useReducer(articleReducer, initialState);
+export type ArticleDisplayData = PostDisplayData;
 
-  const loadArticles = useCallback(
+// Provides Post Provider context to the component tree.
+export function PostProvider({ children }: PostProviderProps) {
+  const [state, dispatch] = useReducer(PostReducer, initialState);
+
+  const loadPosts = useCallback(
     async (reset = false) => {
       dispatch({ type: "SET_LOADING", payload: true });
       dispatch({ type: "SET_ERROR", payload: null });
@@ -141,35 +164,35 @@ export function ArticleProvider({ children }: ArticleProviderProps) {
           ...(state.searchTerm && { search: state.searchTerm }),
         });
 
-        const response = await fetch(`/api/articles?${params}`);
+        const response = await fetch(`/api/posts?${params}`);
         if (!response.ok) {
-          throw new Error("Failed to fetch articles");
+          throw new Error("Failed to fetch Posts");
         }
 
         const data = await response.json();
 
         if (reset || offset === 0) {
           dispatch({
-            type: "SET_ARTICLES",
+            type: "SET_PostS",
             payload: {
-              articles: data.articles,
+              Posts: data.Posts,
               total: data.total,
               hasMore: data.hasMore,
             },
           });
 
-          // Set featured article (first article)
-          if (data.articles.length > 0) {
+          // Set featured Post (first Post)
+          if (data.Posts.length > 0) {
             dispatch({
-              type: "SET_FEATURED_ARTICLE",
-              payload: data.articles[0],
+              type: "SET_FEATURED_Post",
+              payload: data.Posts[0],
             });
           }
         } else {
           dispatch({
-            type: "APPEND_ARTICLES",
+            type: "APPEND_PostS",
             payload: {
-              articles: data.articles,
+              Posts: data.Posts,
               hasMore: data.hasMore,
             },
           });
@@ -184,55 +207,59 @@ export function ArticleProvider({ children }: ArticleProviderProps) {
     [state.currentOffset, state.searchTerm]
   );
 
-  const loadMoreArticles = useCallback(async () => {
+  const loadMorePosts = useCallback(async () => {
     if (!state.hasMore || state.loading) return;
-    await loadArticles(false);
-  }, [state.hasMore, state.loading, loadArticles]);
+    await loadPosts(false);
+  }, [state.hasMore, state.loading, loadPosts]);
 
-  const searchArticles = useCallback(
+  const searchPosts = useCallback(
     async (searchTerm: string) => {
       dispatch({ type: "SET_SEARCH_TERM", payload: searchTerm });
-      await loadArticles(true);
+      await loadPosts(true);
     },
-    [loadArticles]
+    [loadPosts]
   );
 
   const setSelectedCategory = useCallback((category: string) => {
     dispatch({ type: "SET_SELECTED_CATEGORY", payload: category });
   }, []);
 
-  const getFilteredArticles = useCallback(() => {
-    let filtered = state.articles;
+  const getFilteredPosts = useCallback(() => {
+    let filtered = state.posts.length ? state.posts : state.Posts;
 
-    // Exclude featured article from the list to avoid duplication
-    if (state.featuredArticle) {
-      filtered = filtered.filter(
-        article => article.id !== state.featuredArticle!.id
-      );
+    // Exclude featured Post from the list to avoid duplication
+    if (state.featuredPost) {
+      filtered = filtered.filter(Post => Post.id !== state.featuredPost!.id);
     }
 
     // Apply category filter (client-side filtering)
     if (state.selectedCategory !== "All Categories") {
       filtered = filtered.filter(
-        article => article.category === state.selectedCategory
+        Post => Post.category === state.selectedCategory
       );
     }
 
     return filtered;
-  }, [state.articles, state.selectedCategory, state.featuredArticle]);
+  }, [state.posts, state.Posts, state.selectedCategory, state.featuredPost]);
 
-  const contextValue: ArticleContextType = {
+  const getFilteredArticles = getFilteredPosts;
+
+  const contextValue: PostContextType = {
     state,
-    loadArticles,
-    loadMoreArticles,
-    searchArticles,
+    loadPosts,
+    loadMorePosts,
+    loadMoreArticles: loadMorePosts,
+    searchPosts,
+    searchArticles: searchPosts,
     setSelectedCategory,
+    getFilteredPosts,
     getFilteredArticles,
   };
 
   return (
-    <ArticleContext.Provider value={contextValue}>
-      {children}
-    </ArticleContext.Provider>
+    <PostContext.Provider value={contextValue}>{children}</PostContext.Provider>
   );
 }
+
+export const ArticleProvider = PostProvider;
+export const useArticles = usePosts;
