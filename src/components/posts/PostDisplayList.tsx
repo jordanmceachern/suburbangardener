@@ -2,10 +2,10 @@
 
 import React from "react";
 import Image from "next/image";
-import PostDisplayCard from "./PostDisplayCard";
+import PostDisplayCard, { type PostDisplayData } from "./PostDisplayCard";
 import LoadingSpinner from "../LoadingSpinner";
-import { articleListStyles } from "../../lib/tailwind";
-import { useArticles } from "../../contexts/ArticleContext";
+import { PostListStyles } from "../../lib/tailwind";
+import { usePosts } from "../../contexts/ArticleContext";
 
 interface PostDisplayListProps {
   className?: string;
@@ -15,21 +15,21 @@ interface PostDisplayListProps {
 export default function PostDisplayList({
   className = "",
 }: PostDisplayListProps) {
-  const { state, loadMoreArticles, getFilteredArticles } = useArticles();
+  const { state, loadMorePosts, getFilteredPosts } = usePosts();
 
-  // Get articles filtered by category (client-side filtering)
-  const displayedArticles = getFilteredArticles();
+  // Get Posts filtered by category (client-side filtering)
+  const displayedPosts = getFilteredPosts();
 
-  if (state.loading && state.articles.length === 0) {
+  if (state.loading && state.Posts.length === 0) {
     return (
       <div className={className}>
-        <div className={articleListStyles.section}>
+        <div className={PostListStyles.section}>
           {Array.from({ length: 6 }).map((_, index) => (
-            <div key={index} className={articleListStyles.skeletonCard}>
-              <div className={articleListStyles.skeletonBlock} />
-              <div className={articleListStyles.skeletonLine} />
-              <div className={articleListStyles.skeletonMeta} />
-              <div className={articleListStyles.skeletonMetaShort} />
+            <div key={index} className={PostListStyles.skeletonCard}>
+              <div className={PostListStyles.skeletonBlock} />
+              <div className={PostListStyles.skeletonLine} />
+              <div className={PostListStyles.skeletonMeta} />
+              <div className={PostListStyles.skeletonMetaShort} />
             </div>
           ))}
         </div>
@@ -39,57 +39,57 @@ export default function PostDisplayList({
 
   return (
     <div className={className}>
-      {!state.loading && displayedArticles.length === 0 && (
-        <div className={articleListStyles.emptyWrapper}>
+      {!state.loading && displayedPosts.length === 0 && (
+        <div className={PostListStyles.emptyWrapper}>
           <Image
             alt="a ruined squished tomato on the ground"
-            className={articleListStyles.emptyImage}
+            className={PostListStyles.emptyImage}
             height={400}
             width={400}
             src="https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1755004794/SuburbanGardener/toflato_l0dkqy.jpg"
           />
-          <p className={articleListStyles.emptyText}>
-            Sorry! We encountered an issue while trying to fetch our articles
-            for you, please come back to check again later.
+          <p className={PostListStyles.emptyText}>
+            Sorry! An error occurred while trying to fetch the community posts,
+            please come back to check again later.
           </p>
         </div>
       )}
 
-      {displayedArticles.length > 0 && (
-        <div className={articleListStyles.section}>
-          {displayedArticles.map(article => (
-            <PostDisplayCard key={article.id} article={article} />
+      {displayedPosts.length > 0 && (
+        <div className={PostListStyles.section}>
+          {displayedPosts.map((post: PostDisplayData) => (
+            <PostDisplayCard key={post.id} Post={post} />
           ))}
         </div>
       )}
 
       {state.hasMore && (
-        <div className={articleListStyles.loadMoreWrap}>
+        <div className={PostListStyles.loadMoreWrap}>
           <button
-            onClick={loadMoreArticles}
+            onClick={loadMorePosts}
             disabled={state.loading}
-            className={articleListStyles.loadMoreButton}
+            className={PostListStyles.loadMoreButton}
           >
             {state.loading ? (
               <LoadingSpinner size="sm" text="Loading..." />
             ) : (
-              `Load More Articles`
+              `Load More Posts`
             )}
           </button>
         </div>
       )}
 
-      {state.loading && state.articles.length > 0 && (
-        <div className={`${articleListStyles.section} mt-6`}>
+      {state.loading && state.Posts.length > 0 && (
+        <div className={`${PostListStyles.section} mt-6`}>
           {Array.from({ length: 3 }).map((_, index) => (
             <div
               key={`loading-${index}`}
-              className={articleListStyles.skeletonCard}
+              className={PostListStyles.skeletonCard}
             >
-              <div className={articleListStyles.skeletonBlock} />
-              <div className={articleListStyles.skeletonLine} />
-              <div className={articleListStyles.skeletonMeta} />
-              <div className={articleListStyles.skeletonMetaShort} />
+              <div className={PostListStyles.skeletonBlock} />
+              <div className={PostListStyles.skeletonLine} />
+              <div className={PostListStyles.skeletonMeta} />
+              <div className={PostListStyles.skeletonMetaShort} />
             </div>
           ))}
         </div>
@@ -97,7 +97,7 @@ export default function PostDisplayList({
 
       {state.error && (
         <div className="mt-8 text-center">
-          <p className={articleListStyles.errorText}>{state.error}</p>
+          <p className={PostListStyles.errorText}>{state.error}</p>
         </div>
       )}
     </div>

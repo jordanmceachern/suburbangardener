@@ -22,7 +22,7 @@ exports[`PostDisplayList Component should match DOM snapshot 1`] = `
     <p
       class="text-xl text-foreground-light dark:text-foreground-dark"
     >
-      Sorry! We encountered an issue while trying to fetch our articles for you, please come back to check again later.
+      Sorry! An error occurred while trying to fetch the community posts, please come back to check again later.
     </p>
   </div>
 </div>

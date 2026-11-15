@@ -24,7 +24,7 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
           <p
             class="text-lg text-start text-neutral-600 dark:text-neutral-200 max-w-2xl mx-auto"
           >
-            Discover expert insights, seasonal tips, and in-depth guides for successful suburban gardening.
+            Check out the latest gardening posts from our community, or share something from your own gardening journey.
           </p>
           <div
             class="mt-6 flex justify-center"
@@ -62,7 +62,7 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
             <p
               class="text-xl text-foreground-light dark:text-foreground-dark"
             >
-              Sorry! We encountered an issue while trying to fetch our articles for you, please come back to check again later.
+              Sorry! An error occurred while trying to fetch the community posts, please come back to check again later.
             </p>
           </div>
           <div

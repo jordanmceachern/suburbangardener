@@ -14,8 +14,8 @@ export default function PostsPageHeader({
     <div className={cn(PostPageHeaderStyles.wrapper, className)}>
       <h1 className={PostPageHeaderStyles.title}>Gardening Posts</h1>
       <p className={PostPageHeaderStyles.copy}>
-        Discover expert insights, seasonal tips, and in-depth guides for
-        successful suburban gardening.
+        Check out the latest gardening posts from our community, or share
+        something from your own gardening journey.
       </p>
       <div className={PostPageHeaderStyles.actions}>
         <Link href="/posts/new" className={buttonStyles.primary}>
