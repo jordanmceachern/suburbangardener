@@ -1,24 +1,29 @@
 import React from "react";
-import type { ArticleDisplayData } from "./PostDisplayCard";
+import { cn, recentPostsStyles } from "../../lib/tailwind";
+import type { PostDisplayData } from "./PostDisplayCard";
 
 interface RecentPostsProps {
-  articles: ArticleDisplayData[];
+  Posts?: PostDisplayData[];
+  articles?: PostDisplayData[];
   className?: string;
 }
 
 // Renders the RecentPosts UI.
 export default function RecentPosts({
+  Posts,
   articles,
   className = "",
 }: RecentPostsProps) {
+  const recentPosts = Posts ?? articles ?? [];
+
   return (
-    <div className={`recent-articles ${className}`}>
-      <h2 className="text-xl font-semibold mb-4">Recent Posts</h2>
-      <div className="space-y-3">
-        {articles.slice(0, 5).map(article => (
-          <div key={article.id} className="border-b border-gray-200 pb-2">
-            <h3 className="font-medium text-sm">{article.title}</h3>
-            <p className="text-xs text-gray-600">{article.publishedDate}</p>
+    <div className={cn(recentPostsStyles.shell, className)}>
+      <h2 className={recentPostsStyles.title}>Recent Posts</h2>
+      <div className={recentPostsStyles.list}>
+        {recentPosts.slice(0, 5).map(Post => (
+          <div key={Post.id} className={recentPostsStyles.item}>
+            <h3 className={recentPostsStyles.itemTitle}>{Post.title}</h3>
+            <p className={recentPostsStyles.itemMeta}>{Post.publishedDate}</p>
           </div>
         ))}
       </div>

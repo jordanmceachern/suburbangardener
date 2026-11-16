@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import SearchPosts from "@/components/posts/SearchPosts";
-import { ArticleProvider } from "@/contexts/ArticleContext";
+import { ArticleProvider } from "@/contexts/PostContext";
 
 describe("SearchPosts Component", () => {
   const mockProps = {

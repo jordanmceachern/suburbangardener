@@ -9,7 +9,7 @@ import PostSidebar from "@/components/posts/PostSidebar";
 import PostComments from "@/components/posts/PostComments";
 import ViewAllPostsButton from "@/components/posts/ViewAllPostsButton";
 import { useAuth } from "@/lib/auth-nextauth";
-import { isAdminEmail } from "@/lib/articleSecurity";
+import { isAdminEmail } from "@/lib/postSecurity";
 import { PostDetailStyles, cn } from "@/lib/tailwind";
 
 type PostRecord = {

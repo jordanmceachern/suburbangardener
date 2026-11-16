@@ -1,1 +1,1 @@
-export * from "./articleSecurity";
+export * from "./postSecurity";

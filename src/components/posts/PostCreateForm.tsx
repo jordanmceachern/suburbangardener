@@ -3,9 +3,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-nextauth";
-import { normalizeCategoryValue } from "@/lib/articleSecurity";
+import {
+  DEFAULT_POST_CATEGORY,
+  POST_CATEGORY_OPTIONS,
+  normalizeCategoryValue,
+} from "@/lib/postSecurity";
 import { validateImageUpload } from "@/lib/imageUpload";
-import { PostFormStyles, buttonStyles, cn, searchStyles } from "@/lib/tailwind";
+import {
+  POST_FORM_COPY,
+  PostFormStyles,
+  cn,
+  searchStyles,
+} from "@/lib/tailwind";
 
 const MAX_POST_BODY_CHARACTERS = 5000;
 const MAX_SUMMARY_CHARACTERS = 100;
@@ -13,7 +22,7 @@ const MAX_SUMMARY_CHARACTERS = 100;
 const initialForm = {
   title: "",
   summary: "",
-  category: "General",
+  category: DEFAULT_POST_CATEGORY,
   coverImageUrl: "",
   youtubeUrl: "",
   contentHtml: "",
@@ -62,7 +71,9 @@ export default function PostCreateForm() {
         setForm({
           title: data.post.title || "",
           summary: data.post.summary || data.post.excerpt || "",
-          category: normalizeCategoryValue(data.post.category || "General"),
+          category: normalizeCategoryValue(
+            data.post.category || DEFAULT_POST_CATEGORY
+          ),
           coverImageUrl: data.post.coverImageUrl || "",
           youtubeUrl: data.post.youtubeUrl || "",
           contentHtml: data.post.contentHtml || initialForm.contentHtml,
@@ -309,7 +320,7 @@ export default function PostCreateForm() {
   if (!isAuthenticated) {
     return (
       <div className={PostFormStyles.emptyState}>
-        Sign in to create a gardening Post.
+        {POST_FORM_COPY.emptyState}
       </div>
     );
   }
@@ -323,7 +334,9 @@ export default function PostCreateForm() {
     >
       <div className={PostFormStyles.header}>
         <h1 id="post-form-title" className={PostFormStyles.title}>
-          {isEditing ? "Edit your Garden Post" : "Write a Gardening Post"}
+          {isEditing
+            ? POST_FORM_COPY.formTitle.edit
+            : POST_FORM_COPY.formTitle.create}
         </h1>
       </div>
 
@@ -340,22 +353,26 @@ export default function PostCreateForm() {
 
       <div className={PostFormStyles.grid}>
         <label htmlFor="post-title" className={PostFormStyles.fieldFull}>
-          <span className={PostFormStyles.label}>Title</span>
+          <span className={PostFormStyles.label}>
+            {POST_FORM_COPY.labels.title}
+          </span>
           <input
             id="post-title"
             name="title"
             value={form.title}
             onChange={event => updateField("title", event.target.value)}
             className={PostFormStyles.input}
-            placeholder="Give your post a searchable name"
+            placeholder={POST_FORM_COPY.placeholders.title}
             required
             aria-required="true"
           />
         </label>
 
         <label htmlFor="post-category" className={PostFormStyles.field}>
-          <span className={PostFormStyles.label}>Category</span>
-          <div className="relative">
+          <span className={PostFormStyles.label}>
+            {POST_FORM_COPY.labels.category}
+          </span>
+          <div className={PostFormStyles.selectWrap}>
             <select
               id="post-category"
               name="category"
@@ -363,21 +380,18 @@ export default function PostCreateForm() {
               onChange={event => updateField("category", event.target.value)}
               required
               aria-required="true"
-              className={cn(
-                "auth-input w-full appearance-none pr-10 cursor-pointer",
-                "focus:border-primary-500"
-              )}
+              className={PostFormStyles.selectInput}
             >
-              <option>General</option>
-              <option>Fruit & Veg</option>
-              <option>Flowers</option>
-              <option>Soil</option>
-              <option>Pest Control</option>
+              {POST_CATEGORY_OPTIONS.map(option => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
             </select>
             <svg
               className={cn(
                 searchStyles.dropdownIcon,
-                "pointer-events-none absolute right-3 top-1/2 -translate-y-1/2"
+                PostFormStyles.selectIcon
               )}
               fill="none"
               stroke="currentColor"
@@ -396,7 +410,7 @@ export default function PostCreateForm() {
 
         <div className={PostFormStyles.field}>
           <label htmlFor="cover-image" className={PostFormStyles.label}>
-            Cover Image
+            {POST_FORM_COPY.labels.coverImage}
           </label>
           <input
             id="cover-image"
@@ -411,30 +425,21 @@ export default function PostCreateForm() {
             aria-describedby="cover-image-help"
           />
           <p id="cover-image-help" className={PostFormStyles.previewHint}>
-            Upload a JPG, PNG, GIF, or WebP image up to 10 MB.
+            {POST_FORM_COPY.uploadHelp}
           </p>
-
-          {form.coverImageUrl ? (
-            <div className={PostFormStyles.previewWrap}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={form.coverImageUrl}
-                alt="Cover preview"
-                className={PostFormStyles.previewImage}
-              />
-            </div>
-          ) : null}
         </div>
 
         <label htmlFor="post-youtube" className={PostFormStyles.fieldFull}>
-          <span className={PostFormStyles.label}>YouTube</span>
+          <span className={PostFormStyles.label}>
+            {POST_FORM_COPY.labels.youtube}
+          </span>
           <input
             id="post-youtube"
             name="youtubeUrl"
             value={form.youtubeUrl}
             onChange={event => updateField("youtubeUrl", event.target.value)}
             className={PostFormStyles.input}
-            placeholder="https://www.youtube.com/watch?v=..."
+            placeholder={POST_FORM_COPY.placeholders.youtube}
             aria-describedby="youtube-help"
           />
         </label>
@@ -442,7 +447,9 @@ export default function PostCreateForm() {
 
       <div className={PostFormStyles.editorWrap}>
         <label htmlFor="post-summary" className={PostFormStyles.fieldFull}>
-          <span className={PostFormStyles.label}>Summary</span>
+          <span className={PostFormStyles.label}>
+            {POST_FORM_COPY.labels.summary}
+          </span>
           <textarea
             id="post-summary"
             name="summary"
@@ -456,7 +463,7 @@ export default function PostCreateForm() {
             }}
             rows={3}
             className={PostFormStyles.textarea}
-            placeholder="How would you describe your post?"
+            placeholder={POST_FORM_COPY.placeholders.summary}
             required
             aria-required="true"
             aria-describedby="summary-character-counter"
@@ -471,11 +478,11 @@ export default function PostCreateForm() {
         </label>
 
         <div className={PostFormStyles.postBodyField}>
-          <div className="flex items-center gap-2">
+          <div className={PostFormStyles.toolbarRow}>
             <label htmlFor="post-body" className={PostFormStyles.label}>
-              Post Body
+              {POST_FORM_COPY.labels.postBody}
             </label>
-            <div className={`${PostFormStyles.editorToolbar} ms-4`}>
+            <div className={cn(PostFormStyles.editorToolbar, "ms-4")}>
               {editorButtons.map(button => (
                 <button
                   key={button.label}
@@ -504,7 +511,7 @@ export default function PostCreateForm() {
             </div>
           </div>
 
-          <div className="relative">
+          <div className={PostFormStyles.editorBodyWrap}>
             <textarea
               id="post-body"
               name="contentHtml"
@@ -522,7 +529,7 @@ export default function PostCreateForm() {
               aria-required="true"
               aria-describedby="post-body-character-counter"
               className={cn(PostFormStyles.editor, "block resize-none")}
-              placeholder="Share what you've learned in detail..."
+              placeholder={POST_FORM_COPY.placeholders.body}
             />
           </div>
           <div
@@ -539,28 +546,22 @@ export default function PostCreateForm() {
         <button
           type="button"
           onClick={() => router.push("/posts")}
-          className={cn(
-            buttonStyles.secondary,
-            "inline-flex items-center justify-center"
-          )}
+          className={PostFormStyles.cancelButton}
         >
-          Cancel
+          {POST_FORM_COPY.labels.cancel}
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className={cn(
-            buttonStyles.primary,
-            "inline-flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-60"
-          )}
+          className={PostFormStyles.submitButton}
         >
           {isSubmitting
             ? isEditing
-              ? "Saving..."
-              : "Publishing..."
+              ? POST_FORM_COPY.labels.savePending
+              : POST_FORM_COPY.labels.publishPending
             : isEditing
-              ? "Save Changes"
-              : "Publish Post"}
+              ? POST_FORM_COPY.labels.save
+              : POST_FORM_COPY.labels.publish}
         </button>
       </div>
     </form>

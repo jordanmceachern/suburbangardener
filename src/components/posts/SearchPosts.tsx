@@ -1,7 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { normalizeCategoryValue } from "@/lib/articleSecurity";
+import {
+  ALL_POST_CATEGORIES,
+  DEFAULT_POST_CATEGORY,
+  normalizeCategoryValue,
+} from "@/lib/postSecurity";
 import { cn, searchStyles } from "../../lib/tailwind";
 import { usePosts } from "../../contexts/PostContext";
 
@@ -18,11 +22,11 @@ export default function SearchPosts({ className = "" }: SearchPostsProps) {
 
   // Get unique categories from Posts
   const categories = [
-    "All Categories",
+    ALL_POST_CATEGORIES,
     ...Array.from(
       new Set(
         state.Posts.map(Post =>
-          normalizeCategoryValue(Post.category || "General")
+          normalizeCategoryValue(Post.category || DEFAULT_POST_CATEGORY)
         )
       )
     ),
@@ -70,9 +74,9 @@ export default function SearchPosts({ className = "" }: SearchPostsProps) {
   };
 
   const filteredPosts = state.Posts.filter(Post => {
-    if (state.selectedCategory === "All Categories") return true;
+    if (state.selectedCategory === ALL_POST_CATEGORIES) return true;
     return (
-      normalizeCategoryValue(Post.category || "General") ===
+      normalizeCategoryValue(Post.category || DEFAULT_POST_CATEGORY) ===
       state.selectedCategory
     );
   });
@@ -85,14 +89,14 @@ export default function SearchPosts({ className = "" }: SearchPostsProps) {
       <h3 className={searchStyles.title}>Search Posts</h3>
 
       <div className={searchStyles.container}>
-        <div className="relative">
+        <div className={searchStyles.inputWrap}>
           <input
             type="text"
             placeholder="Search posts..."
             value={localSearchTerm}
             onChange={e => setLocalSearchTerm(e.target.value)}
             onKeyPress={handleKeyPress}
-            className={cn("auth-input", searchStyles.input)}
+            className={searchStyles.input}
           />
           <button
             onClick={handleSearch}
@@ -118,11 +122,11 @@ export default function SearchPosts({ className = "" }: SearchPostsProps) {
           </button>
         </div>
 
-        <div ref={dropdownRef} className="relative">
+        <div ref={dropdownRef} className={searchStyles.dropdownWrap}>
           <button
             type="button"
             onClick={toggleCategoryFilter}
-            className={cn("auth-input", searchStyles.dropdownButton)}
+            className={searchStyles.dropdownButton}
             aria-haspopup="listbox"
             aria-expanded={isDropdownOpen}
             aria-label="Select category"
@@ -170,7 +174,8 @@ export default function SearchPosts({ className = "" }: SearchPostsProps) {
         </div>
 
         <div className={cn(searchStyles.results, "text-base")}>
-          {state.searchTerm || state.selectedCategory !== "All Categories" ? (
+          {state.searchTerm ||
+          state.selectedCategory !== ALL_POST_CATEGORIES ? (
             <span className="text-base">
               Found {filteredPosts.length} posts
               {state.searchTerm && ` for "${state.searchTerm}"`}

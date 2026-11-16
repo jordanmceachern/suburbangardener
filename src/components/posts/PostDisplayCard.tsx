@@ -61,11 +61,11 @@ export default function PostDisplayCard({
         />
       </div>
       <div className={PostCardStyles.content}>
-        <div className={cn(PostCardStyles.meta, "justify-between gap-3")}>
+        <div className={PostCardStyles.meta}>
           <span className={PostCardStyles.metaText}>
             {maskDisplayName(post.author)} · {post.publishedDate}
           </span>
-          <span className="inline-flex items-center gap-1 rounded-full bg-slate-200 px-2 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-100">
+          <span className={PostCardStyles.voteBadge}>
             ▲ {voteScore}
             {voteCount > 0 ? ` · ${voteCount}` : ""}
           </span>

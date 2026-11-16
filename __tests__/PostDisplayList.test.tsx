@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import PostDisplayList from "@/components/posts/PostDisplayList";
-import { ArticleProvider } from "@/contexts/ArticleContext";
+import { ArticleProvider } from "@/contexts/PostContext";
 
 describe("PostDisplayList Component", () => {
   const mockProps = {

@@ -6,7 +6,7 @@ import React, {
   useReducer,
   useCallback,
 } from "react";
-import { normalizeCategoryValue } from "@/lib/articleSecurity";
+import { normalizeCategoryValue } from "@/lib/postSecurity";
 import type { PostDisplayData } from "../components/posts/PostDisplayCard";
 
 interface PostState {

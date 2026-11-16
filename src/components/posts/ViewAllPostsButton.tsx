@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { buttonStyles, cn } from "@/lib/tailwind";
+import { buttonStyles, cn, viewAllPostsStyles } from "@/lib/tailwind";
 
 interface ViewAllPostsButtonProps {
   className?: string;
@@ -20,7 +20,7 @@ export default function ViewAllPostsButton({
 
   const combinedClasses = cn(
     variantClasses,
-    "inline-flex items-center justify-center gap-2 w-fit",
+    viewAllPostsStyles.button,
     className
   );
 
@@ -28,7 +28,7 @@ export default function ViewAllPostsButton({
     <Link href="/posts" className={combinedClasses}>
       {arrowDirection === "left" && (
         <svg
-          className="w-5 h-5 mr-2"
+          className={viewAllPostsStyles.iconLeft}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -44,7 +44,7 @@ export default function ViewAllPostsButton({
       {text}
       {arrowDirection === "right" && (
         <svg
-          className="w-5 h-5 ml-2"
+          className={viewAllPostsStyles.iconRight}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

@@ -2,11 +2,14 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import PostCreateForm from "../src/components/posts/PostCreateForm";
 import {
+  ALL_POST_CATEGORIES,
+  DEFAULT_POST_CATEGORY,
+  POST_CATEGORY_OPTIONS,
   canEditPost,
   isAdminEmail,
   maskDisplayName,
   sanitizeHtml,
-} from "../src/lib/articleSecurity";
+} from "../src/lib/postSecurity";
 import { PostFormStyles } from "../src/lib/tailwind";
 
 jest.mock("../src/lib/auth-nextauth", () => ({
@@ -54,6 +57,18 @@ describe("post security helpers", () => {
         PostAuthorUserId: "user-123",
       })
     ).toBe(false);
+  });
+
+  it("exposes shared category constants instead of duplicating category strings in components", () => {
+    expect(DEFAULT_POST_CATEGORY).toBe("General");
+    expect(ALL_POST_CATEGORIES).toBe("All Categories");
+    expect(POST_CATEGORY_OPTIONS).toEqual([
+      "General",
+      "Fruit & Veg",
+      "Flowers",
+      "Soil",
+      "Pest Control",
+    ]);
   });
 
   it("removes unsafe HTML before storage", () => {

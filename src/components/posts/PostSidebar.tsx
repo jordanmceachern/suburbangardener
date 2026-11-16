@@ -143,7 +143,12 @@ export default function PostSidebar(props: any) {
           <h3 className={PostSidebarStyles.sectionTitle}>Recent Posts</h3>
 
           {loading && (
-            <div className={`${PostSidebarStyles.skeletonWrap} mb-8`}>
+            <div
+              className={cn(
+                PostSidebarStyles.skeletonWrap,
+                PostSidebarStyles.sectionSpacing
+              )}
+            >
               {Array.from({ length: maxPosts }).map((_, index) => (
                 <div
                   key={`recent-skeleton-${index}`}
@@ -162,11 +167,23 @@ export default function PostSidebar(props: any) {
           )}
 
           {error && (
-            <p className={`${PostSidebarStyles.errorText} mb-8`}>{error}</p>
+            <p
+              className={cn(
+                PostSidebarStyles.errorText,
+                PostSidebarStyles.sectionErrorSpacing
+              )}
+            >
+              {error}
+            </p>
           )}
 
           {!loading && !error && (
-            <div className={`${PostSidebarStyles.listWrap} mb-8`}>
+            <div
+              className={cn(
+                PostSidebarStyles.listWrap,
+                PostSidebarStyles.sectionSpacing
+              )}
+            >
               {recentPosts.map((Post, index) => (
                 <PostListItem
                   key={Post.id}

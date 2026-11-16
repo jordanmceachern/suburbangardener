@@ -6,7 +6,7 @@ import {
   isValidYouTubeUrl,
   normalizeCategoryValue,
   sanitizeHtml,
-} from "@/lib/articleSecurity";
+} from "@/lib/postSecurity";
 import { prisma } from "@/lib/prisma";
 
 function slugify(value: string) {

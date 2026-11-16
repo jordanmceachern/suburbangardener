@@ -117,13 +117,13 @@ export default function PostComments({
             className={PostDetailStyles.textarea}
             placeholder="Share your thoughts on this Post..."
           />
-          <div className="flex justify-end">
+          <div className={PostDetailStyles.actionRow}>
             <button
               type="submit"
               disabled={submitting || !commentBody.trim()}
               className={cn(
                 buttonStyles.primary,
-                "inline-flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-60"
+                PostDetailStyles.primaryAction
               )}
             >
               {submitting ? "Posting..." : "Post comment"}
@@ -139,7 +139,7 @@ export default function PostComments({
       {error ? <div className={PostDetailStyles.mutedText}>{error}</div> : null}
 
       {loading ? (
-        <div className="flex justify-center py-4">
+        <div className={PostDetailStyles.loadingWrap}>
           <LoadingSpinner
             size="sm"
             text="Loading comments..."
@@ -156,7 +156,7 @@ export default function PostComments({
             <div key={comment.id} className={PostDetailStyles.commentItem}>
               <div className={PostDetailStyles.commentMeta}>
                 <strong>{comment.author}</strong>
-                <span className="mx-2">•</span>
+                <span className={PostDetailStyles.commentDot}>•</span>
                 <span>
                   {new Date(comment.createdAt).toLocaleDateString("en-US", {
                     month: "short",

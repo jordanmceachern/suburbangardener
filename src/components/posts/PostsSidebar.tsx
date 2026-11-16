@@ -123,7 +123,7 @@ export default function PostsSidebar(props: any) {
         </button>
 
         <div className={PostSidebarStyles.content}>
-          <div className="mb-8">
+          <div className={PostSidebarStyles.searchWrap}>
             <SearchPosts />
           </div>
 

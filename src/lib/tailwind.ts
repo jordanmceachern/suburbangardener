@@ -66,13 +66,15 @@ export const searchStyles = {
   title:
     "text-xl font-semibold text-foreground-light dark:text-foreground-dark mb-4",
   container: "space-y-4",
+  inputWrap: "relative",
+  dropdownWrap: "relative",
   input:
-    "block w-full pl-3 pr-12 py-2.5 h-10 text-base border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 dark:text-neutral-900 placeholder:text-neutral-500 dark:placeholder:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-text hover:border-slate-400 dark:hover:border-primary-300 transition-colors",
+    "auth-input block w-full pl-3 pr-12 py-2.5 h-10 text-base border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 dark:text-neutral-900 placeholder:text-neutral-500 dark:placeholder:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-text hover:border-slate-400 dark:hover:border-primary-300 transition-colors",
   searchButton:
     "absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-900 dark:text-neutral-900 hover:text-slate-600 dark:hover:text-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed",
   inputIcon: "h-4 w-4",
   dropdownButton:
-    "w-full px-3 py-2.5 h-10 min-h-[2.5rem] text-lg border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 dark:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-primary-300 transition-colors text-left flex items-center justify-between",
+    "auth-input w-full px-3 py-2.5 h-10 min-h-[2.5rem] text-lg border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 dark:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-primary-300 transition-colors text-left flex items-center justify-between",
   dropdownIcon:
     "h-4 w-4 text-neutral-900 dark:text-neutral-900 transition-transform",
   dropdownMenu:
@@ -87,6 +89,7 @@ export const searchStyles = {
 
 export const PostListStyles = {
   section: "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6",
+  sectionLoadingMore: "mt-6",
   skeletonCard: "animate-pulse",
   skeletonBlock:
     "bg-neutral-200 dark:bg-neutral-700 rounded-lg h-48 sm:h-64 mb-4",
@@ -99,6 +102,7 @@ export const PostListStyles = {
   loadMoreWrap: "mt-8 text-center",
   loadMoreButton:
     "bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 text-white px-8 py-3 rounded-lg font-medium transition-colors inline-flex items-center gap-2",
+  errorWrap: "mt-8 text-center",
   errorText: "text-red-600 dark:text-red-400",
 } as const;
 
@@ -153,6 +157,9 @@ export const PostSidebarStyles = {
   relatedEmpty: "text-sm text-slate-600 dark:text-slate-300 italic",
   divider: "my-6 border-0 border-t border-primary-200 dark:border-tertiary-700",
   listWrap: "space-y-4",
+  sectionSpacing: "mb-8",
+  sectionErrorSpacing: "mb-8",
+  searchWrap: "mb-8",
 } as const;
 
 export const PostPageHeaderStyles = {
@@ -160,6 +167,12 @@ export const PostPageHeaderStyles = {
   title: "text-4xl font-bold text-primary-900 dark:text-primary-100 mb-4",
   copy: "text-xl text-start text-foreground-light dark:text-foreground-dark max-w-2xl mx-auto",
   actions: "mt-6 flex justify-center",
+} as const;
+
+export const viewAllPostsStyles = {
+  button: "inline-flex items-center justify-center gap-2 w-fit",
+  iconLeft: "w-5 h-5 mr-2",
+  iconRight: "w-5 h-5 ml-2",
 } as const;
 
 export const bannerStyles = {
@@ -239,15 +252,78 @@ export const PostCardStyles = {
   imageWrap: "h-48 sm:h-64 bg-slate-800",
   image: "w-full h-full rounded-b-none",
   content: "px-6 pb-6 py-4 flex flex-col flex-grow",
-  meta: "flex items-center mb-2",
+  meta: "flex items-center mb-2 justify-between gap-3",
   metaText: "text-neutral-700 dark:text-neutral-200 text-sm",
   title:
     "text-xl lg:text-2xl xl:text-3xl font-bold text-foreground-light dark:text-foreground-dark mb-3",
   excerpt:
     "text-foreground-light dark:text-foreground-dark text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3",
+  voteBadge:
+    "inline-flex items-center gap-1 rounded-full bg-slate-200 px-2 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-100",
   button:
     "bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-500 dark:hover:bg-tertiary-600 text-neutral-900 dark:text-neutral-900 px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center",
   buttonNarrow: "self-center",
+} as const;
+
+export const featuredPostStyles = {
+  wrapper: "",
+  skeletonCard: "animate-pulse",
+  skeletonBlock:
+    "bg-neutral-200 dark:bg-neutral-700 rounded-lg h-48 sm:h-64 mb-4",
+  skeletonLine: "bg-neutral-200 dark:bg-neutral-700 rounded h-8 mb-3",
+  skeletonMeta: "bg-neutral-200 dark:bg-neutral-700 rounded h-4 mb-2",
+  skeletonMetaShort:
+    "bg-neutral-200 dark:bg-neutral-700 rounded h-4 w-2/3 mb-4",
+  skeletonAction: "bg-neutral-200 dark:bg-neutral-700 rounded h-10 w-32",
+  imageClassName: "h-60 sm:h-80",
+  featuredTitleClassName: "sm:text-3xl md:text-3xl lg:text-3xl",
+} as const;
+
+export const recentPostsStyles = {
+  shell: "recent-articles ",
+  title: "text-xl font-semibold mb-4",
+  list: "space-y-3",
+  item: "border-b border-gray-200 pb-2",
+  itemTitle: "font-medium text-sm",
+  itemMeta: "text-xs text-gray-600",
+} as const;
+
+export const PostListItemStyles = {
+  item: "border-b border-slate-300 dark:border-slate-500 pb-4 ",
+  itemNoBorder: "",
+  title: "font-medium text-slate-800 dark:text-slate-200 mb-2",
+  titleLink:
+    "hover:text-primary-600 dark:hover:text-primary-300 transition-colors",
+  excerpt: "text-sm text-slate-600 dark:text-slate-300 mb-2",
+  date: "text-xs text-slate-500 dark:text-slate-300",
+} as const;
+
+export const POST_FORM_COPY = {
+  formTitle: {
+    create: "Write a Gardening Post",
+    edit: "Edit your Garden Post",
+  },
+  emptyState: "Sign in to create a gardening Post.",
+  labels: {
+    title: "Title",
+    category: "Category",
+    coverImage: "Cover Image",
+    youtube: "YouTube",
+    summary: "Summary",
+    postBody: "Post Body",
+    cancel: "Cancel",
+    publish: "Publish Post",
+    publishPending: "Publishing...",
+    save: "Save Changes",
+    savePending: "Saving...",
+  },
+  placeholders: {
+    title: "Give your post a searchable name",
+    youtube: "https://www.youtube.com/watch?v=...",
+    summary: "How would you describe your post?",
+    body: "Share what you've learned in detail...",
+  },
+  uploadHelp: "Upload a JPG, PNG, GIF, or WebP image up to 10 MB.",
 } as const;
 
 export const PostFormStyles = {
@@ -268,9 +344,15 @@ export const PostFormStyles = {
     "auth-input w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-primary-200 dark:bg-primary-100 dark:placeholder:text-neutral-600",
   textarea:
     "auth-input block w-full resize-none rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-primary-200 dark:bg-primary-100 dark:placeholder:text-neutral-600",
+  selectWrap: "relative",
+  selectInput:
+    "auth-input w-full appearance-none pr-10 cursor-pointer focus:border-primary-500",
+  selectIcon: "pointer-events-none absolute right-3 top-1/2 -translate-y-1/2",
   editorWrap: "space-y-3",
   postBodyField: "!mt-4 space-y-2 md:col-span-2",
+  toolbarRow: "flex items-center gap-2",
   editorToolbar: "flex flex-wrap items-center gap-2",
+  editorBodyWrap: "relative",
   editorButton:
     "h-auto rounded-md border-0 bg-tertiary-500 px-4 py-1 text-base font-medium text-neutral-900 shadow-sm transition hover:bg-tertiary-400 dark:bg-tertiary-500 dark:text-neutral-900 dark:hover:bg-tertiary-400",
   editor:
@@ -281,11 +363,16 @@ export const PostFormStyles = {
   previewHint:
     "mt-2 text-left text-base text-neutral-700 dark:text-neutral-200",
   actions: "flex justify-end gap-4",
-  cancelButton: buttonStyles.secondary,
+  cancelButton: cn(
+    buttonStyles.secondary,
+    "inline-flex items-center justify-center"
+  ),
   submitButton: cn(
     buttonStyles.primary,
     "inline-flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-60"
   ),
+  selectField: "relative",
+  fieldRow: "flex items-center gap-2",
   emptyState:
     "rounded-lg border border-primary-200 bg-primary-100 p-8 text-foreground-light dark:border-tertiary-700 dark:bg-tertiary-800 dark:text-foreground-dark",
 } as const;
@@ -327,8 +414,13 @@ export const PostDetailStyles = {
     "mb-6 space-y-3 rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-700/60",
   textarea:
     "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100",
+  actionRow: "flex justify-end",
+  loadingWrap: "flex justify-center py-4",
+  commentDot: "mx-2",
   mutedText: "text-sm text-foreground-light/80 dark:text-foreground-dark/80",
   inlineAction: "inline-flex items-center justify-center",
+  primaryAction:
+    "inline-flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-60",
   voteRow: "mb-8 flex gap-3",
   voteButton:
     "inline-flex items-center justify-center rounded-md border border-slate-300 bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600",

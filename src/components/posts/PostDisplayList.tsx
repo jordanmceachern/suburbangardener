@@ -4,8 +4,8 @@ import React from "react";
 import Image from "next/image";
 import PostDisplayCard, { type PostDisplayData } from "./PostDisplayCard";
 import LoadingSpinner from "../LoadingSpinner";
-import { PostListStyles } from "../../lib/tailwind";
-import { usePosts } from "../../contexts/ArticleContext";
+import { PostListStyles, cn } from "../../lib/tailwind";
+import { usePosts } from "../../contexts/PostContext";
 
 interface PostDisplayListProps {
   className?: string;
@@ -80,7 +80,12 @@ export default function PostDisplayList({
       )}
 
       {state.loading && state.Posts.length > 0 && (
-        <div className={`${PostListStyles.section} mt-6`}>
+        <div
+          className={cn(
+            PostListStyles.section,
+            PostListStyles.sectionLoadingMore
+          )}
+        >
           {Array.from({ length: 3 }).map((_, index) => (
             <div
               key={`loading-${index}`}
@@ -96,7 +101,7 @@ export default function PostDisplayList({
       )}
 
       {state.error && (
-        <div className="mt-8 text-center">
+        <div className={PostListStyles.errorWrap}>
           <p className={PostListStyles.errorText}>{state.error}</p>
         </div>
       )}

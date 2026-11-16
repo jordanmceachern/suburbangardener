@@ -8,7 +8,7 @@ import {
   maskDisplayName,
   normalizeCategoryValue,
   sanitizeHtml,
-} from "@/lib/articleSecurity";
+} from "@/lib/postSecurity";
 
 type PostMapEntry = {
   id: string;

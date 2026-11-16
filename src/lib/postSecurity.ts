@@ -1,3 +1,13 @@
+export const DEFAULT_POST_CATEGORY = "General";
+export const ALL_POST_CATEGORIES = "All Categories";
+export const POST_CATEGORY_OPTIONS = [
+  DEFAULT_POST_CATEGORY,
+  "Fruit & Veg",
+  "Flowers",
+  "Soil",
+  "Pest Control",
+] as const;
+
 export function normalizeEmail(value?: string | null): string {
   return String(value ?? "")
     .trim()
@@ -12,7 +22,7 @@ export function normalizeCategoryValue(value?: string | null): string {
   const trimmed = String(value ?? "").trim();
 
   if (!trimmed) {
-    return "General";
+    return DEFAULT_POST_CATEGORY;
   }
 
   const normalized = trimmed.toLowerCase();
