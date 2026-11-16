@@ -22,7 +22,7 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
             Gardening Posts
           </h1>
           <p
-            class="text-lg text-start text-neutral-600 dark:text-neutral-200 max-w-2xl mx-auto"
+            class="text-xl text-start text-foreground-light dark:text-foreground-dark max-w-2xl mx-auto"
           >
             Check out the latest gardening posts from our community, or share something from your own gardening journey.
           </p>
@@ -85,15 +85,15 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
       class=""
     >
       <div
-        class="bg-slate-100 dark:bg-slate-800 shadow-lg transition-all duration-300 ease-in-out relative h-screen pb-20 sm:pb-0 translate-x-0 opacity-100 border-l border-slate-300 dark:border-slate-600"
+        class="bg-primary-100 dark:bg-tertiary-800 shadow-lg transition-all duration-300 ease-in-out relative h-screen pb-20 sm:pb-0 translate-x-0 opacity-100 border-l border-primary-200 dark:border-tertiary-700"
       >
         <button
           aria-label="Hide recent posts"
-          class="absolute top-4 -left-10 bg-slate-200 dark:bg-slate-600 shadow-xl cursor-pointer hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors z-30 focus:outline-none focus:ring-2 focus:ring-primary-500 w-10 h-16 flex items-center justify-center rounded-l-md lg:hidden border-l border-t border-b border-slate-300 dark:border-slate-600"
+          class="absolute top-4 -left-10 bg-primary-100 dark:bg-tertiary-800 shadow-xl cursor-pointer hover:bg-primary-200 dark:hover:bg-tertiary-700 transition-colors z-30 focus:outline-none focus:ring-2 focus:ring-primary-500 w-10 h-16 flex items-center justify-center rounded-l-md lg:hidden border-l border-t border-b border-primary-200 dark:border-tertiary-700"
           type="button"
         >
           <svg
-            class="w-4 h-4 text-slate-600 dark:text-slate-300"
+            class="w-4 h-4 text-foreground-light dark:text-foreground-dark"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -116,7 +116,7 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
               class=""
             >
               <h3
-                class="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4"
+                class="text-xl font-semibold text-foreground-light dark:text-foreground-dark mb-4"
               >
                 Search Posts
               </h3>
@@ -127,13 +127,13 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
                   class="relative"
                 >
                   <input
-                    class="block w-full pl-3 pr-12 py-2.5 h-10 text-base border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-900 dark:placeholder-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-text hover:border-slate-400 dark:hover:border-slate-500 transition-colors"
+                    class="auth-input block w-full pl-3 pr-12 py-2.5 h-10 text-base border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 dark:text-neutral-900 placeholder:text-neutral-500 dark:placeholder:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-text hover:border-slate-400 dark:hover:border-primary-300 transition-colors"
                     placeholder="Search posts..."
                     type="text"
                     value=""
                   />
                   <button
-                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-900 dark:text-slate-100 hover:text-slate-600 dark:hover:text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-900 dark:text-neutral-900 hover:text-slate-600 dark:hover:text-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <svg
                       class="h-4 w-4"
@@ -157,7 +157,7 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
                     aria-expanded="false"
                     aria-haspopup="listbox"
                     aria-label="Select category"
-                    class="w-full px-3 py-2.5 h-10 text-base border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-slate-500 transition-colors text-left flex items-center justify-between"
+                    class="auth-input w-full px-3 py-2.5 h-10 text-base border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 dark:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-primary-300 transition-colors text-left flex items-center justify-between"
                     type="button"
                   >
                     <span
@@ -166,7 +166,7 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
                       All Categories
                     </span>
                     <svg
-                      class="h-4 w-4 text-slate-900 dark:text-slate-100 transition-transform"
+                      class="h-4 w-4 text-neutral-900 dark:text-neutral-900 transition-transform"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 20 20"
@@ -181,9 +181,11 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
                   </button>
                 </div>
                 <div
-                  class="text-xs text-slate-600 dark:text-slate-300"
+                  class="text-base text-foreground-light dark:text-foreground-dark text-base"
                 >
-                  <span>
+                  <span
+                    class="text-base"
+                  >
                     0
                      total posts
                   </span>
@@ -191,11 +193,11 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
               </div>
             </div>
           </div>
-          <div
-            class="border-t border-slate-300 dark:border-slate-500 mb-6"
+          <hr
+            class="my-6 border-0 border-t border-primary-200 dark:border-tertiary-700"
           />
           <h3
-            class="text-lg font-semibold text-foreground-light dark:text-foreground-dark mb-4"
+            class="text-xl font-semibold text-foreground-light dark:text-foreground-dark mb-4"
           >
             Recent Posts
           </h3>
@@ -203,7 +205,7 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
             class="space-y-4"
           >
             <div
-              class="border-b border-slate-300 dark:border-slate-500 pb-4 animate-pulse"
+              class="border-b border-primary-200 dark:border-tertiary-700 pb-4 animate-pulse"
             >
               <div
                 class="h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2"
@@ -216,7 +218,7 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
               />
             </div>
             <div
-              class="border-b border-slate-300 dark:border-slate-500 pb-4 animate-pulse"
+              class="border-b border-primary-200 dark:border-tertiary-700 pb-4 animate-pulse"
             >
               <div
                 class="h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2"
@@ -229,7 +231,7 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
               />
             </div>
             <div
-              class="border-b border-slate-300 dark:border-slate-500 pb-4 animate-pulse"
+              class="border-b border-primary-200 dark:border-tertiary-700 pb-4 animate-pulse"
             >
               <div
                 class="h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2"
@@ -242,7 +244,7 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
               />
             </div>
             <div
-              class="border-b border-slate-300 dark:border-slate-500 pb-4 animate-pulse"
+              class="border-b border-primary-200 dark:border-tertiary-700 pb-4 animate-pulse"
             >
               <div
                 class="h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2"
@@ -255,7 +257,7 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
               />
             </div>
             <div
-              class="border-b border-slate-300 dark:border-slate-500 pb-4 animate-pulse"
+              class="border-b border-primary-200 dark:border-tertiary-700 pb-4 animate-pulse"
             >
               <div
                 class="h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2"

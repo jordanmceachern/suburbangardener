@@ -18,10 +18,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: validationError }, { status: 400 });
     }
 
-    const url = await uploadImageToCloudinary(
-      file,
-      "SuburbanGardener/articles"
-    );
+    const url = await uploadImageToCloudinary(file, "SuburbanGardener/Posts");
 
     return NextResponse.json({ url });
   } catch (error) {

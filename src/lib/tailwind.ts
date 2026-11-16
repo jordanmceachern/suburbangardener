@@ -63,25 +63,26 @@ export const customBuildStyles = {
 } as const;
 
 export const searchStyles = {
-  title: "text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4",
+  title:
+    "text-xl font-semibold text-foreground-light dark:text-foreground-dark mb-4",
   container: "space-y-4",
   input:
-    "block w-full pl-3 pr-12 py-2.5 h-10 text-base border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-900 dark:placeholder-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-text hover:border-slate-400 dark:hover:border-slate-500 transition-colors",
+    "block w-full pl-3 pr-12 py-2.5 h-10 text-base border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 dark:text-neutral-900 placeholder:text-neutral-500 dark:placeholder:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-text hover:border-slate-400 dark:hover:border-primary-300 transition-colors",
   searchButton:
-    "absolute inset-y-0 right-0 pr-3 flex items-center text-slate-900 dark:text-slate-100 hover:text-slate-600 dark:hover:text-slate-300 disabled:opacity-50 disabled:cursor-not-allowed",
+    "absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-900 dark:text-neutral-900 hover:text-slate-600 dark:hover:text-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed",
   inputIcon: "h-4 w-4",
   dropdownButton:
-    "w-full px-3 py-2.5 h-10 text-base border border-slate-300 dark:border-slate-600 rounded-md bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-slate-500 transition-colors text-left flex items-center justify-between",
+    "w-full px-3 py-2.5 h-10 text-base border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 dark:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-primary-300 transition-colors text-left flex items-center justify-between",
   dropdownIcon:
-    "h-4 w-4 text-slate-900 dark:text-slate-100 transition-transform",
+    "h-4 w-4 text-neutral-900 dark:text-neutral-900 transition-transform",
   dropdownMenu:
-    "absolute z-50 w-full mt-1 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md max-h-60 overflow-auto shadow-lg",
+    "absolute z-50 w-full mt-1 bg-white dark:bg-primary-100 border border-slate-300 dark:border-primary-200 rounded-md max-h-60 overflow-auto shadow-lg",
   dropdownItem:
-    "w-full px-3 py-2.5 text-left text-base hover:bg-slate-50 dark:hover:bg-slate-600 focus:outline-none focus:bg-slate-50 dark:focus:bg-slate-600 transition-colors first:rounded-t-md last:rounded-b-md",
+    "w-full px-3 py-2.5 text-left text-base hover:bg-slate-50 dark:hover:bg-primary-100 focus:outline-none focus:bg-slate-50 dark:focus:bg-primary-100 transition-colors first:rounded-t-md last:rounded-b-md",
   dropdownItemActive:
-    "bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300",
-  dropdownItemInactive: "text-slate-900 dark:text-slate-100",
-  results: "text-xs text-slate-600 dark:text-slate-300",
+    "bg-primary-50 dark:bg-primary-100 text-primary-700 dark:text-primary-700",
+  dropdownItemInactive: "text-neutral-900 dark:text-neutral-900",
+  results: "text-base text-foreground-light dark:text-foreground-dark",
 } as const;
 
 export const PostListStyles = {
@@ -128,36 +129,36 @@ export const homePostStyles = {
 
 export const PostSidebarStyles = {
   panelBase:
-    "bg-slate-100 dark:bg-slate-800 shadow-lg transition-all duration-300 ease-in-out relative h-screen pb-20 sm:pb-0",
+    "bg-primary-100 dark:bg-tertiary-800 shadow-lg transition-all duration-300 ease-in-out relative h-screen pb-20 sm:pb-0",
   panelOpen:
-    "translate-x-0 opacity-100 border-l border-slate-300 dark:border-slate-600",
+    "translate-x-0 opacity-100 border-l border-primary-200 dark:border-tertiary-700",
   panelClosed: "translate-x-full lg:translate-x-0 opacity-90 lg:opacity-100",
   collapseButtonBase:
-    "absolute top-4 -left-10 bg-slate-200 dark:bg-slate-600 shadow-xl cursor-pointer hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors z-30 focus:outline-none focus:ring-2 focus:ring-primary-500 w-10 h-16 flex items-center justify-center rounded-l-md lg:hidden",
+    "absolute top-4 -left-10 bg-primary-100 dark:bg-tertiary-800 shadow-xl cursor-pointer hover:bg-primary-200 dark:hover:bg-tertiary-700 transition-colors z-30 focus:outline-none focus:ring-2 focus:ring-primary-500 w-10 h-16 flex items-center justify-center rounded-l-md lg:hidden",
   collapseButtonOpen:
-    "border-l border-t border-b border-slate-300 dark:border-slate-600",
-  collapseButtonClosed: "border border-slate-300 dark:border-slate-600",
-  collapseIcon: "w-4 h-4 text-slate-600 dark:text-slate-300",
+    "border-l border-t border-b border-primary-200 dark:border-tertiary-700",
+  collapseButtonClosed: "border border-primary-200 dark:border-tertiary-700",
+  collapseIcon: "w-4 h-4 text-foreground-light dark:text-foreground-dark",
   content: "p-6 pt-6 h-full overflow-y-auto",
   sectionTitle:
-    "text-lg font-semibold text-foreground-light dark:text-foreground-dark mb-4",
+    "text-xl font-semibold text-foreground-light dark:text-foreground-dark mb-4",
   skeletonWrap: "space-y-4",
   skeletonItem: "animate-pulse",
   skeletonDivider:
-    "border-b border-slate-300 dark:border-slate-500 pb-4 animate-pulse",
+    "border-b border-primary-200 dark:border-tertiary-700 pb-4 animate-pulse",
   skeletonBlock: "h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2",
   skeletonLine: "h-3 bg-slate-300 dark:bg-slate-600 rounded mb-2",
   skeletonShort: "h-3 bg-slate-300 dark:bg-slate-600 rounded w-1/3",
   errorText: "text-sm text-red-600 dark:text-red-400",
   relatedEmpty: "text-sm text-slate-600 dark:text-slate-300 italic",
-  divider: "border-t border-slate-300 dark:border-slate-500 mb-6",
+  divider: "my-6 border-0 border-t border-primary-200 dark:border-tertiary-700",
   listWrap: "space-y-4",
 } as const;
 
 export const PostPageHeaderStyles = {
   wrapper: "text-center mb-12",
   title: "text-4xl font-bold text-primary-900 dark:text-primary-100 mb-4",
-  copy: "text-lg text-start text-neutral-600 dark:text-neutral-200 max-w-2xl mx-auto",
+  copy: "text-xl text-start text-foreground-light dark:text-foreground-dark max-w-2xl mx-auto",
   actions: "mt-6 flex justify-center",
 } as const;
 

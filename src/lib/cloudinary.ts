@@ -1,24 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 
-export const MAX_IMAGE_UPLOAD_BYTES = 10 * 1024 * 1024;
-
-export function validateImageUpload(
-  file: File | Blob | null | undefined
-): string | null {
-  if (!file) {
-    return "An image file is required.";
-  }
-
-  if (!file.type.startsWith("image/")) {
-    return "Only image files are allowed.";
-  }
-
-  if (file.size > MAX_IMAGE_UPLOAD_BYTES) {
-    return "Image must be 10 MB or smaller.";
-  }
-
-  return null;
-}
+export { MAX_IMAGE_UPLOAD_BYTES, validateImageUpload } from "./imageUpload";
 
 export function getCloudinaryConfig() {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
@@ -35,7 +17,7 @@ export function getCloudinaryConfig() {
 
 export async function uploadImageToCloudinary(
   file: File | Blob,
-  folder = "SuburbanGardener/articles"
+  folder = "SuburbanGardener/Posts"
 ): Promise<string> {
   const { configured, cloudName, apiKey, apiSecret } = getCloudinaryConfig();
 

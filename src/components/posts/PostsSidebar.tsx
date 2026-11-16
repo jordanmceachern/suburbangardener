@@ -127,7 +127,7 @@ export default function PostsSidebar(props: any) {
             <SearchPosts />
           </div>
 
-          <div className={PostSidebarStyles.divider}></div>
+          <hr className={PostSidebarStyles.divider} />
 
           <h3 className={PostSidebarStyles.sectionTitle}>Recent Posts</h3>
 

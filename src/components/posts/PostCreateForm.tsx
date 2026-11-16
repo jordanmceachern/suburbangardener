@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-nextauth";
-import { validateImageUpload } from "@/lib/cloudinary";
+import { validateImageUpload } from "@/lib/imageUpload";
 import { PostFormStyles, buttonStyles, cn } from "@/lib/tailwind";
 
 const initialForm = {

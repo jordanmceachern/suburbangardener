@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { cn, searchStyles } from "../../lib/tailwind";
-import { useArticles } from "../../contexts/ArticleContext";
+import { usePosts } from "../../contexts/PostContext";
 
 interface SearchPostsProps {
   className?: string;
@@ -10,15 +10,15 @@ interface SearchPostsProps {
 
 // Renders the SearchPosts UI.
 export default function SearchPosts({ className = "" }: SearchPostsProps) {
-  const { state, searchArticles, setSelectedCategory } = useArticles();
+  const { state, searchPosts, setSelectedCategory } = usePosts();
   const [localSearchTerm, setLocalSearchTerm] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Get unique categories from articles
+  // Get unique categories from Posts
   const categories = [
     "All Categories",
-    ...Array.from(new Set(state.articles.map(article => article.category))),
+    ...Array.from(new Set(state.Posts.map(Post => Post.category))),
   ];
 
   // Close dropdown when clicking outside
@@ -45,7 +45,7 @@ export default function SearchPosts({ className = "" }: SearchPostsProps) {
       localSearchTerm.trim().length >= 4 ||
       localSearchTerm.trim().length === 0
     ) {
-      await searchArticles(localSearchTerm.trim());
+      await searchPosts(localSearchTerm.trim());
     }
   };
 
@@ -62,9 +62,9 @@ export default function SearchPosts({ className = "" }: SearchPostsProps) {
     setIsDropdownOpen(false);
   };
 
-  const filteredArticles = state.articles.filter(article => {
+  const filteredPosts = state.Posts.filter(Post => {
     if (state.selectedCategory === "All Categories") return true;
-    return article.category === state.selectedCategory;
+    return Post.category === state.selectedCategory;
   });
 
   // Toggles CategoryFilter to keep the UI state in sync with the user action.
@@ -82,7 +82,7 @@ export default function SearchPosts({ className = "" }: SearchPostsProps) {
             value={localSearchTerm}
             onChange={e => setLocalSearchTerm(e.target.value)}
             onKeyPress={handleKeyPress}
-            className={searchStyles.input}
+            className={cn("auth-input", searchStyles.input)}
           />
           <button
             onClick={handleSearch}
@@ -112,7 +112,7 @@ export default function SearchPosts({ className = "" }: SearchPostsProps) {
           <button
             type="button"
             onClick={toggleCategoryFilter}
-            className={searchStyles.dropdownButton}
+            className={cn("auth-input", searchStyles.dropdownButton)}
             aria-haspopup="listbox"
             aria-expanded={isDropdownOpen}
             aria-label="Select category"
@@ -159,14 +159,14 @@ export default function SearchPosts({ className = "" }: SearchPostsProps) {
           )}
         </div>
 
-        <div className={searchStyles.results}>
+        <div className={cn(searchStyles.results, "text-base")}>
           {state.searchTerm || state.selectedCategory !== "All Categories" ? (
-            <span>
-              Found {filteredArticles.length} posts
+            <span className="text-base">
+              Found {filteredPosts.length} posts
               {state.searchTerm && ` for "${state.searchTerm}"`}
             </span>
           ) : (
-            <span>{state.total} total posts</span>
+            <span className="text-base">{state.total} total posts</span>
           )}
         </div>
       </div>

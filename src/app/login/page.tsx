@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -34,8 +34,20 @@ const clearPendingAuthCredentials = () => {
   window.sessionStorage.removeItem(PENDING_AUTH_PASSWORD_KEY);
 };
 
-// Renders the sign-in and account-creation flow, including the email verification redirect logic and auth-state recovery.
 export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background-light dark:bg-background-dark" />
+      }
+    >
+      <LoginPageContent />
+    </Suspense>
+  );
+}
+
+// Renders the sign-in and account-creation flow, including the email verification redirect logic and auth-state recovery.
+function LoginPageContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [mode, setMode] = useState<"signIn" | "signUp">("signIn");
   const [email, setEmail] = useState("");

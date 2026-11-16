@@ -202,23 +202,43 @@ html[data-theme="light"] {
   }
 
   .auth-input {
-    @apply w-full rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-3 text-lg text-neutral-900 dark:text-neutral-100 placeholder:text-lg placeholder:text-neutral-500 dark:placeholder:text-neutral-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20;
-    background-color: #ffffff !important;
-    color: #111827 !important;
-    -webkit-text-fill-color: #111827 !important;
-    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    @apply w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg text-neutral-900 placeholder:text-lg placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-primary-200 dark:bg-primary-100 dark:text-neutral-900 dark:placeholder:text-neutral-600;
+    color: #111827;
+    background-color: #ffffff;
+    -webkit-text-fill-color: #111827;
     caret-color: #111827;
-    transition: background-color 5000s ease-in-out 0s;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      box-shadow 150ms ease;
+  }
+
+  .dark .auth-input,
+  html[data-theme="dark"] .auth-input {
+    background-color: #cfeccf;
+    border-color: #9ccc9d;
+    color: #111827;
+    -webkit-text-fill-color: #111827;
   }
 
   .auth-input:hover,
   .auth-input:focus,
   .auth-input:focus-visible,
   .auth-input:active {
-    background-color: #ffffff !important;
-    color: #111827 !important;
-    -webkit-text-fill-color: #111827 !important;
-    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    background-color: #f7faf8;
+    border-color: #8cc58f;
+  }
+
+  .dark .auth-input:hover,
+  .dark .auth-input:focus,
+  .dark .auth-input:focus-visible,
+  .dark .auth-input:active,
+  html[data-theme="dark"] .auth-input:hover,
+  html[data-theme="dark"] .auth-input:focus,
+  html[data-theme="dark"] .auth-input:focus-visible,
+  html[data-theme="dark"] .auth-input:active {
+    background-color: #cfeccf;
+    border-color: #8cc58f;
   }
 
   .auth-input::placeholder {
@@ -230,11 +250,25 @@ html[data-theme="light"] {
   .auth-input:-webkit-autofill:hover,
   .auth-input:-webkit-autofill:focus,
   .auth-input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
-    -webkit-text-fill-color: #111827 !important;
-    background-color: #ffffff !important;
-    border-color: #d1d5db !important;
+    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
+    -webkit-text-fill-color: #111827;
+    background-color: #ffffff;
+    border-color: #d1d5db;
     transition: background-color 5000s ease-in-out 0s;
+  }
+
+  .dark .auth-input:-webkit-autofill,
+  .dark .auth-input:-webkit-autofill:hover,
+  .dark .auth-input:-webkit-autofill:focus,
+  .dark .auth-input:-webkit-autofill:active,
+  html[data-theme="dark"] .auth-input:-webkit-autofill,
+  html[data-theme="dark"] .auth-input:-webkit-autofill:hover,
+  html[data-theme="dark"] .auth-input:-webkit-autofill:focus,
+  html[data-theme="dark"] .auth-input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px #cfeccf inset;
+    -webkit-text-fill-color: #111827;
+    background-color: #cfeccf;
+    border-color: #9ccc9d;
   }
 
   .auth-button {
