@@ -3,14 +3,10 @@ import SearchPosts from "@/components/posts/SearchPosts";
 import { ArticleProvider } from "@/contexts/PostContext";
 
 describe("SearchPosts Component", () => {
-  const mockProps = {
-    className: "test-search-class",
-  };
-
   it("should match DOM snapshot", () => {
     const { container } = render(
       <ArticleProvider>
-        <SearchPosts {...mockProps} />
+        <SearchPosts />
       </ArticleProvider>
     );
     expect(container.firstChild).toMatchSnapshot();
@@ -19,7 +15,7 @@ describe("SearchPosts Component", () => {
   it("should maintain CSS classes for search input", () => {
     const { container } = render(
       <ArticleProvider>
-        <SearchPosts {...mockProps} />
+        <SearchPosts />
       </ArticleProvider>
     );
 

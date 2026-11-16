@@ -112,9 +112,7 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
           <div
             class="mb-8"
           >
-            <div
-              class=""
-            >
+            <div>
               <h3
                 class="text-xl font-semibold text-foreground-light dark:text-foreground-dark mb-4"
               >

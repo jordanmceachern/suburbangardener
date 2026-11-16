@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`SearchPosts Component should match DOM snapshot 1`] = `
-<div
-  class="test-search-class"
->
+<div>
   <h3
     class="text-xl font-semibold text-foreground-light dark:text-foreground-dark mb-4"
   >

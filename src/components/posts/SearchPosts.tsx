@@ -9,12 +9,8 @@ import {
 import { cn, searchStyles } from "../../lib/tailwind";
 import { usePosts } from "../../contexts/PostContext";
 
-interface SearchPostsProps {
-  className?: string;
-}
-
 // Renders the SearchPosts UI.
-export default function SearchPosts({ className = "" }: SearchPostsProps) {
+export default function SearchPosts() {
   const { state, searchPosts, setSelectedCategory } = usePosts();
   const [localSearchTerm, setLocalSearchTerm] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -85,7 +81,7 @@ export default function SearchPosts({ className = "" }: SearchPostsProps) {
   const toggleCategoryFilter = () => setIsDropdownOpen(!isDropdownOpen);
 
   return (
-    <div className={className}>
+    <div>
       <h3 className={searchStyles.title}>Search Posts</h3>
 
       <div className={searchStyles.container}>
