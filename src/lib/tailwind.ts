@@ -329,9 +329,9 @@ export const POST_FORM_COPY = {
 export const PostFormStyles = {
   shell:
     "mx-auto max-w-4xl space-y-6 rounded-2xl border border-primary-200 bg-primary-100 p-6 shadow-xl dark:border-tertiary-700 dark:bg-tertiary-800",
-  header: "space-y-2",
+  header: "mt-2 space-y-2",
   title:
-    "text-2xl font-bold text-foreground-light dark:text-foreground-dark md:text-3xl",
+    "pt-2 text-2xl font-bold text-foreground-light dark:text-foreground-dark md:text-3xl",
   intro: "text-lg text-foreground-light dark:text-foreground-dark",
   error:
     "rounded-md border border-red-200 bg-red-50 px-4 py-3 text-base font-medium text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300",
