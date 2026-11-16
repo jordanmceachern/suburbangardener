@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import PostCreateForm from "../src/components/posts/PostCreateForm";
 import {
   canEditPost,
@@ -116,5 +116,81 @@ describe("post security helpers", () => {
     expect(PostFormStyles.input).toContain("auth-input");
     expect(PostFormStyles.label).toContain("text-lg");
     expect(PostFormStyles.shell).toContain("bg-primary-100");
+  });
+
+  it("tracks the summary and post body character counters with the correct limits", () => {
+    useAuth.mockReturnValue({
+      user: {
+        id: "user-123",
+        email: "gardener@example.com",
+        name: "Gardener",
+      },
+      isAuthenticated: true,
+      isLoading: false,
+    });
+
+    render(React.createElement(PostCreateForm));
+
+    expect(screen.getByText("0 / 100")).toBeInTheDocument();
+    expect(screen.getByText("0 / 5000")).toBeInTheDocument();
+
+    const summaryInput = screen.getByLabelText(/summary/i);
+    const postBodyInput = screen.getByLabelText(/post body/i);
+
+    fireEvent.change(summaryInput, {
+      target: { value: "a".repeat(150) },
+    });
+
+    expect(summaryInput).toHaveValue("a".repeat(100));
+    expect(screen.getByText("100 / 100")).toBeInTheDocument();
+
+    fireEvent.change(postBodyInput, {
+      target: { value: "b".repeat(6000) },
+    });
+
+    expect(postBodyInput).toHaveValue("b".repeat(5000));
+    expect(screen.getByText("5000 / 5000")).toBeInTheDocument();
+  });
+
+  it("formats the selected post body text when the toolbar buttons are clicked", () => {
+    useAuth.mockReturnValue({
+      user: {
+        id: "user-123",
+        email: "gardener@example.com",
+        name: "Gardener",
+      },
+      isAuthenticated: true,
+      isLoading: false,
+    });
+
+    render(React.createElement(PostCreateForm));
+
+    const postBodyInput = screen.getByLabelText(/post body/i);
+
+    fireEvent.change(postBodyInput, { target: { value: "garden" } });
+    Object.defineProperty(postBodyInput, "selectionStart", {
+      value: 0,
+      configurable: true,
+    });
+    Object.defineProperty(postBodyInput, "selectionEnd", {
+      value: 6,
+      configurable: true,
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /bold/i }));
+    expect(postBodyInput).toHaveValue("**garden**");
+
+    fireEvent.change(postBodyInput, { target: { value: "leaf\nroot" } });
+    Object.defineProperty(postBodyInput, "selectionStart", {
+      value: 0,
+      configurable: true,
+    });
+    Object.defineProperty(postBodyInput, "selectionEnd", {
+      value: 9,
+      configurable: true,
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /bullet/i }));
+    expect(postBodyInput).toHaveValue("- leaf\n- root");
   });
 });
