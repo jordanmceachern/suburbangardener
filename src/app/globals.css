@@ -202,10 +202,9 @@ html[data-theme="light"] {
   }
 
   .auth-input {
-    @apply w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg text-neutral-900 placeholder:text-lg placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-primary-200 dark:bg-primary-100 dark:text-neutral-900 dark:placeholder:text-neutral-600;
+    @apply w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg placeholder:text-lg placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-primary-200 dark:bg-primary-100 dark:placeholder:text-neutral-600;
     color: #111827;
     background-color: #ffffff;
-    -webkit-text-fill-color: #111827;
     caret-color: #111827;
     transition:
       background-color 150ms ease,
@@ -218,7 +217,6 @@ html[data-theme="light"] {
     background-color: #cfeccf;
     border-color: #9ccc9d;
     color: #111827;
-    -webkit-text-fill-color: #111827;
   }
 
   .auth-input:hover,
@@ -241,9 +239,65 @@ html[data-theme="light"] {
     border-color: #8cc58f;
   }
 
-  .auth-input::placeholder {
-    color: #6b7280;
-    opacity: 1;
+  .auth-input[type="file"]::file-selector-button {
+    @apply mr-4 h-auto rounded-md border-0 bg-tertiary-500 px-4 py-1 text-base font-medium text-neutral-900 shadow-sm transition hover:bg-tertiary-400;
+    cursor: pointer;
+    line-height: 1.1;
+  }
+
+  .auth-input::placeholder,
+  .auth-input::-webkit-input-placeholder,
+  .auth-input::-moz-placeholder,
+  .auth-input:-ms-input-placeholder,
+  .auth-input *::placeholder {
+    color: rgba(17, 24, 39, 0.35) !important;
+    opacity: 1 !important;
+  }
+
+  .dark .auth-input::placeholder,
+  .dark .auth-input::-webkit-input-placeholder,
+  .dark .auth-input::-moz-placeholder,
+  .dark .auth-input:-ms-input-placeholder,
+  html[data-theme="dark"] .auth-input::placeholder,
+  html[data-theme="dark"] .auth-input::-webkit-input-placeholder,
+  html[data-theme="dark"] .auth-input::-moz-placeholder,
+  html[data-theme="dark"] .auth-input:-ms-input-placeholder {
+    color: rgba(17, 24, 39, 0.4) !important;
+    opacity: 1 !important;
+  }
+
+  .post-editor {
+    color: #111827;
+    position: relative;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .post-editor ul,
+  .post-editor ol {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .post-editor ul {
+    list-style: disc;
+  }
+
+  .post-editor ol {
+    list-style: decimal;
+  }
+
+  .post-editor:empty::before {
+    content: attr(data-placeholder);
+    color: rgba(17, 24, 39, 0.35) !important;
+    display: block;
+    min-height: 1.5em;
+    cursor: text;
+  }
+
+  .post-editor * {
+    color: inherit;
   }
 
   .auth-input:-webkit-autofill,

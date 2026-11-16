@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { normalizeCategoryValue } from "@/lib/articleSecurity";
 import { cn, searchStyles } from "../../lib/tailwind";
 import { usePosts } from "../../contexts/PostContext";
 
@@ -18,7 +19,13 @@ export default function SearchPosts({ className = "" }: SearchPostsProps) {
   // Get unique categories from Posts
   const categories = [
     "All Categories",
-    ...Array.from(new Set(state.Posts.map(Post => Post.category))),
+    ...Array.from(
+      new Set(
+        state.Posts.map(Post =>
+          normalizeCategoryValue(Post.category || "General")
+        )
+      )
+    ),
   ];
 
   // Close dropdown when clicking outside
@@ -58,13 +65,16 @@ export default function SearchPosts({ className = "" }: SearchPostsProps) {
 
   // Handles Category Change for the current user interaction.
   const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category);
+    setSelectedCategory(normalizeCategoryValue(category));
     setIsDropdownOpen(false);
   };
 
   const filteredPosts = state.Posts.filter(Post => {
     if (state.selectedCategory === "All Categories") return true;
-    return Post.category === state.selectedCategory;
+    return (
+      normalizeCategoryValue(Post.category || "General") ===
+      state.selectedCategory
+    );
   });
 
   // Toggles CategoryFilter to keep the UI state in sync with the user action.

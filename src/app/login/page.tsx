@@ -97,7 +97,13 @@ function LoginPageContent() {
             return;
           }
         } catch (signInError) {
-          // Fall through to the normal redirect if automatic sign-in fails.
+          console.error(
+            "Automatic sign-in after verification failed:",
+            signInError
+          );
+          setError(
+            "Your email was verified, but we could not sign you in automatically. Please try signing in again."
+          );
         }
       }
 

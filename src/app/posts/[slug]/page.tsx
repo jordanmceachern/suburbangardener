@@ -8,6 +8,8 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import PostSidebar from "@/components/posts/PostSidebar";
 import PostComments from "@/components/posts/PostComments";
 import ViewAllPostsButton from "@/components/posts/ViewAllPostsButton";
+import { useAuth } from "@/lib/auth-nextauth";
+import { isAdminEmail } from "@/lib/articleSecurity";
 import { PostDetailStyles, cn } from "@/lib/tailwind";
 
 type PostRecord = {
@@ -17,6 +19,8 @@ type PostRecord = {
   summary?: string;
   publishedDate: string;
   author: string;
+  authorEmail?: string;
+  authorId?: string;
   slug: string;
   imageUrl: string;
   youtubeUrl?: string;
@@ -50,6 +54,7 @@ function getEmbedUrl(youtubeUrl: string) {
 
 export default function PostPage() {
   const params = useParams<{ slug: string }>();
+  const { user } = useAuth();
   const slug = Array.isArray(params?.slug)
     ? params.slug[0]
     : (params?.slug ?? "");
@@ -146,6 +151,11 @@ export default function PostPage() {
   const summaryText = Post.summary || Post.excerpt || "";
   const voteScore = typeof Post.voteScore === "number" ? Post.voteScore : 0;
   const voteCount = typeof Post.voteCount === "number" ? Post.voteCount : 0;
+  const canEditPost =
+    !!user &&
+    (user.id === Post.authorId ||
+      (Post.authorEmail ? user.email === Post.authorEmail : false) ||
+      isAdminEmail(user.email));
 
   const handleVote = async (nextVote: "UP" | "DOWN") => {
     if (!Post) return;
@@ -289,6 +299,14 @@ export default function PostPage() {
               </p>
 
               <div className={PostDetailStyles.buttonRow}>
+                {canEditPost ? (
+                  <Link
+                    href={`/posts/new?edit=${encodeURIComponent(Post.id)}`}
+                    className="inline-flex items-center justify-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-primary-700"
+                  >
+                    Edit Post
+                  </Link>
+                ) : null}
                 <ViewAllPostsButton
                   text="Back to Posts"
                   arrowDirection="left"

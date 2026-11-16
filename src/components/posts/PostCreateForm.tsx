@@ -1,10 +1,14 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-nextauth";
+import { normalizeCategoryValue } from "@/lib/articleSecurity";
 import { validateImageUpload } from "@/lib/imageUpload";
-import { PostFormStyles, buttonStyles, cn } from "@/lib/tailwind";
+import { PostFormStyles, buttonStyles, cn, searchStyles } from "@/lib/tailwind";
+
+const MAX_POST_BODY_CHARACTERS = 5000;
+const MAX_SUMMARY_CHARACTERS = 100;
 
 const initialForm = {
   title: "",
@@ -12,53 +16,143 @@ const initialForm = {
   category: "General",
   coverImageUrl: "",
   youtubeUrl: "",
-  contentHtml: "<p>Share your guidance, growing tips, and seasonal advice.</p>",
+  contentHtml: "",
 };
 
 export default function PostCreateForm() {
   const router = useRouter();
   const { user, isAuthenticated, isLoading } = useAuth();
-  const editorRef = useRef<HTMLDivElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editPostId, setEditPostId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (editorRef.current && editorRef.current.innerHTML.trim() === "") {
-      editorRef.current.innerHTML = form.contentHtml;
+    if (typeof window === "undefined") {
+      return;
     }
-  }, [form.contentHtml]);
 
-  const editorButtons = useMemo(
-    () => [
-      { label: "Bold", command: "bold" },
-      { label: "Italic", command: "italic" },
-      { label: "H3", command: "formatBlock", value: "h3" },
-      { label: "Bullet", command: "insertUnorderedList" },
-    ],
-    []
-  );
+    const params = new URLSearchParams(window.location.search);
+    const nextEditPostId = params.get("edit");
+    setEditPostId(nextEditPostId);
+    setIsEditing(Boolean(nextEditPostId));
+
+    if (!nextEditPostId) {
+      return;
+    }
+
+    let isMounted = true;
+
+    async function loadPost() {
+      try {
+        const response = await fetch(`/api/posts/${nextEditPostId}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Unable to load Post for editing.");
+        }
+
+        if (!isMounted || !data.post) {
+          return;
+        }
+
+        setForm({
+          title: data.post.title || "",
+          summary: data.post.summary || data.post.excerpt || "",
+          category: normalizeCategoryValue(data.post.category || "General"),
+          coverImageUrl: data.post.coverImageUrl || "",
+          youtubeUrl: data.post.youtubeUrl || "",
+          contentHtml: data.post.contentHtml || initialForm.contentHtml,
+        });
+      } catch (loadError) {
+        if (isMounted) {
+          setError(
+            loadError instanceof Error
+              ? loadError.message
+              : "Unable to load Post for editing."
+          );
+        }
+      }
+    }
+
+    loadPost();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const editorButtons = [
+    { label: "Bold", prefix: "**", suffix: "**" },
+    { label: "Italic", prefix: "*", suffix: "*" },
+    { label: "Underline", prefix: "<u>", suffix: "</u>" },
+  ];
 
   const updateField = (field: keyof typeof initialForm, value: string) => {
     setForm(current => ({ ...current, [field]: value }));
   };
 
-  const applyEditorCommand = (
-    command: string,
-    value?: string,
-    shouldFocus = true
-  ) => {
-    if (typeof document !== "undefined") {
-      document.execCommand(command, false, value ?? undefined);
-      if (shouldFocus) {
-        editorRef.current?.focus();
-      }
-      setForm(current => ({
-        ...current,
-        contentHtml: editorRef.current?.innerHTML || current.contentHtml,
-      }));
+  const getPlainTextContent = (value: string) =>
+    value.replace(/\s+/g, " ").trim();
+
+  const postBodyCharacterCount = getPlainTextContent(
+    form.contentHtml || ""
+  ).length;
+  const summaryCharacterCount = getPlainTextContent(form.summary || "").length;
+
+  const applyTextFormat = (prefix: string, suffix = prefix) => {
+    const textarea = textareaRef.current;
+
+    if (!textarea) {
+      return;
     }
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selected = textarea.value.slice(start, end);
+    const before = textarea.value.slice(0, start);
+    const after = textarea.value.slice(end);
+    const nextValue = `${before}${prefix}${selected}${suffix}${after}`;
+
+    updateField("contentHtml", nextValue);
+
+    requestAnimationFrame(() => {
+      textarea.focus();
+      const caretStart = start + prefix.length;
+      const caretEnd = caretStart + selected.length;
+      textarea.setSelectionRange(caretStart, caretEnd);
+    });
+  };
+
+  const applyBulletFormat = () => {
+    const textarea = textareaRef.current;
+
+    if (!textarea) {
+      return;
+    }
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selected = textarea.value.slice(start, end);
+    const before = textarea.value.slice(0, start);
+    const after = textarea.value.slice(end);
+    const selectedLines = selected ? selected.split("\n") : [""];
+    const formattedLines = selectedLines.map(line =>
+      line.trim() ? `- ${line.trim()}` : "- "
+    );
+    const nextValue = `${before}${formattedLines.join("\n")}${after}`;
+
+    updateField("contentHtml", nextValue);
+
+    requestAnimationFrame(() => {
+      textarea.focus();
+      const cursorStart = start + 2;
+      const cursorEnd = cursorStart + formattedLines.join("\n").length;
+      textarea.setSelectionRange(cursorStart, cursorEnd);
+    });
   };
 
   const handleImageUpload = async (
@@ -117,14 +211,15 @@ export default function PostCreateForm() {
       return;
     }
 
-    const trimmedContent = (
-      editorRef.current?.innerHTML ||
-      form.contentHtml ||
-      ""
-    ).trim();
+    const trimmedContent = (form.contentHtml || "").trim();
 
     if (!trimmedContent || trimmedContent === "<br>") {
       setError("Post content is required.");
+      return;
+    }
+
+    if (trimmedContent.length > MAX_POST_BODY_CHARACTERS) {
+      setError("Post body must be 5000 characters or fewer.");
       return;
     }
 
@@ -135,6 +230,11 @@ export default function PostCreateForm() {
 
     if (!form.summary.trim()) {
       setError("Summary is required.");
+      return;
+    }
+
+    if (form.summary.trim().length > MAX_SUMMARY_CHARACTERS) {
+      setError("Summary must be 100 characters or fewer.");
       return;
     }
 
@@ -154,25 +254,34 @@ export default function PostCreateForm() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("/api/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...form,
-          title: form.title.trim(),
-          summary: form.summary.trim(),
-          contentHtml: trimmedContent,
-          coverImageUrl: form.coverImageUrl.trim(),
-          youtubeUrl: form.youtubeUrl.trim(),
-        }),
-      });
+      const payload = {
+        ...form,
+        title: form.title.trim(),
+        summary: form.summary.trim(),
+        category: normalizeCategoryValue(form.category),
+        contentHtml: trimmedContent,
+        coverImageUrl: form.coverImageUrl.trim(),
+        youtubeUrl: form.youtubeUrl.trim(),
+      };
+
+      const response = await fetch(
+        isEditing && editPostId ? `/api/posts/${editPostId}` : "/api/posts",
+        {
+          method: isEditing && editPostId ? "PATCH" : "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Unable to publish Post.");
+        throw new Error(
+          data.error ||
+            (isEditing ? "Unable to update Post." : "Unable to publish Post.")
+        );
       }
 
       router.push("/posts");
@@ -180,7 +289,9 @@ export default function PostCreateForm() {
       setError(
         submitError instanceof Error
           ? submitError.message
-          : "Unable to publish Post."
+          : isEditing
+            ? "Unable to update Post."
+            : "Unable to publish Post."
       );
     } finally {
       setIsSubmitting(false);
@@ -204,66 +315,102 @@ export default function PostCreateForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={PostFormStyles.shell}>
+    <form
+      onSubmit={handleSubmit}
+      className={PostFormStyles.shell}
+      aria-labelledby="post-form-title"
+      aria-describedby={error ? "post-form-error" : undefined}
+    >
       <div className={PostFormStyles.header}>
-        <h1 className={PostFormStyles.title}>Publish a gardening Post</h1>
-        <p className={PostFormStyles.intro}>
-          Share practical advice with the suburban gardening community.
-        </p>
+        <h1 id="post-form-title" className={PostFormStyles.title}>
+          {isEditing ? "Edit your Garden Post" : "Write a Gardening Post"}
+        </h1>
       </div>
 
-      {error ? <div className={PostFormStyles.error}>{error}</div> : null}
+      {error ? (
+        <div
+          id="post-form-error"
+          role="alert"
+          aria-live="assertive"
+          className={PostFormStyles.error}
+        >
+          {error}
+        </div>
+      ) : null}
 
       <div className={PostFormStyles.grid}>
-        <label className={PostFormStyles.fieldFull}>
+        <label htmlFor="post-title" className={PostFormStyles.fieldFull}>
           <span className={PostFormStyles.label}>Title</span>
           <input
+            id="post-title"
+            name="title"
             value={form.title}
             onChange={event => updateField("title", event.target.value)}
             className={PostFormStyles.input}
-            placeholder="Growing tomatoes in a compact suburban plot"
+            placeholder="Give your post a searchable name"
             required
+            aria-required="true"
           />
         </label>
 
-        <label className={PostFormStyles.fieldFull}>
-          <span className={PostFormStyles.label}>Summary</span>
-          <textarea
-            value={form.summary}
-            onChange={event => updateField("summary", event.target.value)}
-            rows={3}
-            className={PostFormStyles.textarea}
-            placeholder="A brief summary for readers on the Post feed."
-            required
-          />
-        </label>
-
-        <label className={PostFormStyles.field}>
+        <label htmlFor="post-category" className={PostFormStyles.field}>
           <span className={PostFormStyles.label}>Category</span>
-          <select
-            value={form.category}
-            onChange={event => updateField("category", event.target.value)}
-            className={PostFormStyles.input}
-          >
-            <option>General</option>
-            <option>Vegetables</option>
-            <option>Flowers</option>
-            <option>Fruit</option>
-            <option>Soil</option>
-            <option>Pest Control</option>
-          </select>
+          <div className="relative">
+            <select
+              id="post-category"
+              name="category"
+              value={normalizeCategoryValue(form.category)}
+              onChange={event => updateField("category", event.target.value)}
+              required
+              aria-required="true"
+              className={cn(
+                "auth-input w-full appearance-none pr-10 cursor-pointer",
+                "focus:border-primary-500"
+              )}
+            >
+              <option>General</option>
+              <option>Fruit & Veg</option>
+              <option>Flowers</option>
+              <option>Soil</option>
+              <option>Pest Control</option>
+            </select>
+            <svg
+              className={cn(
+                searchStyles.dropdownIcon,
+                "pointer-events-none absolute right-3 top-1/2 -translate-y-1/2"
+              )}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 20 20"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M6 8l4 4 4-4"
+              />
+            </svg>
+          </div>
         </label>
 
-        <div className={PostFormStyles.fieldFull}>
-          <span className={PostFormStyles.label}>Cover image upload</span>
+        <div className={PostFormStyles.field}>
+          <label htmlFor="cover-image" className={PostFormStyles.label}>
+            Cover Image
+          </label>
           <input
+            id="cover-image"
+            name="coverImage"
             type="file"
             accept="image/*"
             onChange={handleImageUpload}
             className={PostFormStyles.input}
             disabled={isUploadingImage}
+            required
+            aria-required="true"
+            aria-describedby="cover-image-help"
           />
-          <p className={PostFormStyles.previewHint}>
+          <p id="cover-image-help" className={PostFormStyles.previewHint}>
             Upload a JPG, PNG, GIF, or WebP image up to 10 MB.
           </p>
 
@@ -279,59 +426,113 @@ export default function PostCreateForm() {
           ) : null}
         </div>
 
-        <label className={PostFormStyles.fieldFull}>
-          <span className={PostFormStyles.label}>Cover image URL</span>
+        <label htmlFor="post-youtube" className={PostFormStyles.fieldFull}>
+          <span className={PostFormStyles.label}>YouTube</span>
           <input
-            value={form.coverImageUrl}
-            onChange={event => updateField("coverImageUrl", event.target.value)}
-            className={PostFormStyles.input}
-            placeholder="https://res.cloudinary.com/your-cloud/image/upload/..."
-            required
-          />
-        </label>
-
-        <label className={PostFormStyles.fieldFull}>
-          <span className={PostFormStyles.label}>Optional YouTube URL</span>
-          <input
+            id="post-youtube"
+            name="youtubeUrl"
             value={form.youtubeUrl}
             onChange={event => updateField("youtubeUrl", event.target.value)}
             className={PostFormStyles.input}
             placeholder="https://www.youtube.com/watch?v=..."
+            aria-describedby="youtube-help"
           />
         </label>
       </div>
 
       <div className={PostFormStyles.editorWrap}>
-        <div className={PostFormStyles.editorToolbar}>
-          {editorButtons.map(button => (
-            <button
-              key={button.label}
-              type="button"
-              onClick={() =>
-                button.command === "formatBlock"
-                  ? applyEditorCommand(button.command, button.value)
-                  : applyEditorCommand(button.command)
-              }
-              className={PostFormStyles.editorButton}
-            >
-              {button.label}
-            </button>
-          ))}
-        </div>
+        <label htmlFor="post-summary" className={PostFormStyles.fieldFull}>
+          <span className={PostFormStyles.label}>Summary</span>
+          <textarea
+            id="post-summary"
+            name="summary"
+            value={form.summary}
+            onChange={event => {
+              const nextValue = event.target.value.slice(
+                0,
+                MAX_SUMMARY_CHARACTERS
+              );
+              updateField("summary", nextValue);
+            }}
+            rows={3}
+            className={PostFormStyles.textarea}
+            placeholder="How would you describe your post?"
+            required
+            aria-required="true"
+            aria-describedby="summary-character-counter"
+          />
+          <div
+            id="summary-character-counter"
+            className={PostFormStyles.previewHint}
+            aria-live="polite"
+          >
+            {summaryCharacterCount} / {MAX_SUMMARY_CHARACTERS}
+          </div>
+        </label>
 
-        <div
-          ref={editorRef}
-          contentEditable
-          suppressContentEditableWarning
-          onInput={event =>
-            setForm(current => ({
-              ...current,
-              contentHtml: (event.target as HTMLDivElement).innerHTML,
-            }))
-          }
-          className={PostFormStyles.editor}
-          dangerouslySetInnerHTML={{ __html: form.contentHtml }}
-        />
+        <div className={PostFormStyles.postBodyField}>
+          <div className="flex items-center gap-2">
+            <label htmlFor="post-body" className={PostFormStyles.label}>
+              Post Body
+            </label>
+            <div className={`${PostFormStyles.editorToolbar} ms-4`}>
+              {editorButtons.map(button => (
+                <button
+                  key={button.label}
+                  type="button"
+                  onClick={() =>
+                    button.label === "Bold"
+                      ? applyTextFormat(button.prefix, button.suffix)
+                      : button.label === "Italic"
+                        ? applyTextFormat(button.prefix, button.suffix)
+                        : applyTextFormat(button.prefix, button.suffix)
+                  }
+                  className={PostFormStyles.editorButton}
+                  aria-label={`Apply ${button.label.toLowerCase()} formatting`}
+                >
+                  {button.label}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={applyBulletFormat}
+                className={PostFormStyles.editorButton}
+                aria-label="Apply bullet list formatting"
+              >
+                Bullet
+              </button>
+            </div>
+          </div>
+
+          <div className="relative">
+            <textarea
+              id="post-body"
+              name="contentHtml"
+              ref={textareaRef}
+              value={form.contentHtml}
+              onChange={event => {
+                const nextValue = event.target.value.slice(
+                  0,
+                  MAX_POST_BODY_CHARACTERS
+                );
+                updateField("contentHtml", nextValue);
+              }}
+              rows={8}
+              required
+              aria-required="true"
+              aria-describedby="post-body-character-counter"
+              className={cn(PostFormStyles.editor, "block resize-none")}
+              placeholder="Share what you've learned in detail..."
+            />
+          </div>
+          <div
+            id="post-body-character-counter"
+            className={PostFormStyles.previewHint}
+            aria-live="polite"
+          >
+            {postBodyCharacterCount} / {MAX_POST_BODY_CHARACTERS}
+          </div>
+        </div>
       </div>
 
       <div className={PostFormStyles.actions}>
@@ -353,7 +554,13 @@ export default function PostCreateForm() {
             "inline-flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-60"
           )}
         >
-          {isSubmitting ? "Publishing..." : "Publish Post"}
+          {isSubmitting
+            ? isEditing
+              ? "Saving..."
+              : "Publishing..."
+            : isEditing
+              ? "Save Changes"
+              : "Publish Post"}
         </button>
       </div>
     </form>

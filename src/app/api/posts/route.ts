@@ -6,8 +6,9 @@ import { prisma } from "@/lib/prisma";
 import {
   isValidYouTubeUrl,
   maskDisplayName,
+  normalizeCategoryValue,
   sanitizeHtml,
-} from "@/lib/PostSecurity";
+} from "@/lib/articleSecurity";
 
 type PostMapEntry = {
   id: string;
@@ -20,7 +21,12 @@ type PostMapEntry = {
   category?: string | null;
   contentHtml?: string | null;
   slug: string;
-  author?: { email?: string | null; name?: string | null } | null;
+  authorId?: string | null;
+  author?: {
+    id?: string | null;
+    email?: string | null;
+    name?: string | null;
+  } | null;
   votes?: Array<{ type: "UP" | "DOWN" }>;
 };
 
@@ -59,6 +65,8 @@ function mapPost(Post: PostMapEntry) {
     author: maskDisplayName(
       Post.author?.email || Post.author?.name || "Anonymous"
     ),
+    authorEmail: Post.author?.email || "",
+    authorId: Post.authorId || Post.author?.id || "",
     slug: Post.slug,
     imageUrl: Post.coverUrl || "",
     youtubeUrl: Post.youtubeUrl || "",
@@ -97,7 +105,7 @@ async function fetchPostListFromDb(
       where,
       include: {
         author: {
-          select: { email: true, name: true },
+          select: { id: true, email: true, name: true },
         },
         votes: {
           select: { type: true },
@@ -170,8 +178,12 @@ export async function POST(request: NextRequest) {
     const youtubeUrl = String(
       payload?.youtubeUrl || payload?.videoUrl || ""
     ).trim();
+    const sanitizedCategory = sanitizeHtml(
+      String(payload?.category || "General")
+    );
     const category =
-      sanitizeHtml(String(payload?.category || "General")).trim() || "General";
+      normalizeCategoryValue(sanitizedCategory.trim() || "General") ||
+      "General";
 
     if (!title) {
       return NextResponse.json(
@@ -243,7 +255,7 @@ export async function POST(request: NextRequest) {
       },
       include: {
         author: {
-          select: { email: true, name: true },
+          select: { id: true, email: true, name: true },
         },
       },
     });

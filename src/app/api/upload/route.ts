@@ -23,11 +23,29 @@ export async function POST(request: Request) {
     return NextResponse.json({ url });
   } catch (error) {
     console.error("Cloudinary upload error:", error);
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Unable to upload image to Cloudinary.";
 
-    return NextResponse.json({ error: message }, { status: 500 });
+    const cloudinaryError = error as {
+      http_code?: number;
+      message?: string;
+      error?: { message?: string };
+    };
+
+    const status =
+      cloudinaryError.http_code && cloudinaryError.http_code >= 400 ? 503 : 500;
+
+    const message =
+      cloudinaryError?.error?.message ||
+      cloudinaryError?.message ||
+      "Unable to upload image to Cloudinary.";
+
+    let normalizedMessage = message;
+
+    if (status === 503) {
+      normalizedMessage =
+        "Cloudinary rejected the image upload. Please check the Cloudinary credentials and try again. Details: " +
+        message;
+    }
+
+    return NextResponse.json({ error: normalizedMessage }, { status });
   }
 }

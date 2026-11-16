@@ -46,7 +46,7 @@ exports[`SearchPosts Component should match DOM snapshot 1`] = `
         aria-expanded="false"
         aria-haspopup="listbox"
         aria-label="Select category"
-        class="auth-input w-full px-3 py-2.5 h-10 text-base border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 dark:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-primary-300 transition-colors text-left flex items-center justify-between"
+        class="auth-input w-full px-3 py-2.5 h-10 min-h-[2.5rem] text-lg border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 dark:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-primary-300 transition-colors text-left flex items-center justify-between"
         type="button"
       >
         <span

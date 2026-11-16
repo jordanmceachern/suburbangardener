@@ -6,6 +6,7 @@ import React, {
   useReducer,
   useCallback,
 } from "react";
+import { normalizeCategoryValue } from "@/lib/articleSecurity";
 import type { PostDisplayData } from "../components/posts/PostDisplayCard";
 
 interface PostState {
@@ -221,7 +222,10 @@ export function PostProvider({ children }: PostProviderProps) {
   );
 
   const setSelectedCategory = useCallback((category: string) => {
-    dispatch({ type: "SET_SELECTED_CATEGORY", payload: category });
+    dispatch({
+      type: "SET_SELECTED_CATEGORY",
+      payload: normalizeCategoryValue(category),
+    });
   }, []);
 
   const getFilteredPosts = useCallback(() => {
@@ -235,7 +239,9 @@ export function PostProvider({ children }: PostProviderProps) {
     // Apply category filter (client-side filtering)
     if (state.selectedCategory !== "All Categories") {
       filtered = filtered.filter(
-        Post => Post.category === state.selectedCategory
+        Post =>
+          normalizeCategoryValue(Post.category || "General") ===
+          normalizeCategoryValue(state.selectedCategory)
       );
     }
 

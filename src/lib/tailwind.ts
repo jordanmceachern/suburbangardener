@@ -11,9 +11,9 @@ export const appLayout = {
 
 export const buttonStyles = {
   primary:
-    "px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-md transition-colors",
+    "px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white dark:text-neutral-200 rounded-md transition-colors",
   secondary:
-    "px-4 py-2 bg-secondary-500 hover:bg-secondary-600 text-white rounded-md transition-colors",
+    "px-4 py-2 bg-secondary-500 hover:bg-secondary-600 text-white dark:text-neutral-200 rounded-md transition-colors",
   tertiary:
     "px-4 py-2 bg-tertiary-500 hover:bg-tertiary-600 text-neutral-900 rounded-md transition-colors",
   danger:
@@ -72,7 +72,7 @@ export const searchStyles = {
     "absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-900 dark:text-neutral-900 hover:text-slate-600 dark:hover:text-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed",
   inputIcon: "h-4 w-4",
   dropdownButton:
-    "w-full px-3 py-2.5 h-10 text-base border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 dark:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-primary-300 transition-colors text-left flex items-center justify-between",
+    "w-full px-3 py-2.5 h-10 min-h-[2.5rem] text-lg border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 dark:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-primary-300 transition-colors text-left flex items-center justify-between",
   dropdownIcon:
     "h-4 w-4 text-neutral-900 dark:text-neutral-900 transition-transform",
   dropdownMenu:
@@ -252,38 +252,42 @@ export const PostCardStyles = {
 
 export const PostFormStyles = {
   shell:
-    "mx-auto max-w-4xl space-y-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800",
+    "mx-auto max-w-4xl space-y-6 rounded-2xl border border-primary-200 bg-primary-100 p-6 shadow-xl dark:border-tertiary-700 dark:bg-tertiary-800",
   header: "space-y-2",
-  title: "text-3xl font-bold text-foreground-light dark:text-foreground-dark",
-  intro: "text-foreground-light/80 dark:text-foreground-dark/80",
+  title:
+    "text-2xl font-bold text-foreground-light dark:text-foreground-dark md:text-3xl",
+  intro: "text-lg text-foreground-light dark:text-foreground-dark",
   error:
-    "rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300",
+    "rounded-md border border-red-200 bg-red-50 px-4 py-3 text-base font-medium text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300",
   grid: "grid gap-6 md:grid-cols-2",
   field: "space-y-2",
   fieldFull: "space-y-2 md:col-span-2",
-  label: "text-sm font-medium text-foreground-light dark:text-foreground-dark",
+  label:
+    "whitespace-nowrap text-lg font-medium text-foreground-light dark:text-foreground-dark",
   input:
-    "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100",
+    "auth-input w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-primary-200 dark:bg-primary-100 dark:placeholder:text-neutral-600",
   textarea:
-    "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100",
+    "auth-input block w-full resize-none rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-primary-200 dark:bg-primary-100 dark:placeholder:text-neutral-600",
   editorWrap: "space-y-3",
-  editorToolbar: "flex flex-wrap gap-2",
+  postBodyField: "!mt-4 space-y-2 md:col-span-2",
+  editorToolbar: "flex flex-wrap items-center gap-2",
   editorButton:
-    "rounded-md border border-slate-300 bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600",
+    "h-auto rounded-md border-0 bg-tertiary-500 px-4 py-1 text-base font-medium text-neutral-900 shadow-sm transition hover:bg-tertiary-400 dark:bg-tertiary-500 dark:text-neutral-900 dark:hover:bg-tertiary-400",
   editor:
-    "min-h-[240px] rounded-md border border-slate-300 bg-white px-3 py-3 text-slate-900 shadow-inner outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100",
+    "auth-input block min-h-[240px] rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg shadow-inner outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-primary-200 dark:bg-primary-100",
   previewWrap:
-    "mt-3 overflow-hidden rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900",
+    "mt-3 overflow-hidden rounded-lg border border-primary-200 bg-white dark:border-tertiary-700 dark:bg-tertiary-700",
   previewImage: "h-48 w-full object-cover",
-  previewHint: "text-sm text-foreground-light/80 dark:text-foreground-dark/80",
-  actions: "flex justify-end gap-3",
+  previewHint:
+    "mt-2 text-left text-base text-neutral-700 dark:text-neutral-200",
+  actions: "flex justify-end gap-4",
   cancelButton: buttonStyles.secondary,
   submitButton: cn(
     buttonStyles.primary,
     "inline-flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-60"
   ),
   emptyState:
-    "rounded-lg border border-slate-200 bg-slate-50 p-8 text-foreground-light dark:border-slate-700 dark:bg-slate-800 dark:text-foreground-dark",
+    "rounded-lg border border-primary-200 bg-primary-100 p-8 text-foreground-light dark:border-tertiary-700 dark:bg-tertiary-800 dark:text-foreground-dark",
 } as const;
 
 export const articleFormStyles = PostFormStyles;

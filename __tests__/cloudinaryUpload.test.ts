@@ -1,4 +1,22 @@
-import { validateImageUpload } from "@/lib/cloudinary";
+jest.mock("next/server", () => ({
+  NextResponse: {
+    json: (body: any, init?: { status?: number }) => ({
+      status: init?.status ?? 200,
+      json: async () => body,
+    }),
+  },
+}));
+
+const { POST } = require("@/app/api/upload/route");
+const {
+  uploadImageToCloudinary,
+  validateImageUpload,
+} = require("@/lib/cloudinary");
+
+jest.mock("@/lib/cloudinary", () => ({
+  ...jest.requireActual("@/lib/cloudinary"),
+  uploadImageToCloudinary: jest.fn(),
+}));
 
 describe("validateImageUpload", () => {
   it("accepts images up to 10 MB", () => {
@@ -23,5 +41,29 @@ describe("validateImageUpload", () => {
     });
 
     expect(validateImageUpload(file)).toContain("image");
+  });
+
+  it("returns a clear upload service error when Cloudinary rejects the upload", async () => {
+    const mockedUpload = uploadImageToCloudinary as jest.MockedFunction<
+      typeof uploadImageToCloudinary
+    >;
+
+    mockedUpload.mockRejectedValue({
+      http_code: 403,
+      message: "Invalid API key",
+    });
+
+    const formData = new FormData();
+    formData.append(
+      "file",
+      new File(["image bytes"], "garden.png", { type: "image/png" })
+    );
+
+    const response = await POST({
+      formData: async () => formData,
+    } as Request);
+
+    expect(response.status).toBe(503);
+    expect((await response.json()).error).toContain("Cloudinary");
   });
 });

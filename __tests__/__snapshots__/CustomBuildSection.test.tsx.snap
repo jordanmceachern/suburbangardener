@@ -29,13 +29,13 @@ exports[`CustomBuildSection Component should match DOM snapshot 1`] = `
       class="flex flex-col sm:flex-row gap-4 justify-center"
     >
       <a
-        class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-md transition-colors"
+        class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white dark:text-neutral-200 rounded-md transition-colors"
         href="/login?mode=signUp"
       >
         Create Account
       </a>
       <a
-        class="px-4 py-2 bg-secondary-500 hover:bg-secondary-600 text-white rounded-md transition-colors"
+        class="px-4 py-2 bg-secondary-500 hover:bg-secondary-600 text-white dark:text-neutral-200 rounded-md transition-colors"
         href="/login"
       >
         Sign In

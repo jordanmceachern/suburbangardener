@@ -8,6 +8,31 @@ export function isAdminEmail(value?: string | null): boolean {
   return normalizeEmail(value) === "jormceachern@proton.me";
 }
 
+export function normalizeCategoryValue(value?: string | null): string {
+  const trimmed = String(value ?? "").trim();
+
+  if (!trimmed) {
+    return "General";
+  }
+
+  const normalized = trimmed.toLowerCase();
+
+  if (
+    [
+      "fruit",
+      "vegetables",
+      "fruit & veg",
+      "fruit and veg",
+      "vegetables & fruit",
+      "vegetables and fruit",
+    ].includes(normalized)
+  ) {
+    return "Fruit & Veg";
+  }
+
+  return trimmed;
+}
+
 export function maskDisplayName(value?: string | null): string {
   const trimmed = String(value ?? "").trim();
 
@@ -23,22 +48,41 @@ export function maskDisplayName(value?: string | null): string {
   return trimmed;
 }
 
-export function canDeleteArticle({
+export function canEditPost({
   actorEmail,
   actorUserId,
-  articleAuthorEmail,
-  articleAuthorUserId,
+  PostAuthorEmail,
+  PostAuthorUserId,
 }: {
   actorEmail?: string | null;
   actorUserId?: string | null;
-  articleAuthorEmail?: string | null;
-  articleAuthorUserId?: string | null;
+  PostAuthorEmail?: string | null;
+  PostAuthorUserId?: string | null;
+}): boolean {
+  return canDeletePost({
+    actorEmail,
+    actorUserId,
+    PostAuthorEmail,
+    PostAuthorUserId,
+  });
+}
+
+export function canDeletePost({
+  actorEmail,
+  actorUserId,
+  PostAuthorEmail,
+  PostAuthorUserId,
+}: {
+  actorEmail?: string | null;
+  actorUserId?: string | null;
+  PostAuthorEmail?: string | null;
+  PostAuthorUserId?: string | null;
 }): boolean {
   const normalizedActorEmail = normalizeEmail(actorEmail);
-  const normalizedAuthorEmail = normalizeEmail(articleAuthorEmail);
+  const normalizedAuthorEmail = normalizeEmail(PostAuthorEmail);
 
-  if (actorUserId && articleAuthorUserId) {
-    if (actorUserId === articleAuthorUserId) {
+  if (actorUserId && PostAuthorUserId) {
+    if (actorUserId === PostAuthorUserId) {
       return true;
     }
   }

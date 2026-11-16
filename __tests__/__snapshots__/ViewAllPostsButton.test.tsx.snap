@@ -2,7 +2,7 @@
 
 exports[`ViewAllPostsButton Component should match DOM snapshot 1`] = `
 <a
-  class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-md transition-colors inline-flex items-center justify-center gap-2 w-fit"
+  class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white dark:text-neutral-200 rounded-md transition-colors inline-flex items-center justify-center gap-2 w-fit"
   href="/posts"
 >
   View All Posts
