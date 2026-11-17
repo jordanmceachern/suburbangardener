@@ -16,6 +16,16 @@ jest.mock("../src/lib/auth-nextauth", () => ({
   useAuth: jest.fn(),
 }));
 
+jest.mock("next-cloudinary", () => ({
+  CldUploadButton: ({
+    children,
+    className,
+  }: {
+    children: React.ReactNode;
+    className?: string;
+  }) => React.createElement("button", { type: "button", className }, children),
+}));
+
 const { useAuth } = jest.requireMock("../src/lib/auth-nextauth");
 
 describe("post security helpers", () => {
@@ -105,6 +115,23 @@ describe("post security helpers", () => {
       screen.getByRole("button", { name: /underline/i })
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /bullet/i })).toBeInTheDocument();
+  });
+
+  it("renders a Cloudinary upload button for the cover image field", () => {
+    useAuth.mockReturnValue({
+      user: {
+        id: "user-123",
+        email: "gardener@example.com",
+        name: "Gardener",
+      },
+      isAuthenticated: true,
+      isLoading: false,
+    });
+
+    render(React.createElement(PostCreateForm));
+
+    const uploadButton = screen.getByRole("button", { name: /choose file/i });
+    expect(uploadButton).toHaveClass("bg-tertiary-400");
   });
 
   it("keeps the create post form aligned with the auth modal styling contract", () => {

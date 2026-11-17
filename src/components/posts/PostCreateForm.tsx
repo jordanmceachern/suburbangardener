@@ -2,13 +2,17 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  CldUploadButton,
+  type CloudinaryUploadWidgetError,
+  type CloudinaryUploadWidgetResults,
+} from "next-cloudinary";
 import { useAuth } from "@/lib/auth-nextauth";
 import {
   DEFAULT_POST_CATEGORY,
   POST_CATEGORY_OPTIONS,
   normalizeCategoryValue,
 } from "@/lib/postSecurity";
-import { validateImageUpload } from "@/lib/imageUpload";
 import {
   POST_FORM_COPY,
   PostFormStyles,
@@ -18,6 +22,9 @@ import {
 
 const MAX_POST_BODY_CHARACTERS = 5000;
 const MAX_SUMMARY_CHARACTERS = 100;
+const CLOUDINARY_CLOUD_NAME = "dtweazqf2";
+// Must be an unsigned upload preset in the Cloudinary console.
+const CLOUDINARY_UPLOAD_PRESET = "suburbangardener";
 
 const initialForm = {
   title: "",
@@ -35,7 +42,6 @@ export default function PostCreateForm() {
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editPostId, setEditPostId] = useState<string | null>(null);
   const [isCancelConfirmed, setIsCancelConfirmed] = useState(false);
@@ -214,51 +220,22 @@ export default function PostCreateForm() {
     });
   };
 
-  const handleImageUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0];
+  const handleCloudinaryUpload = (results: CloudinaryUploadWidgetResults) => {
+    const info = results.info;
 
-    if (!file) {
+    if (!info || typeof info === "string") {
       return;
     }
 
-    const validationError = validateImageUpload(file);
-    if (validationError) {
-      setError(validationError);
-      event.target.value = "";
-      return;
-    }
-
-    setIsUploadingImage(true);
     setError(null);
+    updateField("coverImageUrl", info.secure_url || info.url);
+  };
 
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
+  const handleCloudinaryError = (uploadError: CloudinaryUploadWidgetError) => {
+    const message =
+      typeof uploadError === "string" ? uploadError : uploadError?.statusText;
 
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Unable to upload cover image.");
-      }
-
-      updateField("coverImageUrl", data.url);
-    } catch (uploadError) {
-      setError(
-        uploadError instanceof Error
-          ? uploadError.message
-          : "Unable to upload cover image."
-      );
-    } finally {
-      setIsUploadingImage(false);
-      event.target.value = "";
-    }
+    setError(message || "Unable to upload cover image.");
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -457,21 +434,31 @@ export default function PostCreateForm() {
         </label>
 
         <div className={PostFormStyles.field}>
-          <label htmlFor="cover-image" className={PostFormStyles.label}>
+          <span id="cover-image-label" className={PostFormStyles.label}>
             {POST_FORM_COPY.labels.coverImage}
-          </label>
-          <input
-            id="cover-image"
-            name="coverImage"
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className={PostFormStyles.input}
-            disabled={isUploadingImage}
-            required
-            aria-required="true"
-            aria-describedby="cover-image-help"
-          />
+          </span>
+          <div>
+            <CldUploadButton
+              uploadPreset={CLOUDINARY_UPLOAD_PRESET}
+              config={{ cloud: { cloudName: CLOUDINARY_CLOUD_NAME } }}
+              options={{
+                sources: ["local"],
+                multiple: false,
+                maxFiles: 1,
+                clientAllowedFormats: ["jpg", "jpeg", "png", "gif", "webp"],
+                maxFileSize: 10 * 1024 * 1024,
+              }}
+              onSuccess={handleCloudinaryUpload}
+              onError={handleCloudinaryError}
+              className={PostFormStyles.uploadButton}
+              aria-labelledby="cover-image-label"
+              aria-describedby="cover-image-help"
+            >
+              {form.coverImageUrl
+                ? POST_FORM_COPY.labels.fileSelected
+                : POST_FORM_COPY.labels.chooseFile}
+            </CldUploadButton>
+          </div>
           <p id="cover-image-help" className={PostFormStyles.previewHint}>
             {POST_FORM_COPY.uploadHelp}
           </p>
