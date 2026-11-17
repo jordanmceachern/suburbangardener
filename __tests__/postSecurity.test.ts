@@ -130,7 +130,7 @@ describe("post security helpers", () => {
     expect(titleInput).toHaveClass("auth-input");
     expect(PostFormStyles.input).toContain("auth-input");
     expect(PostFormStyles.label).toContain("text-lg");
-    expect(PostFormStyles.shell).toContain("bg-secondary-100");
+    expect(PostFormStyles.shell).toContain("bg-primary-100");
   });
 
   it("uses the site-wide primary focus ring for keyboard accessibility in form fields", () => {

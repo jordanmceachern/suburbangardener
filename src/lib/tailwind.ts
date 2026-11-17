@@ -336,7 +336,7 @@ const postFormInputBase =
 
 export const PostFormStyles = {
   shell:
-    "mx-auto max-w-4xl space-y-6 rounded-2xl border border-secondary-200 bg-secondary-100 p-6 shadow-xl dark:border-secondary-700 dark:bg-secondary-800",
+    "mx-auto max-w-4xl space-y-6 rounded-2xl border border-secondary-200 bg-primary-100 p-6 shadow-xl dark:border-secondary-700 dark:bg-secondary-800",
   header: "mt-2 space-y-2",
   title:
     "pt-2 text-center text-2xl font-bold text-foreground-light dark:text-foreground-dark md:text-3xl",
