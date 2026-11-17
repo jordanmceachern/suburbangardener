@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import BackgroundImage from "../BackgroundImage";
-import { maskDisplayName } from "../../lib/PostSecurity";
+import { maskDisplayName } from "../../lib/postSecurity";
 import { PostCardStyles, cn } from "../../lib/tailwind";
 
 export interface PostDisplayData {

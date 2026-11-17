@@ -5,20 +5,33 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
     const file = formData.get("file");
+    const isFileLike =
+      typeof Blob !== "undefined" && file instanceof Blob
+        ? true
+        : !!file &&
+          typeof file === "object" &&
+          "name" in file &&
+          "type" in file &&
+          typeof (file as { arrayBuffer?: unknown }).arrayBuffer === "function";
 
-    if (!(file instanceof File)) {
+    if (!isFileLike) {
       return NextResponse.json(
         { error: "A valid image file is required." },
         { status: 400 }
       );
     }
 
-    const validationError = validateImageUpload(file);
+    const imageFile = file as File | Blob;
+
+    const validationError = validateImageUpload(imageFile);
     if (validationError) {
       return NextResponse.json({ error: validationError }, { status: 400 });
     }
 
-    const url = await uploadImageToCloudinary(file, "SuburbanGardener/Posts");
+    const url = await uploadImageToCloudinary(
+      imageFile,
+      "SuburbanGardener/Posts"
+    );
 
     return NextResponse.json({ url });
   } catch (error) {

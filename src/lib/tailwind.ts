@@ -13,9 +13,9 @@ export const buttonStyles = {
   primary:
     "px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white dark:text-neutral-200 rounded-md transition-colors",
   secondary:
-    "px-4 py-2 bg-secondary-500 hover:bg-secondary-600 text-white dark:text-neutral-200 rounded-md transition-colors",
+    "px-4 py-2 bg-secondary-500 hover:bg-secondary-600 text-white dark:bg-secondary-700 dark:hover:bg-secondary-800 dark:text-neutral-200 rounded-md transition-colors",
   tertiary:
-    "px-4 py-2 bg-tertiary-500 hover:bg-tertiary-600 text-neutral-900 rounded-md transition-colors",
+    "px-4 py-2 bg-tertiary-400 hover:bg-tertiary-500 text-neutral-950 dark:text-neutral-950 rounded-md transition-colors",
   danger:
     "px-4 py-2 text-white rounded-md transition-colors disabled:cursor-not-allowed disabled:opacity-70 bg-[#dc2626] hover:bg-[#b91c1c] dark:bg-[#7f1d1d] dark:hover:bg-[#5b1010]",
 } as const;
@@ -100,8 +100,10 @@ export const PostListStyles = {
   emptyImage: "flex justify-center mb-8 rounded-lg mx-auto",
   emptyText: "text-xl text-foreground-light dark:text-foreground-dark",
   loadMoreWrap: "mt-8 text-center",
-  loadMoreButton:
-    "bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 text-white px-8 py-3 rounded-lg font-medium transition-colors inline-flex items-center gap-2",
+  loadMoreButton: cn(
+    buttonStyles.primary,
+    "disabled:bg-primary-400 px-8 py-3 inline-flex items-center gap-2"
+  ),
   errorWrap: "mt-8 text-center",
   errorText: "text-red-600 dark:text-red-400",
 } as const;
@@ -261,7 +263,7 @@ export const PostCardStyles = {
   voteBadge:
     "inline-flex items-center gap-1 rounded-full bg-slate-200 px-2 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-100",
   button:
-    "bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-500 dark:hover:bg-tertiary-600 text-neutral-900 dark:text-neutral-900 px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center",
+    "bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-500 dark:hover:bg-tertiary-600 text-neutral-950 dark:text-neutral-950 px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center",
   buttonNarrow: "self-center",
 } as const;
 
@@ -308,6 +310,9 @@ export const POST_FORM_COPY = {
     title: "Title",
     category: "Category",
     coverImage: "Cover Image",
+    chooseFile: "Choose File",
+    fileSelected: "File selected",
+    noFileSelected: "No file selected",
     youtube: "YouTube",
     summary: "Summary",
     postBody: "Post Body",
@@ -326,6 +331,9 @@ export const POST_FORM_COPY = {
   uploadHelp: "Upload a JPG, PNG, GIF, or WebP image up to 10 MB.",
 } as const;
 
+const postFormInputBase =
+  "auth-input w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-primary-200 dark:bg-primary-100 dark:placeholder:text-neutral-600";
+
 export const PostFormStyles = {
   shell:
     "mx-auto max-w-4xl space-y-6 rounded-2xl border border-secondary-200 bg-secondary-100 p-6 shadow-xl dark:border-secondary-700 dark:bg-secondary-800",
@@ -340,8 +348,7 @@ export const PostFormStyles = {
   fieldFull: "space-y-2 md:col-span-2",
   label:
     "whitespace-nowrap text-lg font-medium text-foreground-light dark:text-foreground-dark",
-  input:
-    "auth-input w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-primary-200 dark:bg-primary-100 dark:placeholder:text-neutral-600",
+  input: postFormInputBase,
   textarea:
     "auth-input block w-full resize-none rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-primary-200 dark:bg-primary-100 dark:placeholder:text-neutral-600",
   selectWrap: "relative",
@@ -353,23 +360,25 @@ export const PostFormStyles = {
   toolbarRow: "flex items-center gap-2",
   editorToolbar: "flex flex-wrap items-center gap-2",
   editorBodyWrap: "relative",
-  editorButton:
-    "h-auto rounded-md border-0 bg-tertiary-500 px-4 py-1 text-base font-medium text-neutral-900 shadow-sm transition hover:bg-tertiary-400 dark:bg-tertiary-500 dark:text-neutral-900 dark:hover:bg-tertiary-400",
+  editorButton: cn(
+    buttonStyles.tertiary,
+    "h-auto rounded-md border border-primary-200 px-4 py-1 text-base font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:border-primary-200 dark:text-neutral-950"
+  ),
   editor:
     "auth-input block min-h-[240px] rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg shadow-inner outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500 dark:border-primary-200 dark:bg-primary-100",
   previewWrap:
     "mt-3 overflow-hidden rounded-lg border border-primary-200 bg-white dark:border-tertiary-700 dark:bg-tertiary-700",
   previewImage: "h-48 w-full object-cover",
   previewHint:
-    "mt-2 text-left text-base text-neutral-700 dark:text-neutral-200",
+    "mt-2 text-left text-base text-foreground-light dark:text-foreground-dark",
   actions: "flex justify-end gap-4",
   cancelButton: cn(
     buttonStyles.danger,
-    "inline-flex items-center justify-center"
+    "inline-flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
   ),
   submitButton: cn(
     buttonStyles.primary,
-    "inline-flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-60"
+    "inline-flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 disabled:cursor-not-allowed disabled:opacity-60"
   ),
   selectField: "relative",
   fieldRow: "flex items-center gap-2",

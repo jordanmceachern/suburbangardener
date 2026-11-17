@@ -220,6 +220,41 @@ describe("credentials auth flow", () => {
     expect(mockPush).toHaveBeenCalledWith("/login?mode=signIn");
   });
 
+  it("redirects back to the requested write-post page after sign in", async () => {
+    currentSearchParams = new URLSearchParams("callbackUrl=%2Fposts%2Fnew");
+    mockSearchParams.mockImplementation(() => currentSearchParams);
+
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ valid: true }),
+    }) as jest.Mock;
+    signIn.mockResolvedValue({ ok: true, url: "/posts/new" });
+
+    render(<LoginPage />);
+
+    fireEvent.change(screen.getByLabelText(/^email$/i), {
+      target: { value: "grower@example.com" },
+    });
+    fireEvent.change(screen.getByLabelText(/^password$/i), {
+      target: { value: "gardenpass" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /sign in/i }));
+
+    await waitFor(() => {
+      expect(signIn).toHaveBeenCalledWith(
+        "credentials",
+        expect.objectContaining({
+          email: "grower@example.com",
+          password: "gardenpass",
+          redirect: false,
+          callbackUrl: "/posts/new",
+        })
+      );
+    });
+
+    expect(mockPush).toHaveBeenCalledWith("/posts/new");
+  });
+
   it("redirects verified users from the sign-in page to the dashboard", async () => {
     currentSearchParams = new URLSearchParams("verified=1");
     mockSearchParams.mockImplementation(() => currentSearchParams);

@@ -10,7 +10,7 @@ import PostComments from "@/components/posts/PostComments";
 import ViewAllPostsButton from "@/components/posts/ViewAllPostsButton";
 import { useAuth } from "@/lib/auth-nextauth";
 import { isAdminEmail } from "@/lib/postSecurity";
-import { PostDetailStyles, cn } from "@/lib/tailwind";
+import { PostDetailStyles, buttonStyles, cn } from "@/lib/tailwind";
 
 type PostRecord = {
   id: string;
@@ -302,7 +302,10 @@ export default function PostPage() {
                 {canEditPost ? (
                   <Link
                     href={`/posts/new?edit=${encodeURIComponent(Post.id)}`}
-                    className="inline-flex items-center justify-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-primary-700"
+                    className={cn(
+                      buttonStyles.primary,
+                      "inline-flex items-center justify-center rounded-lg text-sm font-medium"
+                    )}
                   >
                     Edit Post
                   </Link>

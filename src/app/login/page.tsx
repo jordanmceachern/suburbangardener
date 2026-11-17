@@ -59,6 +59,7 @@ function LoginPageContent() {
   const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
   // Watches for verification and auth callbacks so a freshly verified user can be redirected into the authenticated dashboard state.
   useEffect(() => {
@@ -82,17 +83,17 @@ function LoginPageContent() {
             email: activeEmail,
             password: activePassword,
             redirect: false,
-            callbackUrl: "/dashboard",
+            callbackUrl,
           });
 
           if (signInResult?.ok !== false) {
             clearPendingAuthCredentials();
             if (process.env.NODE_ENV === "test") {
-              router.push("/dashboard");
+              router.push(callbackUrl);
             } else if (typeof window !== "undefined") {
-              window.location.assign("/dashboard");
+              window.location.assign(callbackUrl);
             } else {
-              router.push("/dashboard");
+              router.push(callbackUrl);
             }
             return;
           }
@@ -109,11 +110,11 @@ function LoginPageContent() {
 
       clearPendingAuthCredentials();
       if (process.env.NODE_ENV === "test") {
-        router.push("/dashboard");
+        router.push(callbackUrl);
       } else if (typeof window !== "undefined") {
-        window.location.assign("/dashboard");
+        window.location.assign(callbackUrl);
       } else {
-        router.push("/dashboard");
+        router.push(callbackUrl);
       }
     };
 
@@ -179,7 +180,7 @@ function LoginPageContent() {
       window.removeEventListener("storage", handleStorageVerification);
       window.removeEventListener("message", handleMessageVerification);
     };
-  }, [email, password, searchParams, router]);
+  }, [callbackUrl, email, password, searchParams, router]);
 
   // Resets the auth form state to clear validation, success, and verification messaging between mode switches.
   const resetAccountForm = () => {
@@ -325,7 +326,7 @@ function LoginPageContent() {
         email,
         password,
         redirect: false,
-        callbackUrl: "/dashboard",
+        callbackUrl,
       });
 
       if (result?.error) {
@@ -336,7 +337,7 @@ function LoginPageContent() {
         );
       }
 
-      router.push("/dashboard");
+      router.push(callbackUrl);
     } catch (err) {
       setError(
         err instanceof Error

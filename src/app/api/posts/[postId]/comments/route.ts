@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "@/lib/auth";
-import { sanitizeHtml } from "@/lib/PostSecurity";
+import { sanitizeHtml } from "@/lib/postSecurity";
 import { prisma } from "@/lib/prisma";
 
 type CommentMapEntry = {
