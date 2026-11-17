@@ -133,15 +133,15 @@ export const homePostStyles = {
 
 export const PostSidebarStyles = {
   panelBase:
-    "bg-primary-100 dark:bg-tertiary-800 shadow-lg transition-all duration-300 ease-in-out relative h-screen pb-20 sm:pb-0",
+    "bg-primary-100 dark:bg-slate-600 shadow-lg transition-all duration-300 ease-in-out relative h-screen pb-20 sm:pb-0 border border-primary-200 dark:border-slate-500",
   panelOpen:
-    "translate-x-0 opacity-100 border-l border-primary-200 dark:border-tertiary-700",
+    "translate-x-0 opacity-100 border-l border-primary-200 dark:border-slate-500",
   panelClosed: "translate-x-full lg:translate-x-0 opacity-90 lg:opacity-100",
   collapseButtonBase:
-    "absolute top-4 -left-10 bg-primary-100 dark:bg-tertiary-800 shadow-xl cursor-pointer hover:bg-primary-200 dark:hover:bg-tertiary-700 transition-colors z-30 focus:outline-none focus:ring-2 focus:ring-primary-500 w-10 h-16 flex items-center justify-center rounded-l-md lg:hidden",
+    "absolute top-4 -left-10 bg-primary-100 dark:bg-slate-600 shadow-xl cursor-pointer hover:bg-primary-200 dark:hover:bg-slate-500 transition-colors z-30 focus:outline-none focus:ring-2 focus:ring-primary-500 w-10 h-16 flex items-center justify-center rounded-l-md lg:hidden border border-primary-200 dark:border-slate-500",
   collapseButtonOpen:
-    "border-l border-t border-b border-primary-200 dark:border-tertiary-700",
-  collapseButtonClosed: "border border-primary-200 dark:border-tertiary-700",
+    "border-l border-t border-b border-primary-200 dark:border-slate-500",
+  collapseButtonClosed: "border border-primary-200 dark:border-slate-500",
   collapseIcon: "w-4 h-4 text-foreground-light dark:text-foreground-dark",
   content: "p-6 pt-6 h-full overflow-y-auto",
   sectionTitle:
@@ -149,13 +149,13 @@ export const PostSidebarStyles = {
   skeletonWrap: "space-y-4",
   skeletonItem: "animate-pulse",
   skeletonDivider:
-    "border-b border-primary-200 dark:border-tertiary-700 pb-4 animate-pulse",
+    "border-b border-primary-200 dark:border-slate-500 pb-4 animate-pulse",
   skeletonBlock: "h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2",
   skeletonLine: "h-3 bg-slate-300 dark:bg-slate-600 rounded mb-2",
   skeletonShort: "h-3 bg-slate-300 dark:bg-slate-600 rounded w-1/3",
   errorText: "text-sm text-red-600 dark:text-red-400",
   relatedEmpty: "text-sm text-slate-600 dark:text-slate-300 italic",
-  divider: "my-6 border-0 border-t border-primary-200 dark:border-tertiary-700",
+  divider: "my-6 border-0 border-t border-primary-200 dark:border-slate-500",
   listWrap: "space-y-4",
   sectionSpacing: "mb-8",
   sectionErrorSpacing: "mb-8",
@@ -328,10 +328,10 @@ export const POST_FORM_COPY = {
 
 export const PostFormStyles = {
   shell:
-    "mx-auto max-w-4xl space-y-6 rounded-2xl border border-primary-200 bg-primary-100 p-6 shadow-xl dark:border-tertiary-700 dark:bg-tertiary-800",
+    "mx-auto max-w-4xl space-y-6 rounded-2xl border border-secondary-200 bg-secondary-100 p-6 shadow-xl dark:border-secondary-700 dark:bg-secondary-800",
   header: "mt-2 space-y-2",
   title:
-    "pt-2 text-2xl font-bold text-foreground-light dark:text-foreground-dark md:text-3xl",
+    "pt-2 text-center text-2xl font-bold text-foreground-light dark:text-foreground-dark md:text-3xl",
   intro: "text-lg text-foreground-light dark:text-foreground-dark",
   error:
     "rounded-md border border-red-200 bg-red-50 px-4 py-3 text-base font-medium text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300",
@@ -341,12 +341,12 @@ export const PostFormStyles = {
   label:
     "whitespace-nowrap text-lg font-medium text-foreground-light dark:text-foreground-dark",
   input:
-    "auth-input w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-primary-200 dark:bg-primary-100 dark:placeholder:text-neutral-600",
+    "auth-input w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-primary-200 dark:bg-primary-100 dark:placeholder:text-neutral-600",
   textarea:
-    "auth-input block w-full resize-none rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-primary-200 dark:bg-primary-100 dark:placeholder:text-neutral-600",
+    "auth-input block w-full resize-none rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-primary-200 dark:bg-primary-100 dark:placeholder:text-neutral-600",
   selectWrap: "relative",
   selectInput:
-    "auth-input w-full appearance-none pr-10 cursor-pointer focus:border-primary-500",
+    "auth-input w-full appearance-none pr-10 cursor-pointer focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500",
   selectIcon: "pointer-events-none absolute right-3 top-1/2 -translate-y-1/2",
   editorWrap: "space-y-3",
   postBodyField: "!mt-4 space-y-2 md:col-span-2",
@@ -356,7 +356,7 @@ export const PostFormStyles = {
   editorButton:
     "h-auto rounded-md border-0 bg-tertiary-500 px-4 py-1 text-base font-medium text-neutral-900 shadow-sm transition hover:bg-tertiary-400 dark:bg-tertiary-500 dark:text-neutral-900 dark:hover:bg-tertiary-400",
   editor:
-    "auth-input block min-h-[240px] rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg shadow-inner outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-primary-200 dark:bg-primary-100",
+    "auth-input block min-h-[240px] rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg shadow-inner outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500 dark:border-primary-200 dark:bg-primary-100",
   previewWrap:
     "mt-3 overflow-hidden rounded-lg border border-primary-200 bg-white dark:border-tertiary-700 dark:bg-tertiary-700",
   previewImage: "h-48 w-full object-cover",
@@ -364,7 +364,7 @@ export const PostFormStyles = {
     "mt-2 text-left text-base text-neutral-700 dark:text-neutral-200",
   actions: "flex justify-end gap-4",
   cancelButton: cn(
-    buttonStyles.secondary,
+    buttonStyles.danger,
     "inline-flex items-center justify-center"
   ),
   submitButton: cn(

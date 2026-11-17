@@ -38,6 +38,9 @@ export default function PostCreateForm() {
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editPostId, setEditPostId] = useState<string | null>(null);
+  const [isCancelConfirmed, setIsCancelConfirmed] = useState(false);
+  const [cancelCooldown, setCancelCooldown] = useState(false);
+  const cancelCooldownRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -104,6 +107,51 @@ export default function PostCreateForm() {
 
   const updateField = (field: keyof typeof initialForm, value: string) => {
     setForm(current => ({ ...current, [field]: value }));
+  };
+
+  useEffect(() => {
+    if (!isCancelConfirmed) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setIsCancelConfirmed(false);
+    }, 1000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [isCancelConfirmed]);
+
+  useEffect(() => {
+    return () => {
+      if (cancelCooldownRef.current) {
+        window.clearTimeout(cancelCooldownRef.current);
+      }
+    };
+  }, []);
+
+  const startCancelCooldown = () => {
+    if (cancelCooldownRef.current) {
+      window.clearTimeout(cancelCooldownRef.current);
+    }
+
+    setCancelCooldown(true);
+    cancelCooldownRef.current = window.setTimeout(() => {
+      setCancelCooldown(false);
+    }, 1000);
+  };
+
+  const handleCancelClick = () => {
+    if (cancelCooldown) {
+      return;
+    }
+
+    if (!isCancelConfirmed) {
+      setIsCancelConfirmed(true);
+      startCancelCooldown();
+      return;
+    }
+
+    router.push("/posts");
   };
 
   const getPlainTextContent = (value: string) =>
@@ -545,10 +593,16 @@ export default function PostCreateForm() {
       <div className={PostFormStyles.actions}>
         <button
           type="button"
-          onClick={() => router.push("/posts")}
-          className={PostFormStyles.cancelButton}
+          onClick={handleCancelClick}
+          disabled={cancelCooldown}
+          className={cn(
+            PostFormStyles.cancelButton,
+            isCancelConfirmed && "ring-2 ring-red-300",
+            cancelCooldown && "cursor-not-allowed opacity-70"
+          )}
+          aria-live="polite"
         >
-          {POST_FORM_COPY.labels.cancel}
+          {isCancelConfirmed ? "Are you sure?" : POST_FORM_COPY.labels.cancel}
         </button>
         <button
           type="submit"

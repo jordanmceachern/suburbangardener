@@ -18,7 +18,7 @@ export default function PostsPageHeader({
         something from your own gardening journey.
       </p>
       <div className={PostPageHeaderStyles.actions}>
-        <Link href="/posts/new" className={buttonStyles.primary}>
+        <Link href="/posts/new" className={buttonStyles.secondary}>
           Write a Post
         </Link>
       </div>

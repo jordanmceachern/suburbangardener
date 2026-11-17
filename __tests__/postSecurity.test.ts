@@ -130,7 +130,14 @@ describe("post security helpers", () => {
     expect(titleInput).toHaveClass("auth-input");
     expect(PostFormStyles.input).toContain("auth-input");
     expect(PostFormStyles.label).toContain("text-lg");
-    expect(PostFormStyles.shell).toContain("bg-primary-100");
+    expect(PostFormStyles.shell).toContain("bg-secondary-100");
+  });
+
+  it("uses the site-wide primary focus ring for keyboard accessibility in form fields", () => {
+    expect(PostFormStyles.input).toContain("focus:ring-2");
+    expect(PostFormStyles.input).toContain("focus:ring-primary-500");
+    expect(PostFormStyles.input).not.toContain("focus:ring-primary-500/20");
+    expect(PostFormStyles.editor).toContain("focus:ring-primary-500");
   });
 
   it("tracks the summary and post body character counters with the correct limits", () => {
