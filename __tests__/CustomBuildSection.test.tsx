@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import CustomBuildSection from "@/components/CustomBuildSection";
 import { useAuth } from "@/lib/auth-nextauth";
-import { customBuildStyles, homeArticleStyles } from "@/lib/tailwind";
+import { customBuildStyles, homePostStyles } from "@/lib/tailwind";
 
 jest.mock("@/lib/auth-nextauth", () => ({
   useAuth: jest.fn(),
@@ -68,8 +68,8 @@ describe("CustomBuildSection Component", () => {
 
   it("keeps home section headings no larger than the hero text on mobile", () => {
     expect(customBuildStyles.title.startsWith("text-2xl")).toBe(true);
-    expect(homeArticleStyles.title.startsWith("text-2xl")).toBe(true);
+    expect(homePostStyles.title.startsWith("text-2xl")).toBe(true);
     expect(customBuildStyles.title).toContain("sm:text-3xl");
-    expect(homeArticleStyles.title).toContain("sm:text-3xl");
+    expect(homePostStyles.title).toContain("sm:text-3xl");
   });
 });

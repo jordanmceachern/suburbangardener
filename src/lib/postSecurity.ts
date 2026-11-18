@@ -61,38 +61,38 @@ export function maskDisplayName(value?: string | null): string {
 export function canEditPost({
   actorEmail,
   actorUserId,
-  PostAuthorEmail,
-  PostAuthorUserId,
+  postAuthorEmail,
+  postAuthorUserId,
 }: {
   actorEmail?: string | null;
   actorUserId?: string | null;
-  PostAuthorEmail?: string | null;
-  PostAuthorUserId?: string | null;
+  postAuthorEmail?: string | null;
+  postAuthorUserId?: string | null;
 }): boolean {
   return canDeletePost({
     actorEmail,
     actorUserId,
-    PostAuthorEmail,
-    PostAuthorUserId,
+    postAuthorEmail,
+    postAuthorUserId,
   });
 }
 
 export function canDeletePost({
   actorEmail,
   actorUserId,
-  PostAuthorEmail,
-  PostAuthorUserId,
+  postAuthorEmail,
+  postAuthorUserId,
 }: {
   actorEmail?: string | null;
   actorUserId?: string | null;
-  PostAuthorEmail?: string | null;
-  PostAuthorUserId?: string | null;
+  postAuthorEmail?: string | null;
+  postAuthorUserId?: string | null;
 }): boolean {
   const normalizedActorEmail = normalizeEmail(actorEmail);
-  const normalizedAuthorEmail = normalizeEmail(PostAuthorEmail);
+  const normalizedAuthorEmail = normalizeEmail(postAuthorEmail);
 
-  if (actorUserId && PostAuthorUserId) {
-    if (actorUserId === PostAuthorUserId) {
+  if (actorUserId && postAuthorUserId) {
+    if (actorUserId === postAuthorUserId) {
       return true;
     }
   }

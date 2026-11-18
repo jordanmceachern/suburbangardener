@@ -1,15 +1,15 @@
 import { render } from "@testing-library/react";
 import RecentPosts from "@/components/posts/RecentPosts";
-import type { ArticleDisplayData } from "@/components/posts/PostDisplayCard";
+import type { PostDisplayData } from "@/components/posts/PostDisplayCard";
 
 describe("RecentPosts Component", () => {
-  const mockArticles: ArticleDisplayData[] = [
+  const mockPosts: PostDisplayData[] = [
     {
       id: "1",
-      title: "Recent Article 1",
-      excerpt: "First recent article",
+      title: "Recent Post 1",
+      excerpt: "First recent post",
       publishedDate: "2024-01-01",
-      slug: "recent-article-1",
+      slug: "recent-post-1",
       content: "Recent content 1",
       imageUrl: "/recent-image-1.jpg",
       category: "Gardening",
@@ -18,14 +18,14 @@ describe("RecentPosts Component", () => {
   ];
 
   it("should match DOM snapshot", () => {
-    const { container } = render(<RecentPosts articles={mockArticles} />);
+    const { container } = render(<RecentPosts posts={mockPosts} />);
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it("should maintain CSS classes for recent posts layout", () => {
-    const { container } = render(<RecentPosts articles={mockArticles} />);
+    const { container } = render(<RecentPosts posts={mockPosts} />);
 
-    // Check for recent articles classes
+    // Check for recent posts classes
     const hasRecentClasses =
       container.innerHTML.includes("recent") ||
       container.innerHTML.includes("list") ||

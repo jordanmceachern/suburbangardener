@@ -17,15 +17,12 @@ export interface PostDisplayData {
   imageUrl: string;
   category: string;
   content?: string;
-  voteScore?: number;
-  voteCount?: number;
+  upvotes?: number;
+  downvotes?: number;
 }
 
-export type ArticleDisplayData = PostDisplayData;
-
 interface PostDisplayCardProps {
-  article?: PostDisplayData;
-  Post?: PostDisplayData;
+  post?: PostDisplayData;
   className?: string;
   buttonVariant?: "default" | "narrow";
   titleClassName?: string;
@@ -34,21 +31,18 @@ interface PostDisplayCardProps {
 
 // Renders the PostDisplayCard UI block.
 export default function PostDisplayCard({
-  article,
-  Post,
+  post,
   className = "",
   buttonVariant = "default",
   titleClassName = "",
   imageClassName = "",
 }: PostDisplayCardProps) {
-  const post = Post ?? article;
-
   if (!post) {
     return null;
   }
 
-  const voteScore = typeof post.voteScore === "number" ? post.voteScore : 0;
-  const voteCount = typeof post.voteCount === "number" ? post.voteCount : 0;
+  const upvotes = post.upvotes ?? 0;
+  const downvotes = post.downvotes ?? 0;
 
   return (
     <div className={cn(PostCardStyles.card, className)}>
@@ -65,8 +59,8 @@ export default function PostDisplayCard({
             {post.publishedDate} · {maskDisplayName(post.author)}
           </span>
           <span className={PostCardStyles.voteBadge}>
-            ▲ {voteScore}
-            {voteCount > 0 ? ` · ${voteCount}` : ""}
+            <span>▲ {upvotes}</span>
+            <span>▼ {downvotes}</span>
           </span>
         </div>
         <h2 className={cn(PostCardStyles.title, titleClassName)}>

@@ -15,10 +15,7 @@ import type { PostDisplayData } from "../components/posts/PostDisplayCard";
 
 interface PostState {
   posts: PostDisplayData[];
-  Posts: PostDisplayData[];
-  articles: PostDisplayData[];
   featuredPost: PostDisplayData | null;
-  featuredArticle: PostDisplayData | null;
   total: number;
   hasMore: boolean;
   loading: boolean;
@@ -32,19 +29,18 @@ type PostAction =
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_ERROR"; payload: string | null }
   | {
-      type: "SET_PostS";
+      type: "SET_POSTS";
       payload: {
-        Posts: PostDisplayData[];
+        posts: PostDisplayData[];
         total: number;
         hasMore: boolean;
       };
     }
   | {
-      type: "APPEND_PostS";
-      payload: { Posts: PostDisplayData[]; hasMore: boolean };
+      type: "APPEND_POSTS";
+      payload: { posts: PostDisplayData[]; hasMore: boolean };
     }
-  | { type: "SET_FEATURED_Post"; payload: PostDisplayData | null }
-  | { type: "SET_FEATURED_ARTICLE"; payload: PostDisplayData | null }
+  | { type: "SET_FEATURED_POST"; payload: PostDisplayData | null }
   | { type: "SET_SEARCH_TERM"; payload: string }
   | { type: "SET_SELECTED_CATEGORY"; payload: string }
   | { type: "SET_OFFSET"; payload: number }
@@ -52,10 +48,7 @@ type PostAction =
 
 const initialState: PostState = {
   posts: [],
-  Posts: [],
-  articles: [],
   featuredPost: null,
-  featuredArticle: null,
   total: 0,
   hasMore: false,
   loading: false,
@@ -72,39 +65,28 @@ function PostReducer(state: PostState, action: PostAction): PostState {
       return { ...state, loading: action.payload };
     case "SET_ERROR":
       return { ...state, error: action.payload, loading: false };
-    case "SET_PostS":
+    case "SET_POSTS":
       return {
         ...state,
-        posts: action.payload.Posts,
-        Posts: action.payload.Posts,
-        articles: action.payload.Posts,
+        posts: action.payload.posts,
         total: action.payload.total,
         hasMore: action.payload.hasMore,
         loading: false,
         error: null,
-        currentOffset: action.payload.Posts.length,
+        currentOffset: action.payload.posts.length,
       };
-    case "APPEND_PostS":
+    case "APPEND_POSTS":
       return {
         ...state,
-        posts: [...state.posts, ...action.payload.Posts],
-        Posts: [...state.Posts, ...action.payload.Posts],
-        articles: [...state.articles, ...action.payload.Posts],
+        posts: [...state.posts, ...action.payload.posts],
         hasMore: action.payload.hasMore,
         loading: false,
-        currentOffset: state.currentOffset + action.payload.Posts.length,
+        currentOffset: state.currentOffset + action.payload.posts.length,
       };
-    case "SET_FEATURED_Post":
+    case "SET_FEATURED_POST":
       return {
         ...state,
         featuredPost: action.payload,
-        featuredArticle: action.payload,
-      };
-    case "SET_FEATURED_ARTICLE":
-      return {
-        ...state,
-        featuredPost: action.payload,
-        featuredArticle: action.payload,
       };
     case "SET_SEARCH_TERM":
       return { ...state, searchTerm: action.payload };
@@ -123,12 +105,9 @@ interface PostContextType {
   state: PostState;
   loadPosts: () => Promise<void>;
   loadMorePosts: () => Promise<void>;
-  loadMoreArticles: () => Promise<void>;
   searchPosts: (_searchTerm: string) => Promise<void>;
-  searchArticles: (_searchTerm: string) => Promise<void>;
   setSelectedCategory: (_category: string) => void;
   getFilteredPosts: () => PostDisplayData[];
-  getFilteredArticles: () => PostDisplayData[];
 }
 
 const PostContext = createContext<PostContextType | null>(null);
@@ -145,8 +124,6 @@ export function usePosts() {
 interface PostProviderProps {
   children: React.ReactNode;
 }
-
-export type ArticleDisplayData = PostDisplayData;
 
 // Provides Post Provider context to the component tree.
 export function PostProvider({ children }: PostProviderProps) {
@@ -178,26 +155,26 @@ export function PostProvider({ children }: PostProviderProps) {
 
         if (reset || offset === 0) {
           dispatch({
-            type: "SET_PostS",
+            type: "SET_POSTS",
             payload: {
-              Posts: data.Posts,
+              posts: data.posts,
               total: data.total,
               hasMore: data.hasMore,
             },
           });
 
           // Set featured Post (first Post)
-          if (data.Posts.length > 0) {
+          if (data.posts.length > 0) {
             dispatch({
-              type: "SET_FEATURED_Post",
-              payload: data.Posts[0],
+              type: "SET_FEATURED_POST",
+              payload: data.posts[0],
             });
           }
         } else {
           dispatch({
-            type: "APPEND_PostS",
+            type: "APPEND_POSTS",
             payload: {
-              Posts: data.Posts,
+              posts: data.posts,
               hasMore: data.hasMore,
             },
           });
@@ -233,43 +210,35 @@ export function PostProvider({ children }: PostProviderProps) {
   }, []);
 
   const getFilteredPosts = useCallback(() => {
-    let filtered = state.posts.length ? state.posts : state.Posts;
+    let filtered = state.posts;
 
     // Exclude featured Post from the list to avoid duplication
     if (state.featuredPost) {
-      filtered = filtered.filter(Post => Post.id !== state.featuredPost!.id);
+      filtered = filtered.filter(post => post.id !== state.featuredPost!.id);
     }
 
     // Apply category filter (client-side filtering)
     if (state.selectedCategory !== ALL_POST_CATEGORIES) {
       filtered = filtered.filter(
-        Post =>
-          normalizeCategoryValue(Post.category || DEFAULT_POST_CATEGORY) ===
+        post =>
+          normalizeCategoryValue(post.category || DEFAULT_POST_CATEGORY) ===
           normalizeCategoryValue(state.selectedCategory)
       );
     }
 
     return filtered;
-  }, [state.posts, state.Posts, state.selectedCategory, state.featuredPost]);
-
-  const getFilteredArticles = getFilteredPosts;
+  }, [state.posts, state.selectedCategory, state.featuredPost]);
 
   const contextValue: PostContextType = {
     state,
     loadPosts,
     loadMorePosts,
-    loadMoreArticles: loadMorePosts,
     searchPosts,
-    searchArticles: searchPosts,
     setSelectedCategory,
     getFilteredPosts,
-    getFilteredArticles,
   };
 
   return (
     <PostContext.Provider value={contextValue}>{children}</PostContext.Provider>
   );
 }
-
-export const ArticleProvider = PostProvider;
-export const useArticles = usePosts;

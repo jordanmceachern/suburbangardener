@@ -34,7 +34,7 @@ export default function FeaturedPost({ className = "" }: FeaturedPostProps) {
   return (
     <div className={className}>
       <PostDisplayCard
-        Post={state.featuredPost}
+        post={state.featuredPost}
         buttonVariant="narrow"
         titleClassName={featuredPostStyles.featuredTitleClassName}
         imageClassName={featuredPostStyles.imageClassName}

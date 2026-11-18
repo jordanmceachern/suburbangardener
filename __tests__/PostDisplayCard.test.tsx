@@ -2,11 +2,11 @@ import { render } from "@testing-library/react";
 import PostDisplayCard from "@/components/posts/PostDisplayCard";
 
 describe("PostDisplayCard Component", () => {
-  const mockArticle = {
+  const mockPost = {
     id: "1",
-    title: "Test Article",
-    excerpt: "This is a test article excerpt",
-    slug: "test-article",
+    title: "Test Post",
+    excerpt: "This is a test post excerpt",
+    slug: "test-post",
     content: "Test content",
     imageUrl: "/test-image.jpg",
     author: "Test Author",
@@ -15,12 +15,12 @@ describe("PostDisplayCard Component", () => {
   };
 
   it("should match DOM snapshot", () => {
-    const { container } = render(<PostDisplayCard article={mockArticle} />);
+    const { container } = render(<PostDisplayCard post={mockPost} />);
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it("should maintain CSS classes for card layout", () => {
-    const { container } = render(<PostDisplayCard article={mockArticle} />);
+    const { container } = render(<PostDisplayCard post={mockPost} />);
 
     // Check for card-related classes
     const hasCardClasses =

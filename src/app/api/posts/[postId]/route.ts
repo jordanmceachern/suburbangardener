@@ -226,8 +226,8 @@ export async function DELETE(
   const canDelete = canDeletePost({
     actorEmail: session.user.email,
     actorUserId: session.user.id,
-    PostAuthorEmail: existingPost.author.email,
-    PostAuthorUserId: existingPost.authorId,
+    postAuthorEmail: existingPost.author.email,
+    postAuthorUserId: existingPost.authorId,
   });
 
   if (!canDelete) {

@@ -39,7 +39,7 @@ export default function PostsSidebar(props: any) {
     className?: string;
     maxPosts?: number;
   };
-  const [Posts, setPosts] = React.useState<PostMetadata[]>([]);
+  const [posts, setPosts] = React.useState<PostMetadata[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -154,11 +154,11 @@ export default function PostsSidebar(props: any) {
 
           {!loading && !error && (
             <div className={PostSidebarStyles.listWrap}>
-              {Posts.map((Post, index) => (
+              {posts.map((post, index) => (
                 <PostListItem
-                  key={Post.id}
-                  Post={Post}
-                  showBorder={index < Posts.length - 1}
+                  key={post.id}
+                  post={post}
+                  showBorder={index < posts.length - 1}
                 />
               ))}
             </div>

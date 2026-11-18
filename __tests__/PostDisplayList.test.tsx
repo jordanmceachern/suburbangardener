@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import PostDisplayList from "@/components/posts/PostDisplayList";
-import { ArticleProvider } from "@/contexts/PostContext";
+import { PostProvider } from "@/contexts/PostContext";
 
 describe("PostDisplayList Component", () => {
   const mockProps = {
@@ -9,18 +9,18 @@ describe("PostDisplayList Component", () => {
 
   it("should match DOM snapshot", () => {
     const { container } = render(
-      <ArticleProvider>
+      <PostProvider>
         <PostDisplayList {...mockProps} />
-      </ArticleProvider>
+      </PostProvider>
     );
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it("should maintain CSS classes for list layout", () => {
     const { container } = render(
-      <ArticleProvider>
+      <PostProvider>
         <PostDisplayList {...mockProps} />
-      </ArticleProvider>
+      </PostProvider>
     );
 
     // Check for list-related classes

@@ -1,22 +1,22 @@
 import { render } from "@testing-library/react";
 import SearchPosts from "@/components/posts/SearchPosts";
-import { ArticleProvider } from "@/contexts/PostContext";
+import { PostProvider } from "@/contexts/PostContext";
 
 describe("SearchPosts Component", () => {
   it("should match DOM snapshot", () => {
     const { container } = render(
-      <ArticleProvider>
+      <PostProvider>
         <SearchPosts />
-      </ArticleProvider>
+      </PostProvider>
     );
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it("should maintain CSS classes for search input", () => {
     const { container } = render(
-      <ArticleProvider>
+      <PostProvider>
         <SearchPosts />
-      </ArticleProvider>
+      </PostProvider>
     );
 
     // Check for search-related classes

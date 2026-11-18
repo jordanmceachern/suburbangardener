@@ -21,8 +21,8 @@ export default function SearchPosts() {
     ALL_POST_CATEGORIES,
     ...Array.from(
       new Set(
-        state.Posts.map(Post =>
-          normalizeCategoryValue(Post.category || DEFAULT_POST_CATEGORY)
+        state.posts.map(post =>
+          normalizeCategoryValue(post.category || DEFAULT_POST_CATEGORY)
         )
       )
     ),
@@ -69,10 +69,10 @@ export default function SearchPosts() {
     setIsDropdownOpen(false);
   };
 
-  const filteredPosts = state.Posts.filter(Post => {
+  const filteredPosts = state.posts.filter(post => {
     if (state.selectedCategory === ALL_POST_CATEGORIES) return true;
     return (
-      normalizeCategoryValue(Post.category || DEFAULT_POST_CATEGORY) ===
+      normalizeCategoryValue(post.category || DEFAULT_POST_CATEGORY) ===
       state.selectedCategory
     );
   });

@@ -22,15 +22,15 @@ async function fetchPosts(
   }
 
   const data = await response.json();
-  const allPosts: PostMetadata[] = Array.isArray(data.Posts) ? data.Posts : [];
+  const allPosts: PostMetadata[] = Array.isArray(data.posts) ? data.posts : [];
 
   const filteredPosts = allPosts.filter(
-    (Post: PostMetadata) => Post.id !== currentPost?.id
+    (post: PostMetadata) => post.id !== currentPost?.id
   );
 
   const relatedPosts = currentPost
     ? filteredPosts
-        .filter((Post: PostMetadata) => Post.category === currentPost.category)
+        .filter((post: PostMetadata) => post.category === currentPost.category)
         .slice(0, maxPosts)
     : [];
 
@@ -45,14 +45,12 @@ export default function PostSidebar(props: any) {
     className = "",
     maxPosts = 3,
     currentPost,
-    currentArticle,
   } = props as {
     className?: string;
     maxPosts?: number;
     currentPost?: PostDisplayData;
-    currentArticle?: PostDisplayData;
   };
-  const resolvedCurrentPost = currentPost ?? currentArticle;
+  const resolvedCurrentPost = currentPost;
   const [recentPosts, setRecentPosts] = React.useState<PostMetadata[]>([]);
   const [relatedPosts, setRelatedPosts] = React.useState<PostMetadata[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -184,10 +182,10 @@ export default function PostSidebar(props: any) {
                 PostSidebarStyles.sectionSpacing
               )}
             >
-              {recentPosts.map((Post, index) => (
+              {recentPosts.map((post, index) => (
                 <PostListItem
-                  key={Post.id}
-                  Post={Post}
+                  key={post.id}
+                  post={post}
                   showBorder={index < recentPosts.length - 1}
                 />
               ))}
@@ -226,10 +224,10 @@ export default function PostSidebar(props: any) {
 
             {!loading && relatedPosts.length > 0 && (
               <div className={PostSidebarStyles.listWrap}>
-                {relatedPosts.map((Post, index) => (
+                {relatedPosts.map((post, index) => (
                   <PostListItem
-                    key={Post.id}
-                    Post={Post}
+                    key={post.id}
+                    post={post}
                     showBorder={index < relatedPosts.length - 1}
                   />
                 ))}

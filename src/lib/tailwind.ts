@@ -106,8 +106,6 @@ export const PostListStyles = {
   errorText: "text-red-600 dark:text-red-400",
 } as const;
 
-export const articleListStyles = PostListStyles;
-
 export const homePostStyles = {
   sectionLoading:
     "p-6 rounded-lg bg-secondary-100 dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700",
@@ -253,13 +251,13 @@ export const PostCardStyles = {
   image: "w-full h-full rounded-b-none",
   content: "px-6 pb-6 py-4 flex flex-col flex-grow",
   meta: "flex items-center mb-2 justify-between gap-3",
-  metaText: "text-neutral-700 dark:text-neutral-200 text-lg",
+  metaText: "text-neutral-700 dark:text-neutral-200 text-sm",
   title:
     "text-xl lg:text-2xl xl:text-3xl font-bold text-foreground-light dark:text-foreground-dark mb-3",
   excerpt:
     "text-foreground-light dark:text-foreground-dark text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3",
   voteBadge:
-    "inline-flex items-center gap-1 rounded-full bg-slate-200 px-2 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-100",
+    "inline-flex items-center gap-2 rounded-full bg-slate-200 px-2 py-1 text-base font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-100",
   button: cn(
     buttonStyles.tertiary,
     "sm:px-6 sm:py-3 text-lg font-medium mt-auto inline-flex items-center justify-center text-center"
@@ -283,7 +281,7 @@ export const featuredPostStyles = {
 } as const;
 
 export const recentPostsStyles = {
-  shell: "recent-articles ",
+  shell: "recent-posts ",
   title: "text-xl font-semibold mb-4",
   list: "space-y-3",
   item: "border-b border-gray-200 pb-2",
@@ -391,8 +389,6 @@ export const PostFormStyles = {
     "rounded-lg border border-primary-200 bg-primary-100 p-8 text-foreground-light dark:border-tertiary-700 dark:bg-tertiary-800 dark:text-foreground-dark",
 } as const;
 
-export const articleFormStyles = PostFormStyles;
-
 export const PostDetailStyles = {
   shell: "min-h-screen bg-background-light dark:bg-background-dark",
   content: "lg:pr-80 relative",
@@ -455,9 +451,3 @@ export const PostDetailStyles = {
   voteButtonActive: "ring-2 ring-offset-2 ring-primary-500",
   sidebarWrap: "fixed right-0 top-0 z-40 w-80",
 } as const;
-
-export const articlePageHeaderStyles = PostPageHeaderStyles;
-export const articleSidebarStyles = PostSidebarStyles;
-export const articleDetailStyles = PostDetailStyles;
-export const homeArticleStyles = homePostStyles;
-export const articleCardStyles = PostCardStyles;

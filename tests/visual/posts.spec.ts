@@ -1,82 +1,74 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Articles Page Visual Tests", () => {
+test.describe("Posts Page Visual Tests", () => {
   test.beforeEach(async ({ page }) => {
     // Wait for the page to load completely
-    await page.goto("/articles");
+    await page.goto("/posts");
     await page.waitForLoadState("networkidle");
   });
 
-  test("should match articles page layout in light mode", async ({ page }) => {
+  test("should match posts page layout in light mode", async ({ page }) => {
     // Ensure light mode
     await page.emulateMedia({ colorScheme: "light" });
     await page.waitForTimeout(500);
 
     // Take full page screenshot
-    await expect(page).toHaveScreenshot("articles-page-light.png", {
+    await expect(page).toHaveScreenshot("posts-page-light.png", {
       fullPage: true,
       threshold: 0.2,
     });
   });
 
-  test("should match articles page layout in dark mode", async ({ page }) => {
+  test("should match posts page layout in dark mode", async ({ page }) => {
     // Switch to dark mode
     await page.emulateMedia({ colorScheme: "dark" });
     await page.waitForTimeout(500);
 
     // Take full page screenshot
-    await expect(page).toHaveScreenshot("articles-page-dark.png", {
+    await expect(page).toHaveScreenshot("posts-page-dark.png", {
       fullPage: true,
       threshold: 0.2,
     });
   });
 
-  test("should match featured article component", async ({ page }) => {
+  test("should match featured post component", async ({ page }) => {
     // Ensure light mode
     await page.emulateMedia({ colorScheme: "light" });
 
-    // Wait for featured article to load
-    const featuredArticle = page
-      .locator("[data-testid='featured-article']")
-      .first();
-    if ((await featuredArticle.count()) === 0) {
+    // Wait for featured post to load
+    const featuredPost = page.locator("[data-testid='featured-post']").first();
+    if ((await featuredPost.count()) === 0) {
       // If no test id, use a more general selector
-      const featuredArticle = page.locator("article").first();
-      await expect(featuredArticle).toHaveScreenshot(
-        "featured-article-light.png",
-        {
-          threshold: 0.2,
-        }
-      );
+      const featuredPost = page.locator("article").first();
+      await expect(featuredPost).toHaveScreenshot("featured-post-light.png", {
+        threshold: 0.2,
+      });
     } else {
-      await expect(featuredArticle).toHaveScreenshot(
-        "featured-article-light.png",
-        {
-          threshold: 0.2,
-        }
-      );
+      await expect(featuredPost).toHaveScreenshot("featured-post-light.png", {
+        threshold: 0.2,
+      });
     }
   });
 
-  test("should match articles grid layout", async ({ page }) => {
+  test("should match posts grid layout", async ({ page }) => {
     // Ensure light mode
     await page.emulateMedia({ colorScheme: "light" });
 
-    // Target the articles grid specifically
-    const articlesGrid = page.locator("[class*='grid']").last();
-    await expect(articlesGrid).toHaveScreenshot("articles-grid-light.png", {
+    // Target the posts grid specifically
+    const postsGrid = page.locator("[class*='grid']").last();
+    await expect(postsGrid).toHaveScreenshot("posts-grid-light.png", {
       threshold: 0.2,
     });
   });
 
-  test("should match articles sidebar", async ({ page }) => {
+  test("should match posts sidebar", async ({ page }) => {
     // Ensure light mode
     await page.emulateMedia({ colorScheme: "light" });
 
     // Target the sidebar (only visible on larger screens)
     const sidebar = page.locator("[class*='fixed'][class*='right-0']");
     if (await sidebar.isVisible()) {
-      await expect(sidebar).toHaveScreenshot("articles-sidebar-light.png", {
+      await expect(sidebar).toHaveScreenshot("posts-sidebar-light.png", {
         threshold: 0.2,
       });
     }
@@ -116,7 +108,7 @@ test.describe("Articles Page Visual Tests", () => {
       await page.waitForTimeout(1000);
 
       // Take screenshot of empty state
-      await expect(page).toHaveScreenshot("articles-empty-state-light.png", {
+      await expect(page).toHaveScreenshot("posts-empty-state-light.png", {
         fullPage: true,
         threshold: 0.2,
       });

@@ -9,15 +9,15 @@ exports[`PostListItem Component should match DOM snapshot 1`] = `
   >
     <a
       class="hover:text-primary-600 dark:hover:text-primary-300 transition-colors"
-      href="/posts/test-article"
+      href="/posts/test-post"
     >
-      Test Article
+      Test Post
     </a>
   </h4>
   <p
     class="text-sm text-slate-600 dark:text-slate-300 mb-2"
   >
-    This is a test article excerpt
+    This is a test post excerpt
   </p>
   <span
     class="text-xs text-slate-500 dark:text-slate-300"

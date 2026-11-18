@@ -2,7 +2,7 @@
 
 exports[`RecentPosts Component should match DOM snapshot 1`] = `
 <div
-  class="recent-articles "
+  class="recent-posts "
 >
   <h2
     class="text-xl font-semibold mb-4"
@@ -18,7 +18,7 @@ exports[`RecentPosts Component should match DOM snapshot 1`] = `
       <h3
         class="font-medium text-sm"
       >
-        Recent Article 1
+        Recent Post 1
       </h3>
       <p
         class="text-xs text-gray-600"

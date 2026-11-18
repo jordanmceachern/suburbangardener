@@ -28,8 +28,8 @@ type PostRecord = {
   category: string;
   content?: string;
   contentHtml?: string;
-  voteScore?: number;
-  voteCount?: number;
+  upvotes?: number;
+  downvotes?: number;
 };
 
 function getEmbedUrl(youtubeUrl: string) {
@@ -60,7 +60,7 @@ export default function PostPage() {
   const slug = Array.isArray(params?.slug)
     ? params.slug[0]
     : (params?.slug ?? "");
-  const [Post, setPost] = useState<PostRecord | null>(null);
+  const [post, setPost] = useState<PostRecord | null>(null);
   const [loading, setLoading] = useState(true);
   const [databaseNotice, setDatabaseNotice] = useState<string | null>(null);
   const [vote, setVote] = useState<"UP" | "DOWN" | null>(null);
@@ -82,7 +82,7 @@ export default function PostPage() {
     return () => window.clearTimeout(timeoutId);
   }, [isDeleteConfirmed]);
 
-  const postId = Post?.id;
+  const postId = post?.id;
   const userId = user?.id;
 
   useEffect(() => {
@@ -127,8 +127,8 @@ export default function PostPage() {
         }
 
         const data = await response.json();
-        const foundPost = Array.isArray(data.Posts)
-          ? data.Posts.find((item: PostRecord) => item.slug === slug)
+        const foundPost = Array.isArray(data.posts)
+          ? data.posts.find((item: PostRecord) => item.slug === slug)
           : null;
 
         if (isActive) {
@@ -178,7 +178,7 @@ export default function PostPage() {
     );
   }
 
-  if (!Post) {
+  if (!post) {
     return (
       <div className={PostDetailStyles.shell}>
         <div className={PostDetailStyles.content}>
@@ -194,16 +194,16 @@ export default function PostPage() {
   }
 
   const PostBody = convertLegacyEmphasis(
-    Post.contentHtml || Post.content || ""
+    post.contentHtml || post.content || ""
   );
-  const summaryText = Post.summary || Post.excerpt || "";
+  const summaryText = post.summary || post.excerpt || "";
   const canManagePost =
     !!user &&
     canDeletePost({
       actorEmail: user.email,
       actorUserId: user.id,
-      PostAuthorEmail: Post.authorEmail,
-      PostAuthorUserId: Post.authorId,
+      postAuthorEmail: post.authorEmail,
+      postAuthorUserId: post.authorId,
     });
 
   const handleDeleteClick = async () => {
@@ -221,7 +221,7 @@ export default function PostPage() {
     setDeleteError(null);
 
     try {
-      const response = await fetch(`/api/posts/${Post.id}`, {
+      const response = await fetch(`/api/posts/${post.id}`, {
         method: "DELETE",
       });
 
@@ -241,12 +241,12 @@ export default function PostPage() {
   };
 
   const handleVote = async (nextVote: "UP" | "DOWN") => {
-    if (!Post || vote === nextVote) return;
+    if (!post || vote === nextVote) return;
 
     setVotePending(true);
 
     try {
-      const response = await fetch(`/api/posts/${Post.id}/vote`, {
+      const response = await fetch(`/api/posts/${post.id}/vote`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type: nextVote }),
@@ -281,7 +281,7 @@ export default function PostPage() {
           <div>
             <div className={PostDetailStyles.banner}>
               <BackgroundImage
-                src={Post.imageUrl}
+                src={post.imageUrl}
                 className={PostDetailStyles.bannerImage}
               />
             </div>
@@ -297,12 +297,12 @@ export default function PostPage() {
                 </Link>
               </div>
 
-              <span className={PostDetailStyles.badge}>{Post.category}</span>
-              <h1 className={PostDetailStyles.title}>{Post.title}</h1>
+              <span className={PostDetailStyles.badge}>{post.category}</span>
+              <h1 className={PostDetailStyles.title}>{post.title}</h1>
               <div className={PostDetailStyles.meta}>
-                <span>{Post.publishedDate}</span>
+                <span>{post.publishedDate}</span>
                 <span className="mx-3">•</span>
-                <span>By {Post.author}</span>
+                <span>By {post.author}</span>
               </div>
             </div>
 
@@ -335,11 +335,11 @@ export default function PostPage() {
               </button>
             </div>
 
-            {Post.youtubeUrl ? (
+            {post.youtubeUrl ? (
               <div className="mb-10 overflow-hidden rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
                 <iframe
-                  src={getEmbedUrl(Post.youtubeUrl)}
-                  title={`${Post.title} video`}
+                  src={getEmbedUrl(post.youtubeUrl)}
+                  title={`${post.title} video`}
                   className="h-[320px] w-full md:h-[420px]"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
@@ -358,7 +358,7 @@ export default function PostPage() {
               <div className={PostDetailStyles.buttonRow}>
                 {canManagePost ? (
                   <Link
-                    href={`/posts/new?edit=${encodeURIComponent(Post.id)}`}
+                    href={`/posts/new?edit=${encodeURIComponent(post.id)}`}
                     className={PostDetailStyles.editButton}
                   >
                     Edit Post
@@ -394,13 +394,13 @@ export default function PostPage() {
               ) : null}
             </div>
 
-            <PostComments PostId={Post.id} />
+            <PostComments postId={post.id} />
           </div>
         </div>
       </div>
 
       <div className={PostDetailStyles.sidebarWrap}>
-        <PostSidebar currentPost={Post} />
+        <PostSidebar currentPost={post} />
       </div>
     </div>
   );

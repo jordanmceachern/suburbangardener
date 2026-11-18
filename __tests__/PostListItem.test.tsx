@@ -2,11 +2,11 @@ import { render } from "@testing-library/react";
 import PostListItem from "@/components/posts/PostListItem";
 
 describe("PostListItem Component", () => {
-  const mockArticle = {
+  const mockPost = {
     id: "1",
-    title: "Test Article",
-    excerpt: "This is a test article excerpt",
-    slug: "test-article",
+    title: "Test Post",
+    excerpt: "This is a test post excerpt",
+    slug: "test-post",
     content: "Test content",
     imageUrl: "/test-image.jpg",
     author: "Test Author",
@@ -15,12 +15,12 @@ describe("PostListItem Component", () => {
   };
 
   it("should match DOM snapshot", () => {
-    const { container } = render(<PostListItem article={mockArticle} />);
+    const { container } = render(<PostListItem post={mockPost} />);
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it("should maintain CSS classes for list item layout", () => {
-    const { container } = render(<PostListItem article={mockArticle} />);
+    const { container } = render(<PostListItem post={mockPost} />);
 
     // Check for list item classes
     const hasListClasses =

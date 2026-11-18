@@ -47,35 +47,32 @@ function formatDate(value: Date | string) {
   }).format(new Date(value));
 }
 
-function mapPost(Post: PostMapEntry) {
-  const publishedDate = Post.publishedAt ?? Post.createdAt ?? new Date();
-  const votes = Array.isArray(Post.votes) ? Post.votes : [];
-  const voteScore = votes.reduce((total: number, vote) => {
-    if (vote.type === "UP") return total + 1;
-    if (vote.type === "DOWN") return total - 1;
-    return total;
-  }, 0);
+function mapPost(post: PostMapEntry) {
+  const publishedDate = post.publishedAt ?? post.createdAt ?? new Date();
+  const votes = Array.isArray(post.votes) ? post.votes : [];
+  const upvotes = votes.filter(vote => vote.type === "UP").length;
+  const downvotes = votes.filter(vote => vote.type === "DOWN").length;
 
   return {
-    id: Post.id,
-    title: Post.title,
-    excerpt: Post.excerpt || "",
-    summary: Post.excerpt || "",
+    id: post.id,
+    title: post.title,
+    excerpt: post.excerpt || "",
+    summary: post.excerpt || "",
     publishedDate: formatDate(publishedDate),
     author: maskDisplayName(
-      Post.author?.email || Post.author?.name || "Anonymous"
+      post.author?.email || post.author?.name || "Anonymous"
     ),
-    authorEmail: Post.author?.email || "",
-    authorId: Post.authorId || Post.author?.id || "",
-    slug: Post.slug,
-    imageUrl: Post.coverUrl || "",
-    youtubeUrl: Post.youtubeUrl || "",
-    videoUrl: Post.youtubeUrl || "",
-    category: Post.category || "General",
-    content: Post.contentHtml || "",
-    contentHtml: Post.contentHtml || "",
-    voteScore,
-    voteCount: votes.length,
+    authorEmail: post.author?.email || "",
+    authorId: post.authorId || post.author?.id || "",
+    slug: post.slug,
+    imageUrl: post.coverUrl || "",
+    youtubeUrl: post.youtubeUrl || "",
+    videoUrl: post.youtubeUrl || "",
+    category: post.category || "General",
+    content: post.contentHtml || "",
+    contentHtml: post.contentHtml || "",
+    upvotes,
+    downvotes,
   };
 }
 
@@ -100,7 +97,7 @@ async function fetchPostListFromDb(
     where.category = category;
   }
 
-  const [Posts, total] = await Promise.all([
+  const [posts, total] = await Promise.all([
     prisma.post.findMany({
       where,
       include: {
@@ -119,9 +116,9 @@ async function fetchPostListFromDb(
   ]);
 
   return {
-    Posts: Posts.map(mapPost),
+    posts: posts.map(mapPost),
     total,
-    hasMore: offset + Posts.length < total,
+    hasMore: offset + posts.length < total,
   };
 }
 
@@ -241,7 +238,7 @@ export async function POST(request: NextRequest) {
       slug = `${PostBaseSlug}-${suffix}`;
     }
 
-    const Post = await prisma.post.create({
+    const post = await prisma.post.create({
       data: {
         title,
         excerpt: summary,
@@ -263,7 +260,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        Post: mapPost(Post),
+        post: mapPost(post),
       },
       { status: 201 }
     );

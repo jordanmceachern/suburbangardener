@@ -13,13 +13,11 @@ interface CommentRecord {
 }
 
 export default function PostComments({
-  PostId,
-  articleId,
+  postId: postIdProp,
 }: {
-  PostId?: string;
-  articleId?: string;
+  postId?: string;
 }) {
-  const postId = PostId ?? articleId ?? "";
+  const postId = postIdProp ?? "";
   const { isAuthenticated } = useAuth();
   const [comments, setComments] = useState<CommentRecord[]>([]);
   const [commentBody, setCommentBody] = useState("");

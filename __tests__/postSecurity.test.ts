@@ -44,28 +44,28 @@ describe("post security helpers", () => {
     expect(
       canEditPost({
         actorUserId: "user-123",
-        PostAuthorUserId: "user-123",
+        postAuthorUserId: "user-123",
       })
     ).toBe(true);
 
     expect(
       canEditPost({
         actorEmail: "gardener@example.com",
-        PostAuthorEmail: "gardener@example.com",
+        postAuthorEmail: "gardener@example.com",
       })
     ).toBe(true);
 
     expect(
       canEditPost({
         actorEmail: "jormceachern@proton.me",
-        PostAuthorEmail: "other@example.com",
+        postAuthorEmail: "other@example.com",
       })
     ).toBe(true);
 
     expect(
       canEditPost({
         actorUserId: "user-999",
-        PostAuthorUserId: "user-123",
+        postAuthorUserId: "user-123",
       })
     ).toBe(false);
   });

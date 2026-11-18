@@ -4,20 +4,18 @@ import { PostListItemStyles, cn } from "../../lib/tailwind";
 import type { PostDisplayData } from "./PostDisplayCard";
 
 interface PostListItemProps {
-  Post?: PostDisplayData;
-  article?: PostDisplayData;
+  post?: PostDisplayData;
   showBorder?: boolean;
   className?: string;
 }
 
 // Renders the PostListItem UI.
 export default function PostListItem({
-  Post,
-  article,
+  post,
   showBorder = true,
   className = "",
 }: PostListItemProps) {
-  const item = Post ?? article;
+  const item = post;
 
   if (!item) {
     return null;

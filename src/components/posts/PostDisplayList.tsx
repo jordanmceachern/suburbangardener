@@ -20,7 +20,7 @@ export default function PostDisplayList({
   // Get Posts filtered by category (client-side filtering)
   const displayedPosts = getFilteredPosts();
 
-  if (state.loading && state.Posts.length === 0) {
+  if (state.loading && state.posts.length === 0) {
     return (
       <div className={className}>
         <div className={PostListStyles.section}>
@@ -58,7 +58,7 @@ export default function PostDisplayList({
       {displayedPosts.length > 0 && (
         <div className={PostListStyles.section}>
           {displayedPosts.map((post: PostDisplayData) => (
-            <PostDisplayCard key={post.id} Post={post} />
+            <PostDisplayCard key={post.id} post={post} />
           ))}
         </div>
       )}
@@ -79,7 +79,7 @@ export default function PostDisplayList({
         </div>
       )}
 
-      {state.loading && state.Posts.length > 0 && (
+      {state.loading && state.posts.length > 0 && (
         <div
           className={cn(
             PostListStyles.section,

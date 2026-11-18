@@ -11,8 +11,8 @@ exports[`PostDisplayCard Component should match DOM snapshot 1`] = `
       class="flex w-full justify-center w-full h-full rounded-b-none"
     >
       <img
-        alt="Test Article"
-        aria-label="Test Article"
+        alt="Test Post"
+        aria-label="Test Post"
         class="h-auto w-full rounded-lg object-contain "
         src="/test-image.jpg"
         style="object-fit: contain;"
@@ -26,32 +26,38 @@ exports[`PostDisplayCard Component should match DOM snapshot 1`] = `
       class="flex items-center mb-2 justify-between gap-3"
     >
       <span
-        class="text-neutral-700 dark:text-neutral-200 text-lg"
+        class="text-neutral-700 dark:text-neutral-200 text-sm"
       >
         2024-01-01
          · 
         Test Author
       </span>
       <span
-        class="inline-flex items-center gap-1 rounded-full bg-slate-200 px-2 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-100"
+        class="inline-flex items-center gap-2 rounded-full bg-slate-200 px-2 py-1 text-base font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-100"
       >
-        ▲ 
-        0
+        <span>
+          ▲ 
+          0
+        </span>
+        <span>
+          ▼ 
+          0
+        </span>
       </span>
     </div>
     <h2
       class="text-xl lg:text-2xl xl:text-3xl font-bold text-foreground-light dark:text-foreground-dark mb-3"
     >
-      Test Article
+      Test Post
     </h2>
     <p
       class="text-foreground-light dark:text-foreground-dark text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3"
     >
-      This is a test article excerpt
+      This is a test post excerpt
     </p>
     <a
       class="px-4 py-2 bg-tertiary-400 hover:bg-tertiary-500 text-neutral-950 rounded-md transition-colors sm:px-6 sm:py-3 text-lg font-medium mt-auto inline-flex items-center justify-center text-center"
-      href="/posts/test-article"
+      href="/posts/test-post"
     >
       Read More
       <svg

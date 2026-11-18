@@ -21,11 +21,11 @@ async function fetchFeaturedPosts(): Promise<PostDisplayData[]> {
     }
 
     const data = await response.json();
-    if (!Array.isArray(data.Posts)) {
+    if (!Array.isArray(data.posts)) {
       return [];
     }
 
-    return data.Posts.slice(0, 2);
+    return data.posts.slice(0, 2);
   } catch (error) {
     console.error("Error fetching Posts:", error);
     return [];
@@ -36,7 +36,7 @@ async function fetchFeaturedPosts(): Promise<PostDisplayData[]> {
 export default function HomePostsSection({
   className = "",
 }: HomePostsSectionProps) {
-  const [Posts, setPosts] = useState<PostDisplayData[]>([]);
+  const [posts, setPosts] = useState<PostDisplayData[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -95,8 +95,8 @@ export default function HomePostsSection({
       </div>
 
       <div className={homePostStyles.grid}>
-        {Posts.map(Post => (
-          <PostDisplayCard key={Post.id} Post={Post} />
+        {posts.map(post => (
+          <PostDisplayCard key={post.id} post={post} />
         ))}
       </div>
 
