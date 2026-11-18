@@ -341,6 +341,14 @@ html[data-theme="light"] {
     @apply w-full bg-tertiary-400 hover:bg-tertiary-500 disabled:opacity-50 text-neutral-950 py-3 px-4 rounded-md border border-transparent transition-colors inline-flex items-center justify-center gap-3 whitespace-nowrap;
   }
 
+  .auth-button,
+  .auth-button:hover,
+  .auth-button:active,
+  .auth-button:focus,
+  .auth-button:visited {
+    color: #0a0a0a;
+  }
+
   .auth-helper {
     @apply mt-2 flex items-start gap-3 text-left text-lg font-bold text-white;
     background: transparent;

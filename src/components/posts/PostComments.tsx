@@ -129,7 +129,7 @@ export default function PostComments({
           </div>
         </form>
       ) : (
-        <p className={PostDetailStyles.mutedText}>
+        <p className={PostDetailStyles.commentLoginPrompt}>
           Log in to join the conversation.
         </p>
       )}

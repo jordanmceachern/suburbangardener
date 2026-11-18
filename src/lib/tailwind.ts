@@ -295,8 +295,8 @@ export const PostListItemStyles = {
   title: "font-medium text-foreground-light dark:text-foreground-dark mb-2",
   titleLink:
     "text-foreground-light dark:text-foreground-dark underline hover:no-underline hover:text-primary-600 dark:hover:text-primary-300 transition-colors",
-  excerpt: "text-sm text-slate-600 dark:text-slate-300 mb-2",
-  date: "text-xs text-slate-500 dark:text-slate-300",
+  excerpt: "text-sm text-foreground-light dark:text-foreground-dark mb-2",
+  date: "text-xs text-foreground-light dark:text-foreground-dark",
 } as const;
 
 export const POST_FORM_COPY = {
@@ -451,8 +451,8 @@ export const PostDetailStyles = {
 export const loadingSpinnerStyles = {
   shell:
     "inline-flex items-center justify-center gap-2 text-center text-lg text-neutral-700",
-  icon: "animate-spin text-neutral-700 dark:text-white",
-  text: "whitespace-nowrap text-lg text-neutral-700 dark:text-white",
+  icon: "animate-spin text-neutral-950 dark:text-neutral-950",
+  text: "whitespace-nowrap text-lg text-neutral-950 dark:text-neutral-950",
   sizes: {
     sm: "h-6 w-6",
     md: "h-12 w-12",
