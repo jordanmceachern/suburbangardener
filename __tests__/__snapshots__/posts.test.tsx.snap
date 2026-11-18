@@ -65,15 +65,6 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
               Sorry! An error occurred while trying to fetch the community posts, please come back to check again later.
             </p>
           </div>
-          <div
-            class="mt-8 text-center"
-          >
-            <p
-              class="text-red-600 dark:text-red-400"
-            >
-              fetch is not defined
-            </p>
-          </div>
         </div>
       </div>
     </div>

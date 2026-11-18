@@ -7,7 +7,6 @@ interface LoadingSpinnerProps {
   text?: string;
 }
 
-// Loads ingSpinner and keeps the component data up to date.
 export default function LoadingSpinner({
   size = "md",
   className = "",

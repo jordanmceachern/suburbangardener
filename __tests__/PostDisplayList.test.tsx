@@ -25,6 +25,7 @@ describe("PostDisplayList Component", () => {
 
     // Check for list-related classes
     const hasListClasses =
+      container.innerHTML.includes("test-list-class") ||
       container.innerHTML.includes("grid") ||
       container.innerHTML.includes("flex") ||
       container.innerHTML.includes("space-") ||

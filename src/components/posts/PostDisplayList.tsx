@@ -39,7 +39,7 @@ export default function PostDisplayList({
 
   return (
     <div className={className}>
-      {!state.loading && displayedPosts.length === 0 && (
+      {!state.loading && displayedPosts.length === 0 && state.error && (
         <div className={PostListStyles.emptyWrapper}>
           <Image
             alt="a ruined squished tomato on the ground"
@@ -97,12 +97,6 @@ export default function PostDisplayList({
               <div className={PostListStyles.skeletonMetaShort} />
             </div>
           ))}
-        </div>
-      )}
-
-      {state.error && (
-        <div className={PostListStyles.errorWrap}>
-          <p className={PostListStyles.errorText}>{state.error}</p>
         </div>
       )}
     </div>

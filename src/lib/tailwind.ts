@@ -86,7 +86,7 @@ export const searchStyles = {
 } as const;
 
 export const PostListStyles = {
-  section: "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6",
+  section: "grid grid-cols-1 md:grid-cols-2 gap-6",
   sectionLoadingMore: "mt-6",
   skeletonCard: "animate-pulse",
   skeletonBlock:
@@ -246,12 +246,12 @@ export const errorTesterStyles = {
 } as const;
 
 export const PostCardStyles = {
-  card: "bg-primary-50 dark:bg-slate-500 rounded-lg shadow-lg overflow-hidden min-w-0 flex flex-col",
+  card: "bg-tertiary-100 dark:bg-slate-500 rounded-lg shadow-lg overflow-hidden min-w-0 flex flex-col",
   imageWrap: "h-48 sm:h-64 bg-slate-800",
   image: "w-full h-full rounded-b-none",
   content: "px-6 pb-6 py-4 flex flex-col flex-grow",
   meta: "flex items-center mb-2 justify-between gap-3",
-  metaText: "text-neutral-700 dark:text-neutral-200 text-sm",
+  metaText: "text-foreground-light dark:text-neutral-200 text-sm",
   title:
     "text-xl lg:text-2xl xl:text-3xl font-bold text-foreground-light dark:text-foreground-dark mb-3",
   excerpt:
@@ -260,7 +260,7 @@ export const PostCardStyles = {
     "inline-flex items-center gap-2 rounded-full bg-slate-200 px-2 py-1 text-base font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-100",
   button: cn(
     buttonStyles.tertiary,
-    "sm:px-6 sm:py-3 text-lg font-medium mt-auto inline-flex items-center justify-center text-center"
+    "mt-auto inline-flex items-center justify-center text-center"
   ),
   buttonIcon: "w-5 h-5 ml-2 text-neutral-950",
   buttonNarrow: "self-center",
@@ -292,9 +292,9 @@ export const recentPostsStyles = {
 export const PostListItemStyles = {
   item: "border-b border-slate-300 dark:border-slate-500 pb-4 ",
   itemNoBorder: "",
-  title: "font-medium text-slate-800 dark:text-slate-200 mb-2",
+  title: "font-medium text-foreground-light dark:text-foreground-dark mb-2",
   titleLink:
-    "hover:text-primary-600 dark:hover:text-primary-300 transition-colors",
+    "text-foreground-light dark:text-foreground-dark underline hover:no-underline hover:text-primary-600 dark:hover:text-primary-300 transition-colors",
   excerpt: "text-sm text-slate-600 dark:text-slate-300 mb-2",
   date: "text-xs text-slate-500 dark:text-slate-300",
 } as const;
@@ -397,7 +397,7 @@ export const PostDetailStyles = {
     "relative mb-8 h-96 overflow-hidden rounded-lg bg-slate-800 md:h-[500px]",
   bannerImage: "w-full h-full object-cover",
   badge:
-    "mb-4 inline-block rounded-full bg-tertiary-500 px-3 py-1 text-sm font-medium text-white dark:text-neutral-950",
+    "mb-4 inline-block rounded-full bg-tertiary-400 px-3 py-1 text-sm font-medium text-neutral-950 dark:text-neutral-950",
   title:
     "mb-4 text-4xl font-bold leading-tight text-primary-900 dark:text-primary-100 md:text-5xl",
   meta: "flex items-center text-lg text-neutral-700 dark:text-neutral-200",
@@ -450,9 +450,9 @@ export const PostDetailStyles = {
 
 export const loadingSpinnerStyles = {
   shell:
-    "inline-flex items-center justify-center gap-2 text-center text-lg text-current",
-  icon: "animate-spin dark:text-white",
-  text: "whitespace-nowrap text-lg text-current dark:text-white",
+    "inline-flex items-center justify-center gap-2 text-center text-lg text-neutral-700",
+  icon: "animate-spin text-neutral-700 dark:text-white",
+  text: "whitespace-nowrap text-lg text-neutral-700 dark:text-white",
   sizes: {
     sm: "h-6 w-6",
     md: "h-12 w-12",

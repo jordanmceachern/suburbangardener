@@ -9,28 +9,19 @@ import { PostSidebarStyles, cn } from "../../lib/tailwind";
 // Use PostDisplayData since it has all the fields we need
 type PostMetadata = PostDisplayData;
 
-// Placeholder API URL for production
-const PRODUCTION_API_URL = "https://api.suburbangardener.com/Posts/recent";
-
 async function fetchPosts(maxPosts: number = 3): Promise<PostMetadata[]> {
-  // In production, this would make an API call
-  if (process.env.NODE_ENV === "production") {
-    try {
-      const response = await fetch(`${PRODUCTION_API_URL}?limit=${maxPosts}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch Posts");
-      }
-      return await response.json();
-    } catch (error) {
-      console.error("Error fetching Posts:", error);
-      // In production, return empty array instead of mock data
-      // Never show fake information to users
-      return [];
+  try {
+    const response = await fetch(`/api/posts?limit=${maxPosts}&offset=0`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch Posts");
     }
-  }
 
-  // Development fallback: keep the sidebar empty rather than returning stale mock content.
-  return [];
+    const data = await response.json();
+    return Array.isArray(data.posts) ? data.posts : [];
+  } catch (error) {
+    console.error("Error fetching Posts:", error);
+    throw error;
+  }
 }
 
 // Renders the PostsSidebar UI block.
