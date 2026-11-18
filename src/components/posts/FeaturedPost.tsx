@@ -36,7 +36,6 @@ export default function FeaturedPost({ className = "" }: FeaturedPostProps) {
       <PostDisplayCard
         Post={state.featuredPost}
         buttonVariant="narrow"
-        showArrow
         titleClassName={featuredPostStyles.featuredTitleClassName}
         imageClassName={featuredPostStyles.imageClassName}
       />

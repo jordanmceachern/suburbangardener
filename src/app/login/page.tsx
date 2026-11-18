@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
+import ArrowIcon from "../../components/ArrowIcon";
 import BackgroundImage from "../../components/BackgroundImage";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
@@ -559,7 +560,10 @@ function LoginPageContent() {
 
           {!successMessage && (
             <div className="auth-link">
-              <Link href="/">← Back to Home</Link>
+              <Link href="/">
+                <ArrowIcon direction="left" />
+                Back to Home
+              </Link>
             </div>
           )}
         </div>

@@ -338,7 +338,7 @@ html[data-theme="light"] {
   }
 
   .auth-button {
-    @apply w-full bg-tertiary-500 hover:bg-tertiary-400 disabled:opacity-50 text-neutral-950 dark:text-neutral-950 font-bold py-3 px-4 rounded-lg transition-colors inline-flex items-center justify-center gap-3 shadow-sm border border-tertiary-400 text-lg whitespace-nowrap;
+    @apply w-full bg-tertiary-400 hover:bg-tertiary-500 disabled:opacity-50 text-neutral-950 py-3 px-4 rounded-md border border-transparent transition-colors inline-flex items-center justify-center gap-3 whitespace-nowrap;
   }
 
   .auth-helper {

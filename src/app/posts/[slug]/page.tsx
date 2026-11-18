@@ -2,15 +2,16 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import ArrowIcon from "@/components/ArrowIcon";
 import BackgroundImage from "@/components/BackgroundImage";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import PostSidebar from "@/components/posts/PostSidebar";
 import PostComments from "@/components/posts/PostComments";
 import ViewAllPostsButton from "@/components/posts/ViewAllPostsButton";
 import { useAuth } from "@/lib/auth-nextauth";
-import { isAdminEmail } from "@/lib/postSecurity";
-import { PostDetailStyles, buttonStyles, cn } from "@/lib/tailwind";
+import { canDeletePost, convertLegacyEmphasis } from "@/lib/postSecurity";
+import { PostDetailStyles, cn, viewAllPostsStyles } from "@/lib/tailwind";
 
 type PostRecord = {
   id: string;
@@ -54,6 +55,7 @@ function getEmbedUrl(youtubeUrl: string) {
 
 export default function PostPage() {
   const params = useParams<{ slug: string }>();
+  const router = useRouter();
   const { user } = useAuth();
   const slug = Array.isArray(params?.slug)
     ? params.slug[0]
@@ -62,7 +64,51 @@ export default function PostPage() {
   const [loading, setLoading] = useState(true);
   const [databaseNotice, setDatabaseNotice] = useState<string | null>(null);
   const [vote, setVote] = useState<"UP" | "DOWN" | null>(null);
+  const [voteCounts, setVoteCounts] = useState({ upvotes: 0, downvotes: 0 });
   const [votePending, setVotePending] = useState(false);
+  const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isDeleteConfirmed) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setIsDeleteConfirmed(false);
+    }, 3000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [isDeleteConfirmed]);
+
+  const postId = Post?.id;
+  const userId = user?.id;
+
+  useEffect(() => {
+    if (!postId) {
+      return;
+    }
+
+    let isActive = true;
+
+    fetch(`/api/posts/${postId}/vote`)
+      .then(response => (response.ok ? response.json() : null))
+      .then(summary => {
+        if (isActive && summary) {
+          setVoteCounts({
+            upvotes: summary.upvotes,
+            downvotes: summary.downvotes,
+          });
+          setVote(summary.userVote);
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      isActive = false;
+    };
+  }, [postId, userId]);
 
   useEffect(() => {
     let isActive = true;
@@ -147,18 +193,55 @@ export default function PostPage() {
     );
   }
 
-  const PostBody = Post.contentHtml || Post.content || "";
+  const PostBody = convertLegacyEmphasis(
+    Post.contentHtml || Post.content || ""
+  );
   const summaryText = Post.summary || Post.excerpt || "";
-  const voteScore = typeof Post.voteScore === "number" ? Post.voteScore : 0;
-  const voteCount = typeof Post.voteCount === "number" ? Post.voteCount : 0;
-  const canEditPost =
+  const canManagePost =
     !!user &&
-    (user.id === Post.authorId ||
-      (Post.authorEmail ? user.email === Post.authorEmail : false) ||
-      isAdminEmail(user.email));
+    canDeletePost({
+      actorEmail: user.email,
+      actorUserId: user.id,
+      PostAuthorEmail: Post.authorEmail,
+      PostAuthorUserId: Post.authorId,
+    });
+
+  const handleDeleteClick = async () => {
+    if (isDeleting) {
+      return;
+    }
+
+    if (!isDeleteConfirmed) {
+      setDeleteError(null);
+      setIsDeleteConfirmed(true);
+      return;
+    }
+
+    setIsDeleting(true);
+    setDeleteError(null);
+
+    try {
+      const response = await fetch(`/api/posts/${Post.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const errorJson = await response.json().catch(() => ({}));
+        throw new Error(errorJson.error || "Unable to delete Post.");
+      }
+
+      router.push("/posts");
+    } catch (error) {
+      setIsDeleteConfirmed(false);
+      setIsDeleting(false);
+      setDeleteError(
+        error instanceof Error ? error.message : "Unable to delete Post."
+      );
+    }
+  };
 
   const handleVote = async (nextVote: "UP" | "DOWN") => {
-    if (!Post) return;
+    if (!Post || vote === nextVote) return;
 
     setVotePending(true);
 
@@ -176,17 +259,12 @@ export default function PostPage() {
         );
       }
 
-      setVote(nextVote);
-      setPost(current =>
-        current
-          ? {
-              ...current,
-              voteScore:
-                (current.voteScore ?? 0) + (nextVote === "UP" ? 1 : -1),
-              voteCount: (current.voteCount ?? 0) + 1,
-            }
-          : current
-      );
+      const summary = await response.json();
+      setVoteCounts({
+        upvotes: summary.upvotes,
+        downvotes: summary.downvotes,
+      });
+      setVote(summary.userVote);
     } catch (error) {
       setDatabaseNotice(
         error instanceof Error ? error.message : "Unable to register your vote."
@@ -211,19 +289,10 @@ export default function PostPage() {
             <div className="mb-12">
               <div className="mb-4">
                 <Link href="/posts" className={PostDetailStyles.backLink}>
-                  <svg
-                    className="mr-2 h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
+                  <ArrowIcon
+                    direction="left"
+                    className={viewAllPostsStyles.iconLeft}
+                  />
                   Back to Posts
                 </Link>
               </div>
@@ -231,9 +300,9 @@ export default function PostPage() {
               <span className={PostDetailStyles.badge}>{Post.category}</span>
               <h1 className={PostDetailStyles.title}>{Post.title}</h1>
               <div className={PostDetailStyles.meta}>
-                <span>By {Post.author}</span>
-                <span className="mx-3">•</span>
                 <span>{Post.publishedDate}</span>
+                <span className="mx-3">•</span>
+                <span>By {Post.author}</span>
               </div>
             </div>
 
@@ -242,30 +311,27 @@ export default function PostPage() {
             </div>
 
             <div className={PostDetailStyles.voteRow}>
-              <span className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-100">
-                Score: {voteScore} · {voteCount} votes
-              </span>
               <button
                 type="button"
                 disabled={votePending}
                 onClick={() => handleVote("UP")}
                 className={cn(
-                  PostDetailStyles.voteButton,
+                  PostDetailStyles.upvoteButton,
                   vote === "UP" && PostDetailStyles.voteButtonActive
                 )}
               >
-                ▲ Upvote
+                {voteCounts.upvotes} ▲ Upvote
               </button>
               <button
                 type="button"
                 disabled={votePending}
                 onClick={() => handleVote("DOWN")}
                 className={cn(
-                  PostDetailStyles.voteButton,
+                  PostDetailStyles.downvoteButton,
                   vote === "DOWN" && PostDetailStyles.voteButtonActive
                 )}
               >
-                ▼ Downvote
+                {voteCounts.downvotes} ▼ Downvote
               </button>
             </div>
 
@@ -288,33 +354,44 @@ export default function PostPage() {
               />
             </div>
 
-            <div className="mt-16 border-t border-gray-200 pt-8 dark:border-gray-700">
-              <h3 className={PostDetailStyles.sectionTitle}>
-                About {Post.author}
-              </h3>
-              <p className={PostDetailStyles.bio}>
-                {Post.author === "Jordan McEachern"
-                  ? "Passionate suburban gardener and founder of SuburbanGardener, sharing practical tips for growing food and beauty in small spaces."
-                  : "Experienced organic gardener and writer, specializing in sustainable growing practices and soil health."}
-              </p>
-
+            <div className={PostDetailStyles.footer}>
               <div className={PostDetailStyles.buttonRow}>
-                {canEditPost ? (
+                {canManagePost ? (
                   <Link
                     href={`/posts/new?edit=${encodeURIComponent(Post.id)}`}
-                    className={cn(
-                      buttonStyles.primary,
-                      "inline-flex items-center justify-center rounded-lg text-sm font-medium"
-                    )}
+                    className={PostDetailStyles.editButton}
                   >
                     Edit Post
                   </Link>
+                ) : null}
+                {canManagePost ? (
+                  <button
+                    type="button"
+                    onClick={handleDeleteClick}
+                    disabled={isDeleting}
+                    className={cn(
+                      PostDetailStyles.deleteButton,
+                      isDeleteConfirmed && PostDetailStyles.deleteButtonConfirm
+                    )}
+                    aria-live="polite"
+                  >
+                    {isDeleting
+                      ? "Deleting..."
+                      : isDeleteConfirmed
+                        ? "Are you sure?"
+                        : "Delete Post"}
+                  </button>
                 ) : null}
                 <ViewAllPostsButton
                   text="Back to Posts"
                   arrowDirection="left"
                 />
               </div>
+              {deleteError ? (
+                <p role="alert" className={PostDetailStyles.deleteError}>
+                  {deleteError}
+                </p>
+              ) : null}
             </div>
 
             <PostComments PostId={Post.id} />

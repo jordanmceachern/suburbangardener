@@ -128,6 +128,20 @@ export function sanitizeHtml(input: string): string {
   return sanitized.trim();
 }
 
+// Older posts stored Markdown-style **bold** and *italic*; only text outside HTML tags is converted.
+export function convertLegacyEmphasis(html: string): string {
+  return html
+    .split(/(<[^>]*>)/)
+    .map((part, index) =>
+      index % 2 === 1
+        ? part
+        : part
+            .replace(/\*\*(\S(?:[^*]*\S)?)\*\*/g, "<strong>$1</strong>")
+            .replace(/\*(\S(?:[^*]*\S)?)\*/g, "<em>$1</em>")
+    )
+    .join("");
+}
+
 export function isValidYouTubeUrl(value?: string | null): boolean {
   if (!value) {
     return false;

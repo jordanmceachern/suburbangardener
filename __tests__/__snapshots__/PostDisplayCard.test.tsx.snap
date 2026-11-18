@@ -26,11 +26,11 @@ exports[`PostDisplayCard Component should match DOM snapshot 1`] = `
       class="flex items-center mb-2 justify-between gap-3"
     >
       <span
-        class="text-neutral-700 dark:text-neutral-200 text-sm"
+        class="text-neutral-700 dark:text-neutral-200 text-lg"
       >
-        Test Author
-         · 
         2024-01-01
+         · 
+        Test Author
       </span>
       <span
         class="inline-flex items-center gap-1 rounded-full bg-slate-200 px-2 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-100"
@@ -50,10 +50,24 @@ exports[`PostDisplayCard Component should match DOM snapshot 1`] = `
       This is a test article excerpt
     </p>
     <a
-      class="bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-500 dark:hover:bg-tertiary-600 text-neutral-950 dark:text-neutral-950 px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center"
+      class="px-4 py-2 bg-tertiary-400 hover:bg-tertiary-500 text-neutral-950 rounded-md transition-colors sm:px-6 sm:py-3 text-lg font-medium mt-auto inline-flex items-center justify-center text-center"
       href="/posts/test-article"
     >
       Read More
+      <svg
+        aria-hidden="true"
+        class="w-5 h-5 ml-2 text-neutral-950"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M9 5l7 7-7 7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+      </svg>
     </a>
   </div>
 </div>

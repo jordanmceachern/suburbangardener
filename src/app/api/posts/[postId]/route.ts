@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import {
+  canDeletePost,
   isAdminEmail,
   isValidYouTubeUrl,
   normalizeCategoryValue,
@@ -197,4 +198,54 @@ export async function PUT(
   context: { params: { postId: string } }
 ) {
   return PATCH(request, context);
+}
+
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: { postId: string } }
+) {
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const existingPost = await prisma.post.findUnique({
+    where: { id: params.postId },
+    include: {
+      author: {
+        select: { id: true, email: true },
+      },
+    },
+  });
+
+  if (!existingPost) {
+    return NextResponse.json({ error: "Post not found." }, { status: 404 });
+  }
+
+  const canDelete = canDeletePost({
+    actorEmail: session.user.email,
+    actorUserId: session.user.id,
+    PostAuthorEmail: existingPost.author.email,
+    PostAuthorUserId: existingPost.authorId,
+  });
+
+  if (!canDelete) {
+    return NextResponse.json(
+      { error: "You can only delete your own posts or admin posts." },
+      { status: 403 }
+    );
+  }
+
+  try {
+    await prisma.post.delete({ where: { id: params.postId } });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Failed to delete Post:", error);
+    return NextResponse.json(
+      { error: "Failed to delete Post." },
+      { status: 500 }
+    );
+  }
 }

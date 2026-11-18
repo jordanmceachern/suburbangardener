@@ -11,6 +11,7 @@ import { useAuth } from "@/lib/auth-nextauth";
 import {
   DEFAULT_POST_CATEGORY,
   POST_CATEGORY_OPTIONS,
+  convertLegacyEmphasis,
   normalizeCategoryValue,
 } from "@/lib/postSecurity";
 import {
@@ -21,7 +22,7 @@ import {
 } from "@/lib/tailwind";
 
 const MAX_POST_BODY_CHARACTERS = 5000;
-const MAX_SUMMARY_CHARACTERS = 100;
+const MAX_SUMMARY_CHARACTERS = 200;
 const CLOUDINARY_CLOUD_NAME = "dtweazqf2";
 // Must be an unsigned upload preset in the Cloudinary console.
 const CLOUDINARY_UPLOAD_PRESET = "suburbangardener";
@@ -85,7 +86,9 @@ export default function PostCreateForm() {
           ),
           coverImageUrl: data.post.coverImageUrl || "",
           youtubeUrl: data.post.youtubeUrl || "",
-          contentHtml: data.post.contentHtml || initialForm.contentHtml,
+          contentHtml: convertLegacyEmphasis(
+            data.post.contentHtml || initialForm.contentHtml
+          ),
         });
       } catch (loadError) {
         if (isMounted) {
@@ -106,8 +109,8 @@ export default function PostCreateForm() {
   }, []);
 
   const editorButtons = [
-    { label: "Bold", prefix: "**", suffix: "**" },
-    { label: "Italic", prefix: "*", suffix: "*" },
+    { label: "Bold", prefix: "<strong>", suffix: "</strong>" },
+    { label: "Italic", prefix: "<em>", suffix: "</em>" },
     { label: "Underline", prefix: "<u>", suffix: "</u>" },
   ];
 
@@ -270,7 +273,9 @@ export default function PostCreateForm() {
     }
 
     if (form.summary.trim().length > MAX_SUMMARY_CHARACTERS) {
-      setError("Summary must be 100 characters or fewer.");
+      setError(
+        `Summary must be ${MAX_SUMMARY_CHARACTERS} characters or fewer.`
+      );
       return;
     }
 

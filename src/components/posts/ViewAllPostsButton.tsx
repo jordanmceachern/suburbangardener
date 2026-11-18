@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ArrowIcon from "@/components/ArrowIcon";
 import { buttonStyles, cn, viewAllPostsStyles } from "@/lib/tailwind";
 
 interface ViewAllPostsButtonProps {
@@ -27,35 +28,11 @@ export default function ViewAllPostsButton({
   return (
     <Link href="/posts" className={combinedClasses}>
       {arrowDirection === "left" && (
-        <svg
-          className={viewAllPostsStyles.iconLeft}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 19l-7-7 7-7"
-          />
-        </svg>
+        <ArrowIcon direction="left" className={viewAllPostsStyles.iconLeft} />
       )}
       {text}
       {arrowDirection === "right" && (
-        <svg
-          className={viewAllPostsStyles.iconRight}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
+        <ArrowIcon className={viewAllPostsStyles.iconRight} />
       )}
     </Link>
   );

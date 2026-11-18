@@ -11,11 +11,11 @@ export const appLayout = {
 
 export const buttonStyles = {
   primary:
-    "px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white dark:text-neutral-200 rounded-md transition-colors",
+    "px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-md transition-colors",
   secondary:
-    "px-4 py-2 bg-secondary-500 hover:bg-secondary-600 text-white dark:bg-secondary-700 dark:hover:bg-secondary-800 dark:text-neutral-200 rounded-md transition-colors",
+    "px-4 py-2 bg-secondary-500 hover:bg-secondary-600 text-white dark:bg-secondary-700 dark:hover:bg-secondary-800 rounded-md transition-colors",
   tertiary:
-    "px-4 py-2 bg-tertiary-400 hover:bg-tertiary-500 text-neutral-950 dark:text-neutral-950 rounded-md transition-colors",
+    "px-4 py-2 bg-tertiary-400 hover:bg-tertiary-500 text-neutral-950 rounded-md transition-colors",
   danger:
     "px-4 py-2 text-white rounded-md transition-colors disabled:cursor-not-allowed disabled:opacity-70 bg-[#dc2626] hover:bg-[#b91c1c] dark:bg-[#7f1d1d] dark:hover:bg-[#5b1010]",
 } as const;
@@ -69,21 +69,19 @@ export const searchStyles = {
   inputWrap: "relative",
   dropdownWrap: "relative",
   input:
-    "auth-input block w-full pl-3 pr-12 py-2.5 h-10 text-base border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 dark:text-neutral-900 placeholder:text-neutral-500 dark:placeholder:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-text hover:border-slate-400 dark:hover:border-primary-300 transition-colors",
+    "auth-input block w-full pl-3 pr-12 py-2.5 h-10 text-base border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 placeholder:text-neutral-500 dark:placeholder:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-text hover:border-slate-400 dark:hover:border-primary-300 transition-colors",
   searchButton:
-    "absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-900 dark:text-neutral-900 hover:text-slate-600 dark:hover:text-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed",
+    "absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-900 hover:text-slate-600 dark:hover:text-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed",
   inputIcon: "h-4 w-4",
   dropdownButton:
-    "auth-input w-full px-3 py-2.5 h-10 min-h-[2.5rem] text-lg border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 dark:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-primary-300 transition-colors text-left flex items-center justify-between",
-  dropdownIcon:
-    "h-4 w-4 text-neutral-900 dark:text-neutral-900 transition-transform",
+    "auth-input w-full px-3 py-2.5 h-10 min-h-[2.5rem] text-base border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-primary-300 transition-colors text-left flex items-center justify-between",
+  dropdownIcon: "h-4 w-4 text-neutral-900 transition-transform",
   dropdownMenu:
     "absolute z-50 w-full mt-1 bg-white dark:bg-primary-100 border border-slate-300 dark:border-primary-200 rounded-md max-h-60 overflow-auto shadow-lg",
   dropdownItem:
     "w-full px-3 py-2.5 text-left text-base hover:bg-slate-50 dark:hover:bg-primary-100 focus:outline-none focus:bg-slate-50 dark:focus:bg-primary-100 transition-colors first:rounded-t-md last:rounded-b-md",
-  dropdownItemActive:
-    "bg-primary-50 dark:bg-primary-100 text-primary-700 dark:text-primary-700",
-  dropdownItemInactive: "text-neutral-900 dark:text-neutral-900",
+  dropdownItemActive: "bg-primary-50 dark:bg-primary-100 text-primary-700",
+  dropdownItemInactive: "text-neutral-900",
   results: "text-base text-foreground-light dark:text-foreground-dark",
 } as const;
 
@@ -255,15 +253,18 @@ export const PostCardStyles = {
   image: "w-full h-full rounded-b-none",
   content: "px-6 pb-6 py-4 flex flex-col flex-grow",
   meta: "flex items-center mb-2 justify-between gap-3",
-  metaText: "text-neutral-700 dark:text-neutral-200 text-sm",
+  metaText: "text-neutral-700 dark:text-neutral-200 text-lg",
   title:
     "text-xl lg:text-2xl xl:text-3xl font-bold text-foreground-light dark:text-foreground-dark mb-3",
   excerpt:
     "text-foreground-light dark:text-foreground-dark text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3",
   voteBadge:
     "inline-flex items-center gap-1 rounded-full bg-slate-200 px-2 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-100",
-  button:
-    "bg-tertiary-500 hover:bg-tertiary-600 dark:bg-tertiary-500 dark:hover:bg-tertiary-600 text-neutral-950 dark:text-neutral-950 px-4 py-2 sm:px-6 sm:py-3 rounded-lg font-medium transition-colors mt-auto inline-block text-center",
+  button: cn(
+    buttonStyles.tertiary,
+    "sm:px-6 sm:py-3 text-lg font-medium mt-auto inline-flex items-center justify-center text-center"
+  ),
+  buttonIcon: "w-5 h-5 ml-2 text-neutral-950",
   buttonNarrow: "self-center",
 } as const;
 
@@ -362,7 +363,7 @@ export const PostFormStyles = {
   editorBodyWrap: "relative",
   editorButton: cn(
     buttonStyles.tertiary,
-    "h-auto rounded-md border border-primary-200 px-4 py-1 text-base font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:border-primary-200 dark:text-neutral-950"
+    "h-auto rounded-md border border-primary-200 px-4 py-1 text-base font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
   ),
   uploadButton: cn(
     buttonStyles.tertiary,
@@ -410,10 +411,18 @@ export const PostDetailStyles = {
     "mb-12 text-xl font-medium leading-relaxed text-neutral-700 italic dark:text-gray-300",
   body: "prose prose-lg max-w-none",
   PostBody: "Post-content",
-  sectionTitle:
-    "mb-2 text-lg font-semibold text-primary-900 dark:text-primary-100",
-  bio: "mb-6 text-neutral-700 dark:text-neutral-200",
-  buttonRow: "flex justify-center",
+  footer: "mt-16 border-t border-gray-200 pt-8 dark:border-gray-700",
+  buttonRow: "flex flex-wrap items-center justify-center gap-4",
+  editButton: cn(
+    buttonStyles.tertiary,
+    "inline-flex items-center justify-center rounded-lg text-lg font-medium"
+  ),
+  deleteButton: cn(
+    buttonStyles.danger,
+    "inline-flex items-center justify-center rounded-lg text-lg font-medium"
+  ),
+  deleteButtonConfirm: "ring-2 ring-red-300",
+  deleteError: "mt-4 text-center text-red-600 dark:text-red-400",
   commentsSection:
     "mt-12 rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800",
   commentsHeader:
@@ -435,10 +444,15 @@ export const PostDetailStyles = {
   primaryAction:
     "inline-flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-60",
   voteRow: "mb-8 flex gap-3",
-  voteButton:
-    "inline-flex items-center justify-center rounded-md border border-slate-300 bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600",
-  voteButtonActive:
-    "border-primary-500 bg-primary-500 text-white hover:bg-primary-600 dark:border-primary-500 dark:bg-primary-500 dark:hover:bg-primary-600",
+  upvoteButton: cn(
+    buttonStyles.primary,
+    "inline-flex items-center justify-center font-medium disabled:cursor-not-allowed disabled:opacity-60"
+  ),
+  downvoteButton: cn(
+    buttonStyles.danger,
+    "inline-flex items-center justify-center font-medium"
+  ),
+  voteButtonActive: "ring-2 ring-offset-2 ring-primary-500",
   sidebarWrap: "fixed right-0 top-0 z-40 w-80",
 } as const;
 

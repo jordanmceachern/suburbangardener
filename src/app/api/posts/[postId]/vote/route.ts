@@ -3,6 +3,32 @@ import { NextResponse } from "next/server";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
+async function getVoteSummary(postId: string, userId?: string) {
+  const [upvotes, downvotes, userVote] = await Promise.all([
+    prisma.vote.count({ where: { PostId: postId, type: "UP" } }),
+    prisma.vote.count({ where: { PostId: postId, type: "DOWN" } }),
+    userId
+      ? prisma.vote.findUnique({
+          where: { userId_PostId: { userId, PostId: postId } },
+          select: { type: true },
+        })
+      : null,
+  ]);
+
+  return { upvotes, downvotes, userVote: userVote?.type ?? null };
+}
+
+export async function GET(
+  _request: Request,
+  { params }: { params: { postId: string } }
+) {
+  const session = await getServerSession(authOptions);
+
+  return NextResponse.json(
+    await getVoteSummary(params.postId, session?.user?.id)
+  );
+}
+
 export async function POST(
   request: Request,
   { params }: { params: { postId: string } }
@@ -45,7 +71,8 @@ export async function POST(
     );
   }
 
-  const vote = await prisma.vote.upsert({
+  // One vote per user and post: voting the other way replaces the previous vote.
+  await prisma.vote.upsert({
     where: {
       userId_PostId: {
         userId: session.user.id,
@@ -60,5 +87,7 @@ export async function POST(
     },
   });
 
-  return NextResponse.json({ vote: { id: vote.id, type: vote.type } });
+  return NextResponse.json(
+    await getVoteSummary(params.postId, session.user.id)
+  );
 }

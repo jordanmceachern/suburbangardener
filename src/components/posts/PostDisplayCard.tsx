@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import ArrowIcon from "../ArrowIcon";
 import BackgroundImage from "../BackgroundImage";
 import { maskDisplayName } from "../../lib/postSecurity";
 import { PostCardStyles, cn } from "../../lib/tailwind";
@@ -27,7 +28,6 @@ interface PostDisplayCardProps {
   Post?: PostDisplayData;
   className?: string;
   buttonVariant?: "default" | "narrow";
-  showArrow?: boolean;
   titleClassName?: string;
   imageClassName?: string;
 }
@@ -38,7 +38,6 @@ export default function PostDisplayCard({
   Post,
   className = "",
   buttonVariant = "default",
-  showArrow = false,
   titleClassName = "",
   imageClassName = "",
 }: PostDisplayCardProps) {
@@ -63,7 +62,7 @@ export default function PostDisplayCard({
       <div className={PostCardStyles.content}>
         <div className={PostCardStyles.meta}>
           <span className={PostCardStyles.metaText}>
-            {maskDisplayName(post.author)} · {post.publishedDate}
+            {post.publishedDate} · {maskDisplayName(post.author)}
           </span>
           <span className={PostCardStyles.voteBadge}>
             ▲ {voteScore}
@@ -81,7 +80,8 @@ export default function PostDisplayCard({
             buttonVariant === "narrow" ? PostCardStyles.buttonNarrow : ""
           )}
         >
-          Read More{showArrow ? " →" : ""}
+          Read More
+          <ArrowIcon className={PostCardStyles.buttonIcon} />
         </Link>
       </div>
     </div>

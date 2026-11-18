@@ -6,6 +6,7 @@ import {
   DEFAULT_POST_CATEGORY,
   POST_CATEGORY_OPTIONS,
   canEditPost,
+  convertLegacyEmphasis,
   isAdminEmail,
   maskDisplayName,
   sanitizeHtml,
@@ -79,6 +80,17 @@ describe("post security helpers", () => {
       "Soil",
       "Pest Control",
     ]);
+  });
+
+  it("converts legacy Markdown emphasis to HTML without touching tags", () => {
+    expect(
+      convertLegacyEmphasis(
+        'I found **Jerusalem artichokes** (*AKA sunchokes*) <a href="https://x.com/*a*">link</a>'
+      )
+    ).toBe(
+      'I found <strong>Jerusalem artichokes</strong> (<em>AKA sunchokes</em>) <a href="https://x.com/*a*">link</a>'
+    );
+    expect(convertLegacyEmphasis("2 * 3 * 4")).toBe("2 * 3 * 4");
   });
 
   it("removes unsafe HTML before storage", () => {
@@ -180,18 +192,18 @@ describe("post security helpers", () => {
 
     render(React.createElement(PostCreateForm));
 
-    expect(screen.getByText("0 / 100")).toBeInTheDocument();
+    expect(screen.getByText("0 / 200")).toBeInTheDocument();
     expect(screen.getByText("0 / 5000")).toBeInTheDocument();
 
     const summaryInput = screen.getByLabelText(/summary/i);
     const postBodyInput = screen.getByLabelText(/post body/i);
 
     fireEvent.change(summaryInput, {
-      target: { value: "a".repeat(150) },
+      target: { value: "a".repeat(250) },
     });
 
-    expect(summaryInput).toHaveValue("a".repeat(100));
-    expect(screen.getByText("100 / 100")).toBeInTheDocument();
+    expect(summaryInput).toHaveValue("a".repeat(200));
+    expect(screen.getByText("200 / 200")).toBeInTheDocument();
 
     fireEvent.change(postBodyInput, {
       target: { value: "b".repeat(6000) },
@@ -227,7 +239,11 @@ describe("post security helpers", () => {
     });
 
     fireEvent.click(screen.getByRole("button", { name: /bold/i }));
-    expect(postBodyInput).toHaveValue("**garden**");
+    expect(postBodyInput).toHaveValue("<strong>garden</strong>");
+
+    fireEvent.change(postBodyInput, { target: { value: "garden" } });
+    fireEvent.click(screen.getByRole("button", { name: /italic/i }));
+    expect(postBodyInput).toHaveValue("<em>garden</em>");
 
     fireEvent.change(postBodyInput, { target: { value: "leaf\nroot" } });
     Object.defineProperty(postBodyInput, "selectionStart", {

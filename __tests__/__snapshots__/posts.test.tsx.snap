@@ -30,7 +30,7 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
             class="mt-6 flex justify-center"
           >
             <a
-              class="px-4 py-2 bg-secondary-500 hover:bg-secondary-600 text-white dark:bg-secondary-700 dark:hover:bg-secondary-800 dark:text-neutral-200 rounded-md transition-colors"
+              class="px-4 py-2 bg-secondary-500 hover:bg-secondary-600 text-white dark:bg-secondary-700 dark:hover:bg-secondary-800 rounded-md transition-colors"
               href="/posts/new"
             >
               Write a Post
@@ -125,13 +125,13 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
                   class="relative"
                 >
                   <input
-                    class="auth-input block w-full pl-3 pr-12 py-2.5 h-10 text-base border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 dark:text-neutral-900 placeholder:text-neutral-500 dark:placeholder:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-text hover:border-slate-400 dark:hover:border-primary-300 transition-colors"
+                    class="auth-input block w-full pl-3 pr-12 py-2.5 h-10 text-base border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 placeholder:text-neutral-500 dark:placeholder:text-neutral-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-text hover:border-slate-400 dark:hover:border-primary-300 transition-colors"
                     placeholder="Search posts..."
                     type="text"
                     value=""
                   />
                   <button
-                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-900 dark:text-neutral-900 hover:text-slate-600 dark:hover:text-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-neutral-900 hover:text-slate-600 dark:hover:text-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <svg
                       class="h-4 w-4"
@@ -155,7 +155,7 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
                     aria-expanded="false"
                     aria-haspopup="listbox"
                     aria-label="Select category"
-                    class="auth-input w-full px-3 py-2.5 h-10 min-h-[2.5rem] text-lg border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 dark:text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-primary-300 transition-colors text-left flex items-center justify-between"
+                    class="auth-input w-full px-3 py-2.5 h-10 min-h-[2.5rem] text-base border border-slate-300 dark:border-primary-200 rounded-md bg-white dark:bg-primary-100 text-neutral-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 cursor-pointer hover:border-slate-400 dark:hover:border-primary-300 transition-colors text-left flex items-center justify-between"
                     type="button"
                   >
                     <span
@@ -164,7 +164,7 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
                       All Categories
                     </span>
                     <svg
-                      class="h-4 w-4 text-neutral-900 dark:text-neutral-900 transition-transform"
+                      class="h-4 w-4 text-neutral-900 transition-transform"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 20 20"
