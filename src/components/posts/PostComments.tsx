@@ -144,10 +144,6 @@ export default function PostComments({
             className={PostDetailStyles.mutedText}
           />
         </div>
-      ) : comments.length === 0 ? (
-        <p className={PostDetailStyles.mutedText}>
-          No comments yet. Be the first to respond.
-        </p>
       ) : (
         <div className={PostDetailStyles.commentList}>
           {comments.map(comment => (

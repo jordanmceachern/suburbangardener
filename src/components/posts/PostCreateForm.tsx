@@ -125,7 +125,7 @@ export default function PostCreateForm() {
 
     const timeoutId = window.setTimeout(() => {
       setIsCancelConfirmed(false);
-    }, 1000);
+    }, 3000);
 
     return () => window.clearTimeout(timeoutId);
   }, [isCancelConfirmed]);
@@ -146,7 +146,7 @@ export default function PostCreateForm() {
     setCancelCooldown(true);
     cancelCooldownRef.current = window.setTimeout(() => {
       setCancelCooldown(false);
-    }, 1000);
+    }, 500);
   };
 
   const handleCancelClick = () => {
@@ -157,6 +157,11 @@ export default function PostCreateForm() {
     if (!isCancelConfirmed) {
       setIsCancelConfirmed(true);
       startCancelCooldown();
+      return;
+    }
+
+    if (window.history.length > 1) {
+      router.back();
       return;
     }
 
@@ -239,6 +244,26 @@ export default function PostCreateForm() {
       typeof uploadError === "string" ? uploadError : uploadError?.statusText;
 
     setError(message || "Unable to upload cover image.");
+
+    // Same payload shape as ErrorBoundary; the route emails it and dedupes repeats.
+    fetch("/api/error-report", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        timestamp: new Date().toISOString(),
+        error: {
+          name: "CloudinaryUploadError",
+          message: message || "Unable to upload cover image.",
+          stack: JSON.stringify(uploadError),
+        },
+        errorInfo: { componentStack: "PostCreateForm > CldUploadButton" },
+        userAgent: navigator.userAgent,
+        url: window.location.href,
+        userId: "anonymous",
+      }),
+    }).catch(reportError => {
+      console.error("Failed to send upload error report:", reportError);
+    });
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

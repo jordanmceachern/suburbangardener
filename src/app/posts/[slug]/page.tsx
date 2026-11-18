@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import ArrowIcon from "@/components/ArrowIcon";
 import BackgroundImage from "@/components/BackgroundImage";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import PostSidebar from "@/components/posts/PostSidebar";
@@ -11,7 +10,9 @@ import PostComments from "@/components/posts/PostComments";
 import ViewAllPostsButton from "@/components/posts/ViewAllPostsButton";
 import { useAuth } from "@/lib/auth-nextauth";
 import { canDeletePost, convertLegacyEmphasis } from "@/lib/postSecurity";
-import { PostDetailStyles, cn, viewAllPostsStyles } from "@/lib/tailwind";
+import { PostDetailStyles, cn } from "@/lib/tailwind";
+
+const DELETE_CONFIRM_DELAY_MS = 500;
 
 type PostRecord = {
   id: string;
@@ -69,7 +70,7 @@ export default function PostPage() {
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
-
+  const deleteArmedAtRef = useRef(0);
   useEffect(() => {
     if (!isDeleteConfirmed) {
       return;
@@ -196,7 +197,6 @@ export default function PostPage() {
   const PostBody = convertLegacyEmphasis(
     post.contentHtml || post.content || ""
   );
-  const summaryText = post.summary || post.excerpt || "";
   const canManagePost =
     !!user &&
     canDeletePost({
@@ -214,6 +214,12 @@ export default function PostPage() {
     if (!isDeleteConfirmed) {
       setDeleteError(null);
       setIsDeleteConfirmed(true);
+      deleteArmedAtRef.current = Date.now();
+      return;
+    }
+
+    // A double-click must not count as the confirming click.
+    if (Date.now() - deleteArmedAtRef.current < DELETE_CONFIRM_DELAY_MS) {
       return;
     }
 
@@ -287,16 +293,6 @@ export default function PostPage() {
             </div>
 
             <div className="mb-12">
-              <div className="mb-4">
-                <Link href="/posts" className={PostDetailStyles.backLink}>
-                  <ArrowIcon
-                    direction="left"
-                    className={viewAllPostsStyles.iconLeft}
-                  />
-                  Back to Posts
-                </Link>
-              </div>
-
               <span className={PostDetailStyles.badge}>{post.category}</span>
               <h1 className={PostDetailStyles.title}>{post.title}</h1>
               <div className={PostDetailStyles.meta}>
@@ -304,10 +300,6 @@ export default function PostPage() {
                 <span className="mx-3">•</span>
                 <span>By {post.author}</span>
               </div>
-            </div>
-
-            <div className={PostDetailStyles.summary}>
-              <p>{summaryText}</p>
             </div>
 
             <div className={PostDetailStyles.voteRow}>
@@ -335,8 +327,15 @@ export default function PostPage() {
               </button>
             </div>
 
+            <div className={PostDetailStyles.body}>
+              <div
+                className={PostDetailStyles.PostBody}
+                dangerouslySetInnerHTML={{ __html: PostBody }}
+              />
+            </div>
+
             {post.youtubeUrl ? (
-              <div className="mb-10 overflow-hidden rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+              <div className="mt-10 mb-10 overflow-hidden rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
                 <iframe
                   src={getEmbedUrl(post.youtubeUrl)}
                   title={`${post.title} video`}
@@ -346,13 +345,6 @@ export default function PostPage() {
                 />
               </div>
             ) : null}
-
-            <div className={PostDetailStyles.body}>
-              <div
-                className={PostDetailStyles.PostBody}
-                dangerouslySetInnerHTML={{ __html: PostBody }}
-              />
-            </div>
 
             <div className={PostDetailStyles.footer}>
               <div className={PostDetailStyles.buttonRow}>

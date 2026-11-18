@@ -396,18 +396,14 @@ export const PostDetailStyles = {
   banner:
     "relative mb-8 h-96 overflow-hidden rounded-lg bg-slate-800 md:h-[500px]",
   bannerImage: "w-full h-full object-cover",
-  backLink:
-    "inline-flex items-center text-neutral-700 transition-colors duration-200 hover:text-primary-900 dark:text-neutral-200 dark:hover:text-primary-100",
   badge:
     "mb-4 inline-block rounded-full bg-tertiary-500 px-3 py-1 text-sm font-medium text-white dark:text-neutral-950",
   title:
     "mb-4 text-4xl font-bold leading-tight text-primary-900 dark:text-primary-100 md:text-5xl",
   meta: "flex items-center text-lg text-neutral-700 dark:text-neutral-200",
-  summary:
-    "mb-12 text-xl font-medium leading-relaxed text-neutral-700 italic dark:text-gray-300",
-  body: "prose prose-lg max-w-none",
+  body: "text-xl",
   PostBody: "Post-content",
-  footer: "mt-16 border-t border-gray-200 pt-8 dark:border-gray-700",
+  footer: "mt-4 border-t border-gray-200 pt-8 dark:border-gray-700",
   buttonRow: "flex flex-wrap items-center justify-center gap-4",
   editButton: cn(
     buttonStyles.tertiary,
@@ -450,4 +446,16 @@ export const PostDetailStyles = {
   ),
   voteButtonActive: "ring-2 ring-offset-2 ring-primary-500",
   sidebarWrap: "fixed right-0 top-0 z-40 w-80",
+} as const;
+
+export const loadingSpinnerStyles = {
+  shell:
+    "inline-flex items-center justify-center gap-2 text-center text-lg text-current",
+  icon: "animate-spin dark:text-white",
+  text: "whitespace-nowrap text-lg text-current dark:text-white",
+  sizes: {
+    sm: "h-6 w-6",
+    md: "h-12 w-12",
+    lg: "h-16 w-16",
+  },
 } as const;
