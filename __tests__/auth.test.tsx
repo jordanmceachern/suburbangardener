@@ -398,10 +398,18 @@ describe("credentials auth flow", () => {
     expect(
       screen.getByRole("button", { name: /deleting profile/i })
     ).toBeDisabled();
-    expect(global.fetch).not.toHaveBeenCalled();
+
+    const hasProfileDeleteCall = () =>
+      (global.fetch as jest.Mock).mock.calls.some(
+        ([url, options]) =>
+          url === "/api/profile" &&
+          (options as RequestInit | undefined)?.method === "DELETE"
+      );
+
+    expect(hasProfileDeleteCall()).toBe(false);
 
     fireEvent.click(screen.getByRole("button", { name: /deleting profile/i }));
-    expect(global.fetch).not.toHaveBeenCalled();
+    expect(hasProfileDeleteCall()).toBe(false);
 
     act(() => {
       jest.advanceTimersByTime(5000);

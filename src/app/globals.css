@@ -445,7 +445,7 @@ html[data-theme="light"] {
   }
 
   .dashboard-layout {
-    @apply grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-6 items-start;
+    @apply grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-8 items-start;
   }
 
   .dashboard-empty-column {
@@ -459,6 +459,11 @@ html[data-theme="light"] {
   .dashboard-settings-heading {
     @apply flex items-center gap-3 pb-3 mb-4;
     border-bottom: 1px solid rgba(52, 44, 21, 0.35);
+  }
+
+  .dark .dashboard-settings-heading,
+  html[data-theme="dark"] .dashboard-settings-heading {
+    border-bottom-color: rgba(255, 255, 255, 0.35);
   }
 
   .dashboard-settings-icon {
@@ -476,7 +481,7 @@ html[data-theme="light"] {
   }
 
   .dashboard-settings-subtitle {
-    @apply text-lg text-neutral-700 dark:text-white/90;
+    @apply text-lg text-neutral-900 dark:text-white/90;
   }
 
   .dashboard-settings-body {
@@ -821,5 +826,37 @@ html[data-theme="light"] {
 
   .nav-mobile-label {
     @apply text-xs font-medium truncate;
+  }
+
+  .dashboard-posts-list {
+    @apply w-full max-h-80;
+  }
+
+  .dashboard-posts {
+    @apply max-h-80 overflow-y-auto space-y-4 pl-0 pr-2;
+  }
+
+  .dashboard-post-item {
+    @apply text-neutral-900 dark:text-white;
+  }
+
+  .dashboard-post-link {
+    @apply inline-flex flex-col items-start text-neutral-900 dark:text-white transition-colors;
+  }
+
+  .dashboard-post-title {
+    @apply text-lg font-semibold underline decoration-2 underline-offset-4;
+  }
+
+  .dashboard-post-link:hover .dashboard-post-title {
+    @apply no-underline;
+  }
+
+  .dashboard-post-date {
+    @apply mt-1 text-sm text-neutral-900 dark:text-white;
+  }
+
+  .dashboard-posts-loading {
+    @apply flex min-h-32 w-full items-center justify-center;
   }
 }

@@ -432,6 +432,7 @@ export const PostDetailStyles = {
   loadingWrap: "flex justify-center py-4",
   commentDot: "mx-2",
   mutedText: "text-sm text-foreground-light/80 dark:text-foreground-dark/80",
+  commentLoginPrompt: "text-lg text-foreground-light dark:text-foreground-dark",
   inlineAction: "inline-flex items-center justify-center",
   primaryAction:
     "inline-flex items-center justify-center disabled:cursor-not-allowed disabled:opacity-60",
@@ -450,9 +451,9 @@ export const PostDetailStyles = {
 
 export const loadingSpinnerStyles = {
   shell:
-    "inline-flex items-center justify-center gap-2 text-center text-lg text-neutral-700",
-  icon: "animate-spin text-neutral-950 dark:text-neutral-950",
-  text: "whitespace-nowrap text-lg text-neutral-950 dark:text-neutral-950",
+    "inline-flex items-center justify-center gap-2 text-center text-lg text-current",
+  icon: "animate-spin text-current",
+  text: "whitespace-nowrap text-lg text-current",
   sizes: {
     sm: "h-6 w-6",
     md: "h-12 w-12",
