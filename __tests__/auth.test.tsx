@@ -403,7 +403,7 @@ describe("credentials auth flow", () => {
       (global.fetch as jest.Mock).mock.calls.some(
         ([url, options]) =>
           url === "/api/profile" &&
-          (options as RequestInit | undefined)?.method === "DELETE"
+          (options as { method?: string } | undefined)?.method === "DELETE"
       );
 
     expect(hasProfileDeleteCall()).toBe(false);
