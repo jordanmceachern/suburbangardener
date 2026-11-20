@@ -437,7 +437,7 @@ html[data-theme="light"] {
   }
 
   .dashboard-email {
-    @apply text-lg text-neutral-700 dark:text-white;
+    @apply text-lg text-neutral-900 dark:text-white;
   }
 
   .dashboard-content {
