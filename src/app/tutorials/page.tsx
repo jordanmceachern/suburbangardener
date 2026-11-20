@@ -1,66 +1,46 @@
-import React from "react";
+"use client";
 
-// Renders the Tutorials Page page and its page-specific behavior.
-export default function TutorialsPage() {
+import React, { useEffect, useRef } from "react";
+import { TutorialProvider, useTutorials } from "@/contexts/TutorialContext";
+import TutorialPageHeader from "@/components/tutorials/TutorialPageHeader";
+import TutorialFeatured from "@/components/tutorials/TutorialFeatured";
+import TutorialDisplayList from "@/components/tutorials/TutorialDisplayList";
+import TutorialSidebar from "@/components/tutorials/TutorialSidebar";
+
+function TutorialsPageContent() {
+  const { loadTutorials } = useTutorials();
+  const initialLoadStarted = useRef(false);
+
+  useEffect(() => {
+    if (initialLoadStarted.current) return;
+    initialLoadStarted.current = true;
+    loadTutorials(true);
+  }, [loadTutorials]);
+
   return (
-    <main className="tutorials-page">
-      <div className="tutorials-shell">
-        <div className="tutorials-header">
-          <h1 className="tutorials-title">Gardening Tutorials</h1>
-          <p className="tutorials-subtitle">
-            Learn the art of suburban gardening with our comprehensive video
-            tutorials and step-by-step guides.
-          </p>
-        </div>
-
-        <div className="tutorials-grid">
-          <div className="tutorial-card">
-            <div className="tutorial-image bg-gradient-to-r from-green-400 to-green-600"></div>
-            <div className="tutorial-body">
-              <h3 className="tutorial-card-title">
-                Starting Your First Garden
-              </h3>
-              <p className="tutorial-card-copy">
-                Complete beginner&apos;s guide to planning and starting your
-                suburban garden.
-              </p>
-              <div className="tutorial-card-footer">
-                <span className="tutorial-meta">15 min video</span>
-                <button className="tutorial-button">Watch Now</button>
-              </div>
-            </div>
+    <main className="min-h-screen bg-background-light dark:bg-background-dark relative">
+      <div className="lg:pr-80">
+        <div className="mx-auto px-4 py-8">
+          <div className="max-w-4xl mx-auto">
+            <TutorialPageHeader />
+            <TutorialFeatured />
           </div>
-
-          <div className="tutorial-card">
-            <div className="tutorial-image bg-gradient-to-r from-blue-400 to-blue-600"></div>
-            <div className="tutorial-body">
-              <h3 className="tutorial-card-title">Soil Preparation Basics</h3>
-              <p className="tutorial-card-copy">
-                Learn how to test, amend, and prepare your soil for optimal
-                plant growth.
-              </p>
-              <div className="tutorial-card-footer">
-                <span className="tutorial-meta">12 min video</span>
-                <button className="tutorial-button">Watch Now</button>
-              </div>
-            </div>
-          </div>
-
-          <div className="tutorial-card">
-            <div className="tutorial-image bg-gradient-to-r from-purple-400 to-purple-600"></div>
-            <div className="tutorial-body">
-              <h3 className="tutorial-card-title">Watering Systems Setup</h3>
-              <p className="tutorial-card-copy">
-                Install efficient irrigation systems for your suburban garden.
-              </p>
-              <div className="tutorial-card-footer">
-                <span className="tutorial-meta">20 min video</span>
-                <button className="tutorial-button">Watch Now</button>
-              </div>
-            </div>
+          <div className="mt-6 max-w-4xl mx-auto">
+            <TutorialDisplayList />
           </div>
         </div>
       </div>
+      <div className="fixed top-0 right-0 w-80 z-40">
+        <TutorialSidebar maxTutorials={6} />
+      </div>
     </main>
+  );
+}
+
+export default function TutorialsPage() {
+  return (
+    <TutorialProvider>
+      <TutorialsPageContent />
+    </TutorialProvider>
   );
 }
