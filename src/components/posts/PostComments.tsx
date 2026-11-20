@@ -4,10 +4,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { useAuth } from "@/lib/auth-nextauth";
 import { PostDetailStyles, buttonStyles, cn } from "@/lib/tailwind";
+import { isAdminEmail } from "@/lib/postSecurity";
 
 interface CommentRecord {
   id: string;
   author: string;
+  authorId?: string | null;
   bodyHtml: string;
   createdAt: string;
   parentId?: string | null;
@@ -20,7 +22,7 @@ export default function PostComments({
   postId?: string;
 }) {
   const postId = postIdProp ?? "";
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [comments, setComments] = useState<CommentRecord[]>([]);
   const [commentBody, setCommentBody] = useState("");
   const [replyTargetId, setReplyTargetId] = useState<string | null>(null);
@@ -137,6 +139,28 @@ export default function PostComments({
     }
   };
 
+  const handleDeleteComment = async (commentId: string) => {
+    if (!isAuthenticated) return;
+
+    try {
+      const response = await fetch(
+        `/api/posts/${postId}/comments/${commentId}`,
+        { method: "DELETE" }
+      );
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to delete comment.");
+      }
+      await fetchComments();
+    } catch (deleteError) {
+      setError(
+        deleteError instanceof Error
+          ? deleteError.message
+          : "Unable to delete comment."
+      );
+    }
+  };
+
   return (
     <section className={PostDetailStyles.commentsSection}>
       <h3 className={PostDetailStyles.commentsHeader}>Comments</h3>
@@ -203,16 +227,28 @@ export default function PostComments({
               />
 
               {isAuthenticated ? (
-                <button
-                  type="button"
-                  className="mt-2 text-sm font-semibold text-primary-700 dark:text-primary-300"
-                  onClick={() => {
-                    setReplyTargetId(comment.id);
-                    setReplyBody("");
-                  }}
-                >
-                  Reply
-                </button>
+                <div className="mt-2 flex gap-2">
+                  <button
+                    type="button"
+                    className="mt-2 rounded-sm text-base font-semibold text-primary-700 underline underline-offset-2 outline-none hover:no-underline focus:no-underline focus:ring-2 focus:ring-primary-500 dark:text-primary-300"
+                    onClick={() => {
+                      setReplyTargetId(comment.id);
+                      setReplyBody("");
+                    }}
+                  >
+                    Reply
+                  </button>
+                  {(user?.email === comment.author ||
+                    isAdminEmail(user?.email)) && (
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteComment(comment.id)}
+                      className="mt-2 ml-3 rounded-sm text-base font-semibold text-primary-700 underline underline-offset-2 outline-none hover:no-underline focus:no-underline focus:ring-2 focus:ring-primary-500 dark:text-primary-300"
+                    >
+                      Delete
+                    </button>
+                  )}
+                </div>
               ) : null}
 
               {replyTargetId === comment.id ? (
@@ -228,26 +264,32 @@ export default function PostComments({
                     placeholder={`Reply to ${comment.author}...`}
                   />
                   <div className={PostDetailStyles.actionRow}>
-                    <button
-                      type="submit"
-                      disabled={submitting || !replyBody.trim()}
-                      className={cn(
-                        buttonStyles.primary,
-                        PostDetailStyles.primaryAction
-                      )}
-                    >
-                      {submitting ? "Posting..." : "Post reply"}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setReplyTargetId(null);
-                        setReplyBody("");
-                      }}
-                      className={buttonStyles.secondary}
-                    >
-                      Cancel
-                    </button>
+                    <div className="flex items-center justify-end gap-3">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setReplyTargetId(null);
+                          setReplyBody("");
+                        }}
+                        className={cn(
+                          buttonStyles.danger,
+                          "focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        )}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={submitting || !replyBody.trim()}
+                        className={cn(
+                          buttonStyles.primary,
+                          PostDetailStyles.primaryAction,
+                          "focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        )}
+                      >
+                        {submitting ? "Commenting..." : "Comment"}
+                      </button>
+                    </div>
                   </div>
                 </form>
               ) : null}
@@ -272,6 +314,17 @@ export default function PostComments({
                     className={PostDetailStyles.commentBody}
                     dangerouslySetInnerHTML={{ __html: reply.bodyHtml }}
                   />
+
+                  {isAuthenticated &&
+                  (isAdminEmail(user?.email) || reply.authorId === user?.id) ? (
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteComment(reply.id)}
+                      className="mt-2 rounded-sm text-base font-semibold text-primary-700 underline underline-offset-2 outline-none hover:no-underline focus:no-underline focus:ring-2 focus:ring-primary-500 dark:text-primary-300"
+                    >
+                      Delete
+                    </button>
+                  ) : null}
                 </div>
               ))}
             </div>

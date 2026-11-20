@@ -35,6 +35,7 @@ export async function GET(
       bodyHtml: comment.bodyHtml,
       createdAt: comment.createdAt.toISOString(),
       parentId: null,
+      authorId: comment.authorId,
       replies: comment.replies.map(reply => ({
         id: reply.id,
         author: reply.author.email
@@ -43,6 +44,7 @@ export async function GET(
         bodyHtml: reply.bodyHtml,
         createdAt: reply.createdAt.toISOString(),
         parentId: reply.parentId,
+        authorId: reply.authorId,
       })),
     })),
   });

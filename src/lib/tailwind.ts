@@ -419,7 +419,7 @@ export const PostDetailStyles = {
     "mt-12 rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800",
   commentsHeader:
     "mb-4 text-2xl font-bold text-foreground-light dark:text-foreground-dark",
-  commentList: "space-y-4",
+  commentList: "space-y-6",
   commentItem:
     "rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-700/60",
   commentMeta: "mb-2 text-sm text-neutral-700 dark:text-neutral-200",
@@ -427,7 +427,7 @@ export const PostDetailStyles = {
   commentComposer:
     "mb-6 space-y-3 rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-700/60",
   textarea:
-    "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100",
+    "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100",
   actionRow: "flex justify-end",
   loadingWrap: "flex justify-center py-4",
   commentDot: "mx-2",
