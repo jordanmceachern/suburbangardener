@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 
 type CommentMapEntry = {
   id: string;
-  PostId: string;
+  postId: string;
   bodyHtml: string;
   createdAt: Date | string;
   author?: { email?: string | null; name?: string | null } | null;
@@ -15,7 +15,7 @@ type CommentMapEntry = {
 function mapComment(comment: CommentMapEntry) {
   return {
     id: comment.id,
-    PostId: comment.PostId,
+    postId: comment.postId,
     author: comment.author?.email
       ? comment.author.email.split("@")[0]
       : comment.author?.name || "Anonymous",
@@ -40,7 +40,7 @@ export async function GET(
   }
 
   const comments = await prisma.comment.findMany({
-    where: { PostId: params.postId },
+    where: { postId: params.postId },
     orderBy: { createdAt: "asc" },
     include: {
       author: {
@@ -96,7 +96,7 @@ export async function POST(
 
   const comment = await prisma.comment.create({
     data: {
-      PostId: params.postId,
+      postId: params.postId,
       authorId: session.user.id,
       bodyHtml,
     },

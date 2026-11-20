@@ -51,7 +51,7 @@ describe("post vote route", () => {
     expect(prisma.vote.upsert).toHaveBeenCalledTimes(1);
     expect(prisma.vote.upsert).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: { userId_PostId: { userId: "user-1", PostId: "post-1" } },
+        where: { userId_postId: { userId: "user-1", postId: "post-1" } },
         update: { type: "DOWN" },
       })
     );

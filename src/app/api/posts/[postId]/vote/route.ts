@@ -5,11 +5,11 @@ import { prisma } from "@/lib/prisma";
 
 async function getVoteSummary(postId: string, userId?: string) {
   const [upvotes, downvotes, userVote] = await Promise.all([
-    prisma.vote.count({ where: { PostId: postId, type: "UP" } }),
-    prisma.vote.count({ where: { PostId: postId, type: "DOWN" } }),
+    prisma.vote.count({ where: { postId, type: "UP" } }),
+    prisma.vote.count({ where: { postId, type: "DOWN" } }),
     userId
       ? prisma.vote.findUnique({
-          where: { userId_PostId: { userId, PostId: postId } },
+          where: { userId_postId: { userId, postId } },
           select: { type: true },
         })
       : null,
@@ -74,15 +74,15 @@ export async function POST(
   // One vote per user and post: voting the other way replaces the previous vote.
   await prisma.vote.upsert({
     where: {
-      userId_PostId: {
+      userId_postId: {
         userId: session.user.id,
-        PostId: params.postId,
+        postId: params.postId,
       },
     },
     update: { type: voteType },
     create: {
       userId: session.user.id,
-      PostId: params.postId,
+      postId: params.postId,
       type: voteType,
     },
   });
