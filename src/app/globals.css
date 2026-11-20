@@ -493,8 +493,10 @@ html[data-theme="light"] {
   }
 
   .dashboard-settings-column--danger {
-    background: transparent;
+    background: transparent !important;
+    background-color: transparent !important;
     border: 0;
+    border-radius: 0;
     padding: 0;
   }
 
@@ -527,10 +529,19 @@ html[data-theme="light"] {
 
   .dashboard-delete-warning {
     @apply mt-3 text-base font-bold leading-relaxed text-neutral-800 dark:text-white;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
   }
 
-  .dashboard-delete-error {
-    @apply mt-2 text-base text-red-600;
+  .dark .dashboard-settings-column--danger,
+  html[data-theme="dark"] .dashboard-settings-column--danger,
+  .dark .dashboard-delete-warning,
+  html[data-theme="dark"] .dashboard-delete-warning {
+    background: transparent !important;
+    background-color: transparent !important;
   }
 
   .dashboard-logout-button {
