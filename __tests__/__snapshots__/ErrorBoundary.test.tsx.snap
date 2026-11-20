@@ -42,7 +42,7 @@ exports[`ErrorBoundary Component should match DOM snapshot when error occurs 1`]
         Refresh this Page
       </button>
       <button
-        class="px-4 py-2 bg-secondary-500 hover:bg-secondary-600 text-white rounded-md transition-colors"
+        class="px-4 py-2 bg-secondary-500 hover:bg-secondary-600 text-white dark:bg-secondary-700 dark:hover:bg-secondary-800 rounded-md transition-colors"
       >
         Go to Home Page
       </button>

@@ -75,8 +75,8 @@ exports[`Navigation Component renders with correct structure and classes 1`] = `
         >
           <a
             class="nav-link nav-link--inactive nav-link--desktop nav-link--desktop-item"
-            href="/articles"
-            title="Articles"
+            href="/posts"
+            title="Posts"
           >
             <span
               class="flex-shrink-0"
@@ -98,7 +98,7 @@ exports[`Navigation Component renders with correct structure and classes 1`] = `
             <span
               class="nav-link-label"
             >
-              Articles
+              Posts
             </span>
           </a>
         </div>
@@ -177,7 +177,7 @@ exports[`Navigation Component renders with correct structure and classes 1`] = `
         >
           <button
             aria-label="Switch to dark mode"
-            class="nav-link nav-link--inactive nav-link--desktop nav-link--desktop-item nav-link--toggle border-0 bg-transparent px-3 py-2 text-left select-none"
+            class="nav-link nav-link--inactive nav-link--desktop nav-link--desktop-item nav-link--toggle border-0 bg-transparent px-3 py-2 text-left select-none disabled:cursor-not-allowed disabled:opacity-60"
             title="dark"
             type="button"
           >

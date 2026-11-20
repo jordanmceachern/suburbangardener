@@ -10,17 +10,17 @@ The visual testing system uses [Playwright](https://playwright.dev/) to capture 
 
 ### Pages Tested
 
-- **Articles Page** (`/articles`)
+- **Posts Page** (`/Posts`)
   - Light and dark mode layouts
-  - Featured article component
-  - Articles grid layout
+  - Featured Post component
+  - Posts grid layout
   - Search functionality
   - Empty states
   - Sidebar components
 
-- **Article Detail Page** (`/articles/[slug]`)
+- **Post Detail Page** (`/Posts/[slug]`)
   - Light and dark mode layouts
-  - Article header section
+  - Post header section
   - Content formatting
   - Author bio section
   - Navigation elements
@@ -33,8 +33,8 @@ The visual testing system uses [Playwright](https://playwright.dev/) to capture 
   - Focus states with green rings
 
 - **Sidebars**
-  - Articles sidebar (search, recent articles)
-  - Article detail sidebar
+  - Posts sidebar (search, recent Posts)
+  - Post detail sidebar
   - Collapse functionality
 
 ## Running Tests
@@ -176,8 +176,8 @@ Edit `playwright.config.ts` to:
 ```
 tests/
 ├── visual/
-│   ├── articles.spec.ts          # Articles page tests
-│   ├── article-detail.spec.ts    # Article detail tests
+│   ├── Posts.spec.ts          # Posts page tests
+│   ├── Post-detail.spec.ts    # Post detail tests
 │   ├── navigation.spec.ts        # Navigation tests
 │   └── sidebars.spec.ts          # Sidebar tests
 ├── setup/                        # Test setup files

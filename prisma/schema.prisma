@@ -19,6 +19,9 @@ model User {
   createdAt                DateTime     @default(now())
   updatedAt                DateTime     @updatedAt
   profile                  UserProfile?
+  Posts                 Post[]
+  comments                 Comment[]
+  votes                    Vote[]
 
   @@index([email])
 }
@@ -36,4 +39,66 @@ model UserProfile {
   updatedAt   DateTime @updatedAt
 
   @@index([userId])
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  excerpt     String?
+  contentHtml String
+  coverUrl    String?
+  youtubeUrl  String?
+  category    String    @default("General")
+  authorId    String
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  publishedAt DateTime? @default(now())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  comments    Comment[]
+  votes       Vote[]
+
+  @@index([authorId])
+  @@index([publishedAt])
+  @@map("posts")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  postId    String   @map("post_id")
+  Post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorId  String   @map("author_id")
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  bodyHtml  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  votes     Vote[]
+
+  @@index([postId])
+  @@index([authorId])
+  @@map("comments")
+}
+
+enum VoteType {
+  UP
+  DOWN
+}
+
+model Vote {
+  id        String    @id @default(cuid())
+  userId    String    @map("user_id")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId    String?   @map("post_id")
+  Post      Post?     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  commentId String?   @map("comment_id")
+  comment   Comment?  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  type      VoteType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([userId, postId])
+  @@unique([userId, commentId])
+  @@index([postId])
+  @@index([commentId])
+  @@map("votes")
 }

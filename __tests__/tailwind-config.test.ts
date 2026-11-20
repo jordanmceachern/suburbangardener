@@ -9,7 +9,7 @@ describe("Tailwind content scanning", () => {
     );
   });
 
-  it("keeps responsive utility classes used by the home and articles layout in the scan set", () => {
+  it("keeps responsive utility classes used by the home and posts layout in the scan set", () => {
     const config = require("../tailwind.config.js");
 
     expect(config.content.join("\n")).toContain(

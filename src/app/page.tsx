@@ -2,7 +2,7 @@ import ErrorTester from "../components/ErrorTester";
 import Greeting from "../components/Greeting";
 import BannerSection from "../components/BannerSection";
 import CustomBuildSection from "../components/CustomBuildSection";
-import HomeArticlesSection from "../components/articles/HomeArticlesSection";
+import HomePostsSection from "../components/posts/HomePostsSection";
 import FontStyleTest from "../components/FontStyleTest";
 
 // Renders the Home home-area UI.
@@ -16,7 +16,7 @@ export default function Home() {
 
         <CustomBuildSection className="mt-8" />
 
-        <HomeArticlesSection className="mt-12" />
+        <HomePostsSection className="mt-12" />
 
         <FontStyleTest className="mt-12" />
 

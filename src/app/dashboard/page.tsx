@@ -6,6 +6,16 @@ import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../lib/auth-nextauth";
 import LoadingSpinner from "../../components/LoadingSpinner";
+import Link from "next/link";
+
+interface DashboardPost {
+  id: string;
+  title: string;
+  slug: string;
+  publishedDate: string;
+  authorId?: string;
+  authorEmail?: string;
+}
 
 // Renders the Dashboard Page page and its page-specific behavior.
 export default function DashboardPage() {
@@ -15,6 +25,9 @@ export default function DashboardPage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteCooldown, setDeleteCooldown] = useState(false);
   const [deleteError, setDeleteError] = useState("");
+  const [myPosts, setMyPosts] = useState<DashboardPost[]>([]);
+  const [myPostsLoading, setMyPostsLoading] = useState(true);
+  const [myPostsError, setMyPostsError] = useState("");
   const cooldownTimeoutRef = useRef<number | null>(null);
   const isDeleteRedirectingRef = useRef(false);
   const deleteRedirectKey = "suburban-gardener-delete-home-redirect";
@@ -131,6 +144,69 @@ export default function DashboardPage() {
     }
   };
 
+  // Fetches the current user's posts for the dashboard.
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    let isActive = true;
+
+    async function loadMyPosts() {
+      try {
+        setMyPostsLoading(true);
+        setMyPostsError("");
+
+        const response = await fetch("/api/posts?limit=100&offset=0");
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Unable to load your posts.");
+        }
+
+        const posts = Array.isArray(data.posts)
+          ? (data.posts as DashboardPost[]).filter(
+              post =>
+                post.authorId === user?.id ||
+                (!!post.authorEmail &&
+                  post.authorEmail.toLowerCase() === user?.email?.toLowerCase())
+            )
+          : [];
+
+        posts.sort((a, b) => {
+          const aTime = Date.parse(a.publishedDate);
+          const bTime = Date.parse(b.publishedDate);
+          if (Number.isNaN(aTime) || Number.isNaN(bTime)) {
+            return 0;
+          }
+          return bTime - aTime;
+        });
+
+        if (isActive) {
+          setMyPosts(posts);
+        }
+      } catch (error) {
+        if (isActive) {
+          setMyPostsError(
+            error instanceof Error
+              ? error.message
+              : "Unable to load your posts."
+          );
+        }
+      } finally {
+        if (isActive) {
+          setMyPostsLoading(false);
+        }
+      }
+    }
+
+    loadMyPosts();
+
+    return () => {
+      isActive = false;
+    };
+  }, [user]);
+
   if (isLoading) {
     return (
       <main className="dashboard-loading">
@@ -173,6 +249,64 @@ export default function DashboardPage() {
 
       <div className="dashboard-content">
         <div className="dashboard-layout">
+          <aside className="dashboard-settings-card">
+            <div className="dashboard-settings-heading">
+              <span className="dashboard-settings-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-7 h-7"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <path d="M14 2v6h6" />
+                  <path d="M8 13h8M8 17h8M8 9h2" />
+                </svg>
+              </span>
+              <div>
+                <h2 className="dashboard-settings-title">My Posts</h2>
+              </div>
+            </div>
+
+            <div className="dashboard-settings-body">
+              <div className="dashboard-posts-list">
+                {myPostsLoading ? (
+                  <div className="dashboard-posts-loading">
+                    <LoadingSpinner className="text-neutral-900 dark:text-white" />
+                  </div>
+                ) : myPostsError ? (
+                  <p className="dashboard-posts-error">{myPostsError}</p>
+                ) : myPosts.length === 0 ? (
+                  <p className="dashboard-posts-empty">
+                    You haven&apos;t created any posts yet.
+                  </p>
+                ) : (
+                  <ol reversed className="dashboard-posts">
+                    {myPosts.map(post => (
+                      <li key={post.id} className="dashboard-post-item">
+                        <Link
+                          href={`/posts/${post.slug}`}
+                          className="dashboard-post-link"
+                        >
+                          <h3 className="dashboard-post-title">{post.title}</h3>
+                          <time
+                            dateTime={post.publishedDate}
+                            className="dashboard-post-date"
+                          >
+                            {new Date(post.publishedDate).toLocaleDateString()}
+                          </time>
+                        </Link>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </div>
+            </div>
+          </aside>
+
           <aside className="dashboard-settings-card">
             <div className="dashboard-settings-heading">
               <span className="dashboard-settings-icon" aria-hidden="true">

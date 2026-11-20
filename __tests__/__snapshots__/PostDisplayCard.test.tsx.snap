@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`PostDisplayCard Component should match DOM snapshot 1`] = `
+<div
+  class="bg-tertiary-100 dark:bg-slate-500 rounded-lg shadow-lg overflow-hidden min-w-0 flex flex-col"
+>
+  <div
+    class="h-48 sm:h-64 bg-slate-800"
+  >
+    <div
+      class="flex w-full justify-center w-full h-full rounded-b-none"
+    >
+      <img
+        alt="Test Post"
+        aria-label="Test Post"
+        class="h-auto w-full rounded-lg object-contain "
+        src="/test-image.jpg"
+        style="object-fit: contain;"
+      />
+    </div>
+  </div>
+  <div
+    class="px-6 pb-6 py-4 flex flex-col flex-grow"
+  >
+    <div
+      class="flex items-center mb-2 justify-between gap-3"
+    >
+      <span
+        class="text-foreground-light dark:text-neutral-200 text-sm"
+      >
+        2024-01-01
+         · 
+        Test Author
+      </span>
+      <span
+        class="inline-flex items-center gap-2 rounded-full bg-slate-200 px-2 py-1 text-base font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-100"
+      >
+        <span>
+          ▲ 
+          0
+        </span>
+        <span>
+          ▼ 
+          0
+        </span>
+      </span>
+    </div>
+    <h2
+      class="text-xl lg:text-2xl xl:text-3xl font-bold text-foreground-light dark:text-foreground-dark mb-3"
+    >
+      Test Post
+    </h2>
+    <p
+      class="text-foreground-light dark:text-foreground-dark text-base sm:text-lg mb-4 sm:mb-6 line-clamp-3"
+    >
+      This is a test post excerpt
+    </p>
+    <a
+      class="px-4 py-2 bg-tertiary-400 hover:bg-tertiary-500 text-neutral-950 rounded-md transition-colors mt-auto inline-flex items-center justify-center text-center"
+      href="/posts/test-post"
+    >
+      Read More
+      <svg
+        aria-hidden="true"
+        class="w-5 h-5 ml-2 text-neutral-950"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M9 5l7 7-7 7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+        />
+      </svg>
+    </a>
+  </div>
+</div>
+`;

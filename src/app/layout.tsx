@@ -10,6 +10,36 @@ const title = "Suburban Gardener";
 const description =
   "Your home gardening journey starts here. Come learn some great tips, use our free design tools, and shop for building materials with complete solutions to your backyard suburban garden.";
 
+const themeScript = `
+  (function() {
+    try {
+      const storageKey = 'suburban-gardener-theme';
+      const getSystemTheme = () =>
+        window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+      const storedTheme = window.localStorage.getItem(storageKey);
+      const theme =
+        storedTheme === 'dark' || storedTheme === 'light'
+          ? storedTheme
+          : getSystemTheme();
+      const root = document.documentElement;
+      root.classList.toggle('dark', theme === 'dark');
+      root.dataset.theme = theme;
+      root.style.colorScheme = theme;
+    } catch (error) {
+      const root = document.documentElement;
+      const theme =
+        window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+      root.classList.toggle('dark', theme === 'dark');
+      root.dataset.theme = theme;
+      root.style.colorScheme = theme;
+    }
+  })();
+`;
+
 const faviconURL =
   "https://res.cloudinary.com/dtweazqf2/image/upload/t_ammafavicon/v1754668830/SuburbanGardener/suburban_gardener_mvpaj0.png";
 export const metadata: Metadata = {
@@ -57,7 +87,10 @@ export const metadata: Metadata = {
 // Provides the Root Layout layout shell for the app.
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         <AuthProvider>
           <ErrorBoundary>

@@ -6,9 +6,15 @@ import { Moon, Sun } from "lucide-react";
 import BackgroundImage from "./BackgroundImage";
 import { usePathname } from "next/navigation";
 import { useAuth } from "../lib/auth-nextauth";
+import {
+  applyThemeMode,
+  getSystemThemePreference,
+  normalizeThemeMode,
+  resolveInitialTheme,
+  THEME_STORAGE_KEY,
+  type ThemeMode,
+} from "../lib/theme";
 import { cn, navStyles } from "../lib/tailwind";
-
-type ThemeMode = "light" | "dark";
 
 interface NavItem {
   name: string;
@@ -16,16 +22,6 @@ interface NavItem {
   icon: React.ReactNode;
   requiresAuth?: boolean;
   isThemeToggle?: boolean;
-}
-
-const THEME_STORAGE_KEY = "suburban-gardener-theme";
-
-function normalizeThemeMode(value: unknown): ThemeMode | null {
-  if (value === "dark" || value === "light") {
-    return value;
-  }
-
-  return null;
 }
 
 const navigation: NavItem[] = [
@@ -68,8 +64,8 @@ const navigation: NavItem[] = [
     ),
   },
   {
-    name: "Articles",
-    href: "/articles",
+    name: "Posts",
+    href: "/posts",
     icon: (
       <svg
         className="w-6 h-6"
@@ -156,15 +152,16 @@ const navigation: NavItem[] = [
 export default function Navigation() {
   const pathname = usePathname();
   const { isAuthenticated, user, isLoading } = useAuth();
-  const [themeMode, setThemeMode] = React.useState<ThemeMode>("light");
+  const [themeMode, setThemeMode] = React.useState<ThemeMode | null>(null);
+  const [isThemeToggleLocked, setIsThemeToggleLocked] = React.useState(false);
+  const themeToggleTimeoutRef = React.useRef<number | null>(null);
 
-  const applyThemeMode = React.useCallback((mode: ThemeMode) => {
-    if (typeof document === "undefined") {
+  React.useEffect(() => {
+    if (typeof window === "undefined") {
       return;
     }
 
-    document.documentElement.classList.toggle("dark", mode === "dark");
-    document.documentElement.dataset.theme = mode;
+    setThemeMode(resolveInitialTheme());
   }, []);
 
   React.useEffect(() => {
@@ -172,13 +169,12 @@ export default function Navigation() {
       return;
     }
 
-    const mediaQuery = window.matchMedia
-      ? window.matchMedia("(prefers-color-scheme: dark)")
-      : null;
-    const systemDark = mediaQuery?.matches ?? false;
-    const fallbackTheme: ThemeMode = systemDark ? "dark" : "light";
-
     const loadThemePreference = async () => {
+      const storedTheme = normalizeThemeMode(
+        window.localStorage.getItem(THEME_STORAGE_KEY)
+      );
+      const fallbackTheme = getSystemThemePreference();
+
       if (isAuthenticated && user?.id) {
         try {
           const response = await fetch("/api/profile", { method: "GET" });
@@ -194,14 +190,10 @@ export default function Navigation() {
             }
           }
         } catch {
-          // Fall back to the system preference.
+          // Fall back to the saved browser preference or system preference.
         }
       }
 
-      const storedTheme =
-        typeof window !== "undefined"
-          ? normalizeThemeMode(window.localStorage.getItem(THEME_STORAGE_KEY))
-          : null;
       const nextTheme = storedTheme ?? fallbackTheme;
       setThemeMode(nextTheme);
       applyThemeMode(nextTheme);
@@ -210,18 +202,30 @@ export default function Navigation() {
     if (!isLoading) {
       loadThemePreference();
     }
-  }, [applyThemeMode, isAuthenticated, isLoading, user?.id]);
+  }, [isAuthenticated, isLoading, user?.id]);
 
   React.useEffect(() => {
-    if (typeof window === "undefined") {
+    if (typeof window === "undefined" || themeMode === null) {
       return;
     }
 
-    if (!isLoading) {
-      applyThemeMode(themeMode);
+    applyThemeMode(themeMode);
+    const currentStoredTheme = normalizeThemeMode(
+      window.localStorage.getItem(THEME_STORAGE_KEY)
+    );
+
+    if (currentStoredTheme !== themeMode) {
       window.localStorage.setItem(THEME_STORAGE_KEY, themeMode);
     }
-  }, [applyThemeMode, isLoading, themeMode]);
+  }, [themeMode]);
+
+  React.useEffect(() => {
+    return () => {
+      if (themeToggleTimeoutRef.current) {
+        window.clearTimeout(themeToggleTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const filteredNavigation = navigation.filter(item => {
     if (item.requiresAuth && !isAuthenticated) {
@@ -245,6 +249,20 @@ export default function Navigation() {
   const navItems = [...filteredNavigation, themeToggle];
 
   const handleThemeToggle = async () => {
+    if (isThemeToggleLocked) {
+      return;
+    }
+
+    setIsThemeToggleLocked(true);
+
+    if (themeToggleTimeoutRef.current) {
+      window.clearTimeout(themeToggleTimeoutRef.current);
+    }
+
+    themeToggleTimeoutRef.current = window.setTimeout(() => {
+      setIsThemeToggleLocked(false);
+    }, 500);
+
     const nextTheme: ThemeMode = themeMode === "dark" ? "light" : "dark";
     setThemeMode(nextTheme);
     applyThemeMode(nextTheme);
@@ -301,11 +319,12 @@ export default function Navigation() {
                             : "Switch to dark mode"
                         }
                         onClick={handleThemeToggle}
+                        disabled={isThemeToggleLocked}
                         className={cn(
                           navStyles.linkInactive,
                           navStyles.desktopModifier,
                           navStyles.toggleButton,
-                          "border-0 bg-transparent px-3 py-2 text-left select-none"
+                          "border-0 bg-transparent px-3 py-2 text-left select-none disabled:cursor-not-allowed disabled:opacity-60"
                         )}
                       >
                         <span className={navStyles.icon}>{item.icon}</span>
@@ -379,10 +398,11 @@ export default function Navigation() {
                       : "Switch to dark mode"
                   }
                   onClick={handleThemeToggle}
+                  disabled={isThemeToggleLocked}
                   className={cn(
                     navStyles.mobileLinkInactive,
                     navStyles.mobileToggleButton,
-                    "border-0 bg-transparent px-0 select-none"
+                    "border-0 bg-transparent px-0 select-none disabled:cursor-not-allowed disabled:opacity-60"
                   )}
                 >
                   <span className={navStyles.mobileIcon}>{item.icon}</span>

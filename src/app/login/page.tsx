@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
+import ArrowIcon from "../../components/ArrowIcon";
 import BackgroundImage from "../../components/BackgroundImage";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
@@ -34,8 +35,20 @@ const clearPendingAuthCredentials = () => {
   window.sessionStorage.removeItem(PENDING_AUTH_PASSWORD_KEY);
 };
 
-// Renders the sign-in and account-creation flow, including the email verification redirect logic and auth-state recovery.
 export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background-light dark:bg-background-dark" />
+      }
+    >
+      <LoginPageContent />
+    </Suspense>
+  );
+}
+
+// Renders the sign-in and account-creation flow, including the email verification redirect logic and auth-state recovery.
+function LoginPageContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [mode, setMode] = useState<"signIn" | "signUp">("signIn");
   const [email, setEmail] = useState("");
@@ -47,6 +60,7 @@ export default function LoginPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
   // Watches for verification and auth callbacks so a freshly verified user can be redirected into the authenticated dashboard state.
   useEffect(() => {
@@ -70,32 +84,38 @@ export default function LoginPage() {
             email: activeEmail,
             password: activePassword,
             redirect: false,
-            callbackUrl: "/dashboard",
+            callbackUrl,
           });
 
           if (signInResult?.ok !== false) {
             clearPendingAuthCredentials();
             if (process.env.NODE_ENV === "test") {
-              router.push("/dashboard");
+              router.push(callbackUrl);
             } else if (typeof window !== "undefined") {
-              window.location.assign("/dashboard");
+              window.location.assign(callbackUrl);
             } else {
-              router.push("/dashboard");
+              router.push(callbackUrl);
             }
             return;
           }
         } catch (signInError) {
-          // Fall through to the normal redirect if automatic sign-in fails.
+          console.error(
+            "Automatic sign-in after verification failed:",
+            signInError
+          );
+          setError(
+            "Your email was verified, but we could not sign you in automatically. Please try signing in again."
+          );
         }
       }
 
       clearPendingAuthCredentials();
       if (process.env.NODE_ENV === "test") {
-        router.push("/dashboard");
+        router.push(callbackUrl);
       } else if (typeof window !== "undefined") {
-        window.location.assign("/dashboard");
+        window.location.assign(callbackUrl);
       } else {
-        router.push("/dashboard");
+        router.push(callbackUrl);
       }
     };
 
@@ -161,7 +181,7 @@ export default function LoginPage() {
       window.removeEventListener("storage", handleStorageVerification);
       window.removeEventListener("message", handleMessageVerification);
     };
-  }, [email, password, searchParams, router]);
+  }, [callbackUrl, email, password, searchParams, router]);
 
   // Resets the auth form state to clear validation, success, and verification messaging between mode switches.
   const resetAccountForm = () => {
@@ -307,7 +327,7 @@ export default function LoginPage() {
         email,
         password,
         redirect: false,
-        callbackUrl: "/dashboard",
+        callbackUrl,
       });
 
       if (result?.error) {
@@ -318,7 +338,7 @@ export default function LoginPage() {
         );
       }
 
-      router.push("/dashboard");
+      router.push(callbackUrl);
     } catch (err) {
       setError(
         err instanceof Error
@@ -540,7 +560,10 @@ export default function LoginPage() {
 
           {!successMessage && (
             <div className="auth-link">
-              <Link href="/">← Back to Home</Link>
+              <Link href="/">
+                <ArrowIcon direction="left" />
+                Back to Home
+              </Link>
             </div>
           )}
         </div>

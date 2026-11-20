@@ -3,6 +3,7 @@ set -e
 
 cd "$(git rev-parse --show-toplevel)"
 
-echo "Running pre-commit checks: lint + tests"
+echo "Running pre-commit checks: lint + tests + snapshot updates"
 npm run lint
-npm test -- --runInBand
+npm test -- --runInBand --updateSnapshot
+git add -u

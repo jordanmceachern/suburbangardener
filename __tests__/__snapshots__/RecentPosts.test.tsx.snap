@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`RecentPosts Component should match DOM snapshot 1`] = `
+<div
+  class="recent-posts "
+>
+  <h2
+    class="text-xl font-semibold mb-4"
+  >
+    Recent Posts
+  </h2>
+  <div
+    class="space-y-3"
+  >
+    <div
+      class="border-b border-gray-200 pb-2"
+    >
+      <h3
+        class="font-medium text-sm"
+      >
+        Recent Post 1
+      </h3>
+      <p
+        class="text-xs text-gray-600"
+      >
+        2024-01-01
+      </p>
+    </div>
+  </div>
+</div>
+`;
