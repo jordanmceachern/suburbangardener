@@ -10,6 +10,8 @@ interface CommentRecord {
   author: string;
   bodyHtml: string;
   createdAt: string;
+  parentId?: string | null;
+  replies?: CommentRecord[];
 }
 
 export default function PostComments({
@@ -21,6 +23,8 @@ export default function PostComments({
   const { isAuthenticated } = useAuth();
   const [comments, setComments] = useState<CommentRecord[]>([]);
   const [commentBody, setCommentBody] = useState("");
+  const [replyTargetId, setReplyTargetId] = useState<string | null>(null);
+  const [replyBody, setReplyBody] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -99,6 +103,40 @@ export default function PostComments({
     }
   };
 
+  const handleReplySubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!replyTargetId || !replyBody.trim()) return;
+
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`/api/posts/${postId}/comments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bodyHtml: replyBody.trim(),
+          parentId: replyTargetId,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to post reply.");
+      }
+      setReplyTargetId(null);
+      setReplyBody("");
+      await fetchComments();
+    } catch (replyError) {
+      setError(
+        replyError instanceof Error
+          ? replyError.message
+          : "Unable to post reply."
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <section className={PostDetailStyles.commentsSection}>
       <h3 className={PostDetailStyles.commentsHeader}>Comments</h3>
@@ -163,6 +201,79 @@ export default function PostComments({
                 className={PostDetailStyles.commentBody}
                 dangerouslySetInnerHTML={{ __html: comment.bodyHtml }}
               />
+
+              {isAuthenticated ? (
+                <button
+                  type="button"
+                  className="mt-2 text-sm font-semibold text-primary-700 dark:text-primary-300"
+                  onClick={() => {
+                    setReplyTargetId(comment.id);
+                    setReplyBody("");
+                  }}
+                >
+                  Reply
+                </button>
+              ) : null}
+
+              {replyTargetId === comment.id ? (
+                <form
+                  onSubmit={handleReplySubmit}
+                  className={PostDetailStyles.commentComposer}
+                >
+                  <textarea
+                    value={replyBody}
+                    onChange={event => setReplyBody(event.target.value)}
+                    rows={3}
+                    className={PostDetailStyles.textarea}
+                    placeholder={`Reply to ${comment.author}...`}
+                  />
+                  <div className={PostDetailStyles.actionRow}>
+                    <button
+                      type="submit"
+                      disabled={submitting || !replyBody.trim()}
+                      className={cn(
+                        buttonStyles.primary,
+                        PostDetailStyles.primaryAction
+                      )}
+                    >
+                      {submitting ? "Posting..." : "Post reply"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setReplyTargetId(null);
+                        setReplyBody("");
+                      }}
+                      className={buttonStyles.secondary}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              ) : null}
+
+              {(comment.replies || []).map(reply => (
+                <div
+                  key={reply.id}
+                  className="ml-6 mt-4 border-l border-neutral-300 pl-4 dark:border-neutral-700"
+                >
+                  <div className={PostDetailStyles.commentMeta}>
+                    <strong>{reply.author}</strong>
+                    <span className={PostDetailStyles.commentDot}>•</span>
+                    <span>
+                      {new Date(reply.createdAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </span>
+                  </div>
+                  <div
+                    className={PostDetailStyles.commentBody}
+                    dangerouslySetInnerHTML={{ __html: reply.bodyHtml }}
+                  />
+                </div>
+              ))}
             </div>
           ))}
         </div>

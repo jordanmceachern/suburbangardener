@@ -77,6 +77,10 @@ model Comment {
   updatedAt DateTime @updatedAt
   votes     Vote[]
 
+  parentId String?   @map("parent_id")
+  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies  Comment[] @relation("CommentReplies")
+
   @@index([postId])
   @@index([authorId])
   @@map("comments")
@@ -137,6 +141,10 @@ model TutorialComment {
   createdAt  DateTime              @default(now())
   updatedAt  DateTime              @updatedAt
   votes      TutorialCommentVote[]
+
+  parentId String?           @map("parent_id")
+  parent   TutorialComment?  @relation("TutorialCommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies  TutorialComment[] @relation("TutorialCommentReplies")
 
   @@index([tutorialId])
   @@index([authorId])

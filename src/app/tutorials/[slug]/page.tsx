@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import BackgroundImage from "@/components/BackgroundImage";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import TutorialComments from "../../../components/tutorials/TutorialComments";
+import TutorialDetailSidebar from "../../../components/tutorials/TutorialDetailSidebar";
 import { useAuth } from "@/lib/auth-nextauth";
 import { isAdminEmail, convertLegacyEmphasis } from "@/lib/postSecurity";
 import { PostDetailStyles, cn } from "@/lib/tailwind";
@@ -164,10 +165,15 @@ export default function TutorialPage() {
                 </Link>
               </div>
             </div>
-            <TutorialComments tutorialId={tutorial.id} />
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-[2fr_1fr]">
+              <div>
+                <TutorialComments tutorialId={tutorial.id} />
+              </div>
+            </div>
           </div>
         </div>
       </div>
+      <TutorialDetailSidebar currentTutorial={tutorial} maxTutorials={3} />
     </div>
   );
 }

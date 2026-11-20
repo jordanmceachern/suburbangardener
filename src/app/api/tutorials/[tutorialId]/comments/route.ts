@@ -15,9 +15,15 @@ export async function GET(
     return NextResponse.json({ error: "Tutorial not found" }, { status: 404 });
 
   const comments = await prisma.tutorialComment.findMany({
-    where: { tutorialId: params.tutorialId },
+    where: { tutorialId: params.tutorialId, parentId: null },
     orderBy: { createdAt: "asc" },
-    include: { author: { select: { email: true, name: true } } },
+    include: {
+      author: { select: { email: true, name: true } },
+      replies: {
+        orderBy: { createdAt: "asc" },
+        include: { author: { select: { email: true, name: true } } },
+      },
+    },
   });
 
   return NextResponse.json({
@@ -28,6 +34,16 @@ export async function GET(
         : comment.author.name || "Anonymous",
       bodyHtml: comment.bodyHtml,
       createdAt: comment.createdAt.toISOString(),
+      parentId: null,
+      replies: comment.replies.map(reply => ({
+        id: reply.id,
+        author: reply.author.email
+          ? reply.author.email.split("@")[0]
+          : reply.author.name || "Anonymous",
+        bodyHtml: reply.bodyHtml,
+        createdAt: reply.createdAt.toISOString(),
+        parentId: reply.parentId,
+      })),
     })),
   });
 }
@@ -58,10 +74,37 @@ export async function POST(
       { status: 400 }
     );
 
+  const parentId =
+    typeof payload === "object" && payload && "parentId" in payload
+      ? String((payload as { parentId?: unknown }).parentId || "").trim()
+      : "";
+
+  if (parentId) {
+    const parent = await prisma.tutorialComment.findUnique({
+      where: { id: parentId },
+      select: { tutorialId: true, parentId: true },
+    });
+
+    if (!parent || parent.tutorialId !== params.tutorialId) {
+      return NextResponse.json(
+        { error: "Reply target not found on this tutorial." },
+        { status: 400 }
+      );
+    }
+
+    if (parent.parentId) {
+      return NextResponse.json(
+        { error: "Replies can only be added to top-level comments." },
+        { status: 400 }
+      );
+    }
+  }
+
   const comment = await prisma.tutorialComment.create({
     data: {
       tutorialId: params.tutorialId,
       authorId: session.user.id,
+      parentId: parentId || null,
       bodyHtml,
     },
   });

@@ -135,7 +135,7 @@ export default function TutorialComments({
         className={PostDetailStyles.commentBody}
         dangerouslySetInnerHTML={{ __html: comment.bodyHtml }}
       />
-      {isAuthenticated ? (
+      {depth === 0 && isAuthenticated ? (
         <button
           type="button"
           className="mt-2 text-sm font-semibold text-primary-700 dark:text-primary-300"
@@ -180,7 +180,28 @@ export default function TutorialComments({
           </div>
         </form>
       ) : null}
-      {(comment.replies || []).map(reply => renderComment(reply, depth + 1))}
+      {(depth === 0 ? comment.replies || [] : []).map(reply => (
+        <div
+          key={reply.id}
+          className="ml-6 mt-4 border-l border-neutral-300 pl-4 dark:border-neutral-700"
+        >
+          <div className={PostDetailStyles.commentMeta}>
+            <strong>{reply.author}</strong>
+            <span className={PostDetailStyles.commentDot}>•</span>
+            <span>
+              {new Date(reply.createdAt).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </span>
+          </div>
+          <div
+            className={PostDetailStyles.commentBody}
+            dangerouslySetInnerHTML={{ __html: reply.bodyHtml }}
+          />
+        </div>
+      ))}
     </div>
   );
 

@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import type { PostDisplayData } from "./PostDisplayCard";
 import PostListItem from "./PostListItem";
 import { PostSidebarStyles, cn } from "../../lib/tailwind";
+import LoadingSpinner from "../LoadingSpinner";
 
 // Use PostDisplayData since it has all the fields we need
 type PostMetadata = PostDisplayData;
@@ -141,26 +142,8 @@ export default function PostSidebar(props: any) {
           <h3 className={PostSidebarStyles.sectionTitle}>Recent Posts</h3>
 
           {loading && (
-            <div
-              className={cn(
-                PostSidebarStyles.skeletonWrap,
-                PostSidebarStyles.sectionSpacing
-              )}
-            >
-              {Array.from({ length: maxPosts }).map((_, index) => (
-                <div
-                  key={`recent-skeleton-${index}`}
-                  className={
-                    index < maxPosts - 1
-                      ? PostSidebarStyles.skeletonDivider
-                      : PostSidebarStyles.skeletonItem
-                  }
-                >
-                  <div className={PostSidebarStyles.skeletonBlock} />
-                  <div className={PostSidebarStyles.skeletonLine} />
-                  <div className={PostSidebarStyles.skeletonShort} />
-                </div>
-              ))}
+            <div className="mt-4 flex items-center justify-center py-8">
+              <LoadingSpinner size="sm" text="Loading posts..." />
             </div>
           )}
 
@@ -198,21 +181,8 @@ export default function PostSidebar(props: any) {
             <h3 className={PostSidebarStyles.sectionTitle}>Related Posts</h3>
 
             {loading && (
-              <div className={PostSidebarStyles.skeletonWrap}>
-                {Array.from({ length: maxPosts }).map((_, index) => (
-                  <div
-                    key={`related-skeleton-${index}`}
-                    className={
-                      index < maxPosts - 1
-                        ? PostSidebarStyles.skeletonDivider
-                        : PostSidebarStyles.skeletonItem
-                    }
-                  >
-                    <div className={PostSidebarStyles.skeletonBlock} />
-                    <div className={PostSidebarStyles.skeletonLine} />
-                    <div className={PostSidebarStyles.skeletonShort} />
-                  </div>
-                ))}
+              <div className="mt-4 flex items-center justify-center py-8">
+                <LoadingSpinner size="sm" text="Loading posts..." />
               </div>
             )}
 
