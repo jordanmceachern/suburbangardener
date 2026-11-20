@@ -238,7 +238,7 @@ export default function PostComments({
                   >
                     Reply
                   </button>
-                  {(user?.email === comment.author ||
+                  {(user?.email === comment.authorId ||
                     isAdminEmail(user?.email)) && (
                     <button
                       type="button"

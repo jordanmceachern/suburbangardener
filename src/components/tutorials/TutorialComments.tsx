@@ -175,10 +175,7 @@ export default function TutorialComments({
         <button
           type="button"
           onClick={() => handleDeleteComment(comment.id)}
-          className={cn(
-            buttonStyles.danger,
-            "mt-2 ml-3 focus:outline-none focus:ring-2 focus:ring-primary-500"
-          )}
+          className="mt-2 ml-3 rounded-sm text-base font-semibold text-primary-700 underline underline-offset-2 outline-none hover:no-underline focus:no-underline focus:ring-2 focus:ring-primary-500 dark:text-primary-300"
         >
           Delete
         </button>
