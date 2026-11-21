@@ -19,7 +19,7 @@ export default function TutorialPageHeader({
       </p>
       {isAdminEmail(user?.email) ? (
         <div className={PostPageHeaderStyles.actions}>
-          <Link href="/tutorials/new" className={buttonStyles.secondary}>
+          <Link href="/tutorials/new" className={buttonStyles.primary}>
             Write a Tutorial
           </Link>
         </div>

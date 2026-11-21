@@ -162,7 +162,7 @@ export default function TutorialComments({
       {depth === 0 && isAuthenticated ? (
         <button
           type="button"
-          className="mt-2 rounded-sm text-base font-semibold text-primary-700 underline underline-offset-2 outline-none hover:no-underline focus:no-underline focus:ring-2 focus:ring-primary-500 dark:text-primary-300"
+          className={PostDetailStyles.replyActionLink}
           onClick={() => {
             setReplyTargetId(comment.id);
             setReplyBody("");
@@ -175,7 +175,7 @@ export default function TutorialComments({
         <button
           type="button"
           onClick={() => handleDeleteComment(comment.id)}
-          className="mt-2 ml-3 rounded-sm text-base font-semibold text-primary-700 underline underline-offset-2 outline-none hover:no-underline focus:no-underline focus:ring-2 focus:ring-primary-500 dark:text-primary-300"
+          className={PostDetailStyles.deleteActionLink}
         >
           Delete
         </button>
@@ -192,7 +192,7 @@ export default function TutorialComments({
             className={PostDetailStyles.textarea}
             placeholder={`Reply to ${comment.author}...`}
           />
-          <div className="flex items-center justify-end gap-3">
+          <div className={PostDetailStyles.replyActionRow}>
             <button
               type="button"
               onClick={() => setReplyTargetId(null)}
@@ -220,7 +220,12 @@ export default function TutorialComments({
       {(depth === 0 ? comment.replies || [] : []).map(reply => (
         <div
           key={reply.id}
-          className="ml-6 mt-4 border-l border-neutral-300 pl-4 dark:border-neutral-700"
+          className={cn(
+            "mt-4",
+            PostDetailStyles.replyIndent,
+            depth > 0 &&
+              "ml-6 border-l border-neutral-300 pl-4 dark:border-neutral-700"
+          )}
         >
           <div className={PostDetailStyles.commentMeta}>
             <strong>{reply.author}</strong>
@@ -241,7 +246,7 @@ export default function TutorialComments({
             <button
               type="button"
               onClick={() => handleDeleteComment(reply.id)}
-              className="mt-2 rounded-sm text-base font-semibold text-primary-700 underline underline-offset-2 outline-none hover:no-underline focus:no-underline focus:ring-2 focus:ring-primary-500 dark:text-primary-300"
+              className={PostDetailStyles.deleteActionLink}
             >
               Delete
             </button>

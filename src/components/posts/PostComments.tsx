@@ -227,10 +227,10 @@ export default function PostComments({
               />
 
               {isAuthenticated ? (
-                <div className="mt-2 flex gap-2">
+                <div className={PostDetailStyles.commentActionRow}>
                   <button
                     type="button"
-                    className="mt-2 rounded-sm text-base font-semibold text-primary-700 underline underline-offset-2 outline-none hover:no-underline focus:no-underline focus:ring-2 focus:ring-primary-500 dark:text-primary-300"
+                    className={PostDetailStyles.replyActionLink}
                     onClick={() => {
                       setReplyTargetId(comment.id);
                       setReplyBody("");
@@ -243,7 +243,7 @@ export default function PostComments({
                     <button
                       type="button"
                       onClick={() => handleDeleteComment(comment.id)}
-                      className="mt-2 ml-3 rounded-sm text-base font-semibold text-primary-700 underline underline-offset-2 outline-none hover:no-underline focus:no-underline focus:ring-2 focus:ring-primary-500 dark:text-primary-300"
+                      className={PostDetailStyles.deleteActionLink}
                     >
                       Delete
                     </button>
@@ -264,7 +264,7 @@ export default function PostComments({
                     placeholder={`Reply to ${comment.author}...`}
                   />
                   <div className={PostDetailStyles.actionRow}>
-                    <div className="flex items-center justify-end gap-3">
+                    <div className={PostDetailStyles.replyActionRow}>
                       <button
                         type="button"
                         onClick={() => {
@@ -295,10 +295,7 @@ export default function PostComments({
               ) : null}
 
               {(comment.replies || []).map(reply => (
-                <div
-                  key={reply.id}
-                  className="ml-6 mt-4 border-l border-neutral-300 pl-4 dark:border-neutral-700"
-                >
+                <div key={reply.id} className={PostDetailStyles.replyIndent}>
                   <div className={PostDetailStyles.commentMeta}>
                     <strong>{reply.author}</strong>
                     <span className={PostDetailStyles.commentDot}>•</span>
@@ -320,7 +317,7 @@ export default function PostComments({
                     <button
                       type="button"
                       onClick={() => handleDeleteComment(reply.id)}
-                      className="mt-2 rounded-sm text-base font-semibold text-primary-700 underline underline-offset-2 outline-none hover:no-underline focus:no-underline focus:ring-2 focus:ring-primary-500 dark:text-primary-300"
+                      className={PostDetailStyles.nestedDeleteActionLink}
                     >
                       Delete
                     </button>
