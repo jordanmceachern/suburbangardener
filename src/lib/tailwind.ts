@@ -435,16 +435,16 @@ export const PostDetailStyles = {
   deleteButtonConfirm: "ring-2 ring-red-300",
   deleteError: "mt-4 text-center text-red-600 dark:text-red-400",
   commentsSection:
-    "mt-12 rounded-xl border border-secondary-200 bg-primary-100 p-6 dark:border-secondary-700 dark:bg-secondary-800",
+    "mt-12 rounded-xl border border-secondary-200 bg-secondary-100 p-6 dark:border-secondary-700 dark:bg-secondary-800",
   commentsHeader:
     "mb-4 text-2xl font-bold text-foreground-light dark:text-foreground-dark",
   commentList: "space-y-6",
   commentItem:
-    "rounded-lg border border-slate-200 bg-tertiary-100 p-4 dark:border-slate-700 dark:bg-slate-500",
+    "rounded-lg border border-tertiary-200 bg-tertiary-100 p-4 dark:border-slate-700 dark:bg-slate-500",
   commentMeta: "mb-2 text-base text-foreground-light dark:text-foreground-dark",
   commentBody: "text-foreground-light dark:text-foreground-dark",
   commentComposer:
-    "mb-6 space-y-3 rounded-lg border border-slate-200 bg-tertiary-100 p-4 dark:border-slate-700 dark:bg-slate-500",
+    "mb-6 space-y-3 rounded-lg border border-tertiary-200 bg-tertiary-100 p-4 dark:border-slate-700 dark:bg-slate-500",
   textarea:
     "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100",
   actionRow: "flex justify-end",
