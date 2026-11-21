@@ -54,7 +54,10 @@ export default function TutorialDisplayList() {
           </button>
         </div>
       ) : null}
-      {state.fetchCompleted && !state.loading && visible.length === 0 ? (
+      {state.fetchCompleted &&
+      !state.loading &&
+      visible.length === 0 &&
+      state.error ? (
         <div className={PostListStyles.emptyWrapper}>
           <Image
             alt="a ruined squished tomato on the ground"
@@ -63,10 +66,7 @@ export default function TutorialDisplayList() {
             width={400}
             src="https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1755004794/SuburbanGardener/toflato_l0dkqy.jpg"
           />
-          <p className={PostListStyles.emptyText}>
-            Sorry! An error occurred while trying to fetch the tutorials, please
-            come back to check again later.
-          </p>
+          <p className={PostListStyles.emptyText}>{state.error}</p>
         </div>
       ) : null}
       {state.loading && state.tutorials.length > 0 ? (

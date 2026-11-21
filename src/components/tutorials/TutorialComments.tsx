@@ -140,8 +140,7 @@ export default function TutorialComments({
       key={comment.id}
       className={cn(
         PostDetailStyles.commentItem,
-        depth > 0 &&
-          "ml-6 border-l border-neutral-300 pl-4 dark:border-neutral-700"
+        depth > 0 && PostDetailStyles.nestedCommentIndent
       )}
     >
       <div className={PostDetailStyles.commentMeta}>
@@ -198,7 +197,7 @@ export default function TutorialComments({
               onClick={() => setReplyTargetId(null)}
               className={cn(
                 buttonStyles.danger,
-                "focus:outline-none focus:ring-2 focus:ring-primary-500"
+                PostDetailStyles.commentActionFocus
               )}
             >
               Cancel
@@ -209,7 +208,7 @@ export default function TutorialComments({
               className={cn(
                 buttonStyles.primary,
                 PostDetailStyles.primaryAction,
-                "focus:outline-none focus:ring-2 focus:ring-primary-500"
+                PostDetailStyles.commentActionFocus
               )}
             >
               {submitting ? "Commenting..." : "Comment"}
@@ -223,8 +222,7 @@ export default function TutorialComments({
           className={cn(
             "mt-4",
             PostDetailStyles.replyIndent,
-            depth > 0 &&
-              "ml-6 border-l border-neutral-300 pl-4 dark:border-neutral-700"
+            depth > 0 && PostDetailStyles.nestedCommentIndent
           )}
         >
           <div className={PostDetailStyles.commentMeta}>

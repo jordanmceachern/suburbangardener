@@ -124,7 +124,7 @@ export default function PostsSidebar(props: any) {
           <h3 className={PostSidebarStyles.sectionTitle}>Recent Posts</h3>
 
           {loading && (
-            <div className="mt-4 flex items-center justify-center py-8">
+            <div className={PostSidebarStyles.loadingWrap}>
               <LoadingSpinner size="sm" text="Loading posts..." />
             </div>
           )}

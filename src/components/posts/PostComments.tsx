@@ -273,7 +273,7 @@ export default function PostComments({
                         }}
                         className={cn(
                           buttonStyles.danger,
-                          "focus:outline-none focus:ring-2 focus:ring-primary-500"
+                          PostDetailStyles.commentActionFocus
                         )}
                       >
                         Cancel
@@ -284,7 +284,7 @@ export default function PostComments({
                         className={cn(
                           buttonStyles.primary,
                           PostDetailStyles.primaryAction,
-                          "focus:outline-none focus:ring-2 focus:ring-primary-500"
+                          PostDetailStyles.commentActionFocus
                         )}
                       >
                         {submitting ? "Commenting..." : "Comment"}

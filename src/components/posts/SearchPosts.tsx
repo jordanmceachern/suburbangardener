@@ -127,7 +127,9 @@ export default function SearchPosts() {
             aria-expanded={isDropdownOpen}
             aria-label="Select category"
           >
-            <span className="truncate">{state.selectedCategory}</span>
+            <span className={searchStyles.selectedCategory}>
+              {state.selectedCategory}
+            </span>
             <svg
               className={cn(
                 searchStyles.dropdownIcon,
@@ -169,15 +171,15 @@ export default function SearchPosts() {
           )}
         </div>
 
-        <div className={cn(searchStyles.results, "text-base")}>
+        <div className={searchStyles.results}>
           {state.searchTerm ||
           state.selectedCategory !== ALL_POST_CATEGORIES ? (
-            <span className="text-base">
+            <span>
               Found {filteredPosts.length} posts
               {state.searchTerm && ` for "${state.searchTerm}"`}
             </span>
           ) : (
-            <span className="text-base">{state.total} total posts</span>
+            <span>{state.total} total posts</span>
           )}
         </div>
       </div>

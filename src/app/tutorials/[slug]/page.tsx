@@ -10,6 +10,7 @@ import TutorialDetailSidebar from "../../../components/tutorials/TutorialDetailS
 import { useAuth } from "@/lib/auth-nextauth";
 import { isAdminEmail, convertLegacyEmphasis } from "@/lib/postSecurity";
 import { PostDetailStyles, cn } from "@/lib/tailwind";
+import ViewAllPostsButton from "@/components/posts/ViewAllPostsButton";
 
 interface TutorialRecord {
   id: string;
@@ -115,9 +116,6 @@ export default function TutorialPage() {
               />
             </div>
             <div className="mb-12">
-              <span className={PostDetailStyles.badge}>
-                {tutorial.category}
-              </span>
               <h1 className={PostDetailStyles.title}>{tutorial.title}</h1>
               <div className={PostDetailStyles.meta}>
                 <span>{tutorial.publishedDate}</span>
@@ -132,11 +130,12 @@ export default function TutorialPage() {
               />
             </div>
             {tutorial.youtubeUrl ? (
-              <div className="mt-10 mb-10 overflow-hidden rounded-lg border">
+              <div className="mt-10 mb-10 overflow-hidden rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
                 <iframe
                   src={tutorial.youtubeUrl}
                   title={`${tutorial.title} video`}
                   className="h-[320px] w-full md:h-[420px]"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 />
               </div>
@@ -160,20 +159,20 @@ export default function TutorialPage() {
                     Delete Tutorial
                   </button>
                 ) : null}
-                <Link href="/tutorials" className={PostDetailStyles.editButton}>
-                  Back to Tutorials
-                </Link>
+                <ViewAllPostsButton
+                  href="/tutorials"
+                  text="Back to Tutorials"
+                  arrowDirection="left"
+                />
               </div>
             </div>
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-[2fr_1fr]">
-              <div>
-                <TutorialComments tutorialId={tutorial.id} />
-              </div>
-            </div>
+            <TutorialComments tutorialId={tutorial.id} />
           </div>
         </div>
       </div>
-      <TutorialDetailSidebar currentTutorial={tutorial} maxTutorials={3} />
+      <div className={PostDetailStyles.sidebarWrap}>
+        <TutorialDetailSidebar currentTutorial={tutorial} maxTutorials={3} />
+      </div>
     </div>
   );
 }

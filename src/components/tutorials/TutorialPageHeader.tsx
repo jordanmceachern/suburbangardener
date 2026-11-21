@@ -12,10 +12,10 @@ export default function TutorialPageHeader({
   const { user } = useAuth();
   return (
     <div className={cn(PostPageHeaderStyles.wrapper, className)}>
-      <h1 className={PostPageHeaderStyles.title}>Gardening Tutorials</h1>
+      <h1 className={PostPageHeaderStyles.title}>Tutorials</h1>
       <p className={PostPageHeaderStyles.copy}>
-        Explore step-by-step gardening tutorials and guides from the Suburban
-        Gardener.
+        A collection of guides detailing setup and installation instructions for
+        Suburban Gardener products.
       </p>
       {isAdminEmail(user?.email) ? (
         <div className={PostPageHeaderStyles.actions}>

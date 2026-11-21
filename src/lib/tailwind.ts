@@ -81,6 +81,7 @@ export const searchStyles = {
   dropdownItem:
     "w-full px-3 py-2.5 text-left text-base hover:bg-slate-50 dark:hover:bg-primary-100 focus:outline-none focus:bg-slate-50 dark:focus:bg-primary-100 transition-colors first:rounded-t-md last:rounded-b-md",
   dropdownItemActive: "bg-primary-50 dark:bg-primary-100 text-primary-700",
+  selectedCategory: "truncate",
   dropdownItemInactive: "text-neutral-900",
   results: "text-base text-foreground-light dark:text-foreground-dark",
 } as const;
@@ -158,6 +159,17 @@ export const PostSidebarStyles = {
   sectionSpacing: "mb-8",
   sectionErrorSpacing: "mb-8",
   searchWrap: "mb-8",
+  fixedPanel: "fixed top-0 right-0 w-80 z-40",
+  loadingWrap: "mt-4 flex items-center justify-center py-8",
+  tutorialItemDivider:
+    "border-b border-primary-200 pb-4 mb-4 dark:border-slate-500",
+  tutorialItemTitle:
+    "text-base font-semibold text-foreground-light dark:text-foreground-dark",
+  tutorialItemLink: "hover:text-primary-700 dark:hover:text-primary-300",
+  tutorialItemExcerpt:
+    "mt-1 line-clamp-2 text-base text-foreground-light dark:text-foreground-dark",
+  tutorialItemDate:
+    "mt-1 block text-base text-foreground-light dark:text-foreground-dark",
 } as const;
 
 export const PostPageHeaderStyles = {
@@ -343,6 +355,7 @@ export const PostFormStyles = {
   error:
     "rounded-md border border-red-200 bg-red-50 px-4 py-3 text-base font-medium text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300",
   grid: "grid gap-6 md:grid-cols-2",
+  loading: "p-8 text-foreground-light dark:text-foreground-dark",
   field: "space-y-2",
   fieldFull: "space-y-2 md:col-span-2",
   label:
@@ -357,7 +370,7 @@ export const PostFormStyles = {
   editorWrap: "space-y-3",
   postBodyField: "!mt-4 space-y-2 md:col-span-2",
   toolbarRow: "flex items-center gap-2",
-  editorToolbar: "flex flex-wrap items-center gap-2",
+  editorToolbar: "flex flex-wrap items-center gap-2 ms-4",
   editorBodyWrap: "relative",
   editorButton: cn(
     buttonStyles.tertiary,
@@ -387,6 +400,12 @@ export const PostFormStyles = {
   fieldRow: "flex items-center gap-2",
   emptyState:
     "rounded-lg border border-primary-200 bg-primary-100 p-8 text-foreground-light dark:border-tertiary-700 dark:bg-tertiary-800 dark:text-foreground-dark",
+  editSkeleton:
+    "mx-auto max-w-4xl animate-pulse space-y-6 rounded-2xl border border-secondary-200 bg-primary-100 p-6 shadow-xl dark:border-secondary-700 dark:bg-secondary-800",
+  editSkeletonTitle:
+    "mx-auto h-8 w-64 rounded bg-neutral-200 dark:bg-neutral-600",
+  editSkeletonField: "h-14 rounded bg-neutral-200 dark:bg-neutral-600",
+  editSkeletonBody: "h-64 rounded bg-neutral-200 dark:bg-neutral-600",
 } as const;
 
 export const PostDetailStyles = {
@@ -402,7 +421,7 @@ export const PostDetailStyles = {
     "mb-4 text-4xl font-bold leading-tight text-primary-900 dark:text-primary-100 md:text-5xl",
   meta: "flex items-center text-lg text-neutral-700 dark:text-neutral-200",
   body: "text-xl",
-  PostBody: "Post-content",
+  PostBody: "Post-content space-y-2 whitespace-pre-wrap break-words",
   footer: "mt-4 border-t border-gray-200 pt-8 dark:border-gray-700",
   buttonRow: "flex flex-wrap items-center justify-center gap-4",
   editButton: cn(
@@ -457,6 +476,9 @@ export const PostDetailStyles = {
     "mt-2 rounded-sm text-base font-semibold text-primary-700 underline underline-offset-2 outline-none hover:no-underline focus:no-underline focus:ring-2 focus:ring-primary-500 dark:text-primary-300",
   replyIndent:
     "ml-6 mt-4 border-l border-neutral-300 pl-4 dark:border-neutral-700",
+  nestedCommentIndent:
+    "ml-6 border-l border-neutral-300 pl-4 dark:border-neutral-700",
+  commentActionFocus: "focus:outline-none focus:ring-2 focus:ring-primary-500",
 } as const;
 
 export const loadingSpinnerStyles = {
@@ -469,4 +491,69 @@ export const loadingSpinnerStyles = {
     md: "h-12 w-12",
     lg: "h-16 w-16",
   },
+} as const;
+
+export const sharedLoadingStyles = {
+  wrapper: "animate-pulse",
+  block: "bg-neutral-200 dark:bg-neutral-700 rounded-lg",
+  line: "bg-neutral-200 dark:bg-neutral-700 rounded",
+  short: "bg-neutral-200 dark:bg-neutral-700 rounded w-2/3",
+} as const;
+
+export const sidebarLoadingStyles = {
+  panelBase:
+    "bg-primary-100 dark:bg-slate-600 shadow-lg transition-all duration-300 ease-in-out relative h-screen pb-20 sm:pb-0 border border-primary-200 dark:border-slate-500",
+  panelOpen:
+    "translate-x-0 opacity-100 border-l border-primary-200 dark:border-slate-500",
+  panelClosed: "translate-x-full lg:translate-x-0 opacity-90 lg:opacity-100",
+  collapseButtonBase:
+    "absolute top-4 -left-10 bg-primary-100 dark:bg-slate-600 shadow-xl cursor-pointer hover:bg-primary-200 dark:hover:bg-slate-500 transition-colors z-30 focus:outline-none focus:ring-2 focus:ring-primary-500 w-10 h-16 flex items-center justify-center rounded-l-md lg:hidden border border-primary-200 dark:border-slate-500",
+  collapseButtonOpen:
+    "border-l border-t border-b border-primary-200 dark:border-slate-500",
+  collapseButtonClosed: "border border-primary-200 dark:border-slate-500",
+  collapseIcon: "w-4 h-4 text-foreground-light dark:text-foreground-dark",
+  content: "p-6 pt-6 h-full overflow-y-auto",
+  sectionTitle:
+    "text-xl font-semibold text-foreground-light dark:text-foreground-dark mb-4",
+  skeletonWrap: "space-y-4",
+  skeletonItem: "animate-pulse",
+  skeletonDivider:
+    "border-b border-primary-200 dark:border-slate-500 pb-4 animate-pulse",
+  skeletonBlock: "h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2",
+  skeletonLine: "h-3 bg-slate-300 dark:bg-slate-600 rounded mb-2",
+  skeletonShort: "h-3 bg-slate-300 dark:bg-slate-600 rounded w-1/3",
+  errorText: "text-sm text-red-600 dark:text-red-400",
+  relatedEmpty: "text-base text-foreground-light dark:text-foreground-dark",
+  divider: "my-6 border-0 border-t border-primary-200 dark:border-slate-500",
+  listWrap: "space-y-4",
+  sectionSpacing: "mb-8",
+  sectionErrorSpacing: "mb-8",
+  searchWrap: "mb-8",
+} as const;
+
+export const tutorialItemStyles = {
+  wrapper: "animate-pulse",
+  title:
+    "text-base font-semibold text-foreground-light dark:text-foreground-dark",
+  link: "hover:text-primary-700 dark:hover:text-primary-300",
+  excerpt:
+    "mt-1 line-clamp-2 text-base text-foreground-light dark:text-foreground-dark",
+  date: "mt-1 block text-base text-foreground-light dark:text-foreground-dark",
+} as const;
+
+export const editPostStyles = {
+  skeleton:
+    "animate-pulse space-y-6 rounded-2xl border border-secondary-200 bg-primary-100 p-6 shadow-xl dark:border-secondary-700 dark:bg-secondary-800",
+  skeletonTitle: "mx-auto h-8 w-64 rounded bg-neutral-200 dark:bg-neutral-600",
+  skeletonField: "h-14 rounded bg-neutral-200 dark:bg-neutral-600",
+  skeletonBody: "h-64 rounded bg-neutral-200 dark:bg-neutral-600",
+} as const;
+
+export const sharedEditFormLoadingStyles = {
+  editSkeleton:
+    "mx-auto max-w-4xl animate-pulse space-y-6 rounded-2xl border border-secondary-200 bg-primary-100 p-6 shadow-xl dark:border-secondary-700 dark:bg-secondary-800",
+  editSkeletonTitle:
+    "mx-auto h-8 w-64 rounded bg-neutral-200 dark:bg-neutral-600",
+  editSkeletonField: "h-14 rounded bg-neutral-200 dark:bg-neutral-600",
+  editSkeletonBody: "h-64 rounded bg-neutral-200 dark:bg-neutral-600",
 } as const;

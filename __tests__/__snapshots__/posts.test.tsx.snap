@@ -170,11 +170,9 @@ exports[`PostsPage renders with correct structure and classes 1`] = `
                   </button>
                 </div>
                 <div
-                  class="text-base text-foreground-light dark:text-foreground-dark text-base"
+                  class="text-base text-foreground-light dark:text-foreground-dark"
                 >
-                  <span
-                    class="text-base"
-                  >
+                  <span>
                     0
                      total posts
                   </span>

@@ -196,7 +196,7 @@ describe("post security helpers", () => {
     expect(screen.getByText("0 / 5000")).toBeInTheDocument();
 
     const summaryInput = screen.getByLabelText(/summary/i);
-    const postBodyInput = screen.getByLabelText(/post body/i);
+    const postBodyInput = screen.getByRole("textbox", { name: /post body/i });
 
     fireEvent.change(summaryInput, {
       target: { value: "a".repeat(250) },
@@ -205,15 +205,15 @@ describe("post security helpers", () => {
     expect(summaryInput).toHaveValue("a".repeat(200));
     expect(screen.getByText("200 / 200")).toBeInTheDocument();
 
-    fireEvent.change(postBodyInput, {
-      target: { value: "b".repeat(6000) },
+    fireEvent.input(postBodyInput, {
+      target: { textContent: "b".repeat(6000) },
     });
 
-    expect(postBodyInput).toHaveValue("b".repeat(5000));
+    expect(postBodyInput).toHaveTextContent("b".repeat(5000));
     expect(screen.getByText("5000 / 5000")).toBeInTheDocument();
   });
 
-  it("formats the selected post body text when the toolbar buttons are clicked", () => {
+  it("formats the selected post body text without inserting visible markup", () => {
     useAuth.mockReturnValue({
       user: {
         id: "user-123",
@@ -239,11 +239,7 @@ describe("post security helpers", () => {
     });
 
     fireEvent.click(screen.getByRole("button", { name: /bold/i }));
-    expect(postBodyInput).toHaveValue("<strong>garden</strong>");
-
-    fireEvent.change(postBodyInput, { target: { value: "garden" } });
-    fireEvent.click(screen.getByRole("button", { name: /italic/i }));
-    expect(postBodyInput).toHaveValue("<em>garden</em>");
+    expect(postBodyInput).toHaveValue("**garden**");
 
     fireEvent.change(postBodyInput, { target: { value: "leaf\nroot" } });
     Object.defineProperty(postBodyInput, "selectionStart", {

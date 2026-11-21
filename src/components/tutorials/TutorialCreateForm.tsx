@@ -1,28 +1,24 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   CldUploadButton,
   type CloudinaryUploadWidgetResults,
 } from "next-cloudinary";
 import { useAuth } from "@/lib/auth-nextauth";
-import {
-  DEFAULT_POST_CATEGORY,
-  POST_CATEGORY_OPTIONS,
-  isAdminEmail,
-  normalizeCategoryValue,
-} from "@/lib/postSecurity";
+import { isAdminEmail } from "@/lib/postSecurity";
 import { POST_FORM_COPY, PostFormStyles, cn } from "@/lib/tailwind";
 
 const initialForm = {
   title: "",
   summary: "",
-  category: DEFAULT_POST_CATEGORY,
   coverImageUrl: "",
   youtubeUrl: "",
   contentHtml: "",
 };
+
+const MAX_TUTORIAL_BODY_CHARACTERS = 5000;
 
 export default function TutorialCreateForm() {
   const router = useRouter();
@@ -32,9 +28,12 @@ export default function TutorialCreateForm() {
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [isLoadingEditContent, setIsLoadingEditContent] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     if (!editId) return;
+    setIsLoadingEditContent(true);
     fetch(`/api/tutorials/${editId}`)
       .then(response => response.json())
       .then(data => {
@@ -42,20 +41,82 @@ export default function TutorialCreateForm() {
           setForm({
             title: data.tutorial.title || "",
             summary: data.tutorial.summary || data.tutorial.excerpt || "",
-            category: normalizeCategoryValue(
-              data.tutorial.category || DEFAULT_POST_CATEGORY
-            ),
             coverImageUrl:
               data.tutorial.coverImageUrl || data.tutorial.coverUrl || "",
             youtubeUrl: data.tutorial.youtubeUrl || "",
-            contentHtml: data.tutorial.contentHtml || "",
+            contentHtml: (data.tutorial.contentHtml || "")
+              .replace(/<strong>/gi, "**")
+              .replace(/<\/strong>/gi, "**")
+              .replace(/<b>/gi, "**")
+              .replace(/<\/b>/gi, "**")
+              .replace(/<em>/gi, "*")
+              .replace(/<\/em>/gi, "*")
+              .replace(/<i>/gi, "*")
+              .replace(/<\/i>/gi, "*")
+              .replace(/<u>/gi, "<u>")
+              .replace(/<\/u>/gi, "</u>")
+              .replace(/<ul>|<\/ul>/gi, "")
+              .replace(/<li>/gi, "- ")
+              .replace(/<\/li>/gi, "\n"),
           });
         }
       })
-      .catch(() => setError("Unable to load tutorial for editing."));
+      .catch(() => setError("Unable to load tutorial for editing."))
+      .finally(() => setIsLoadingEditContent(false));
   }, [editId]);
 
-  if (isLoading) return <div className="p-8">Loading...</div>;
+  const editorButtons = [
+    { label: "Bold", command: "bold" as const },
+    { label: "Italic", command: "italic" as const },
+    { label: "Underline", command: "underline" as const },
+  ];
+
+  const getPlainTextContent = (value: string) =>
+    value.replace(/\s+/g, " ").trim();
+
+  const tutorialBodyCharacterCount = getPlainTextContent(
+    form.contentHtml || ""
+  ).length;
+
+  const applyTextFormat = (command: "bold" | "italic" | "underline") => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const prefix = command === "bold" ? "**" : command === "italic" ? "*" : "";
+    if (!prefix) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selected = textarea.value.slice(start, end);
+    const suffix = prefix;
+    const nextValue = `${textarea.value.slice(0, start)}${prefix}${selected}${suffix}${textarea.value.slice(end)}`;
+
+    updateField("contentHtml", nextValue);
+    requestAnimationFrame(() => {
+      textarea.focus();
+      textarea.setSelectionRange(
+        start + prefix.length,
+        start + prefix.length + selected.length
+      );
+    });
+  };
+
+  const applyBulletFormat = () => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selected = textarea.value.slice(start, end);
+    const before = textarea.value.slice(0, start);
+    const after = textarea.value.slice(end);
+    const lines = (selected || "").split("\n").map(line => `- ${line}`);
+
+    updateField("contentHtml", `${before}${lines.join("\n")}${after}`);
+  };
+
+  if (isLoading)
+    return <div className={PostFormStyles.loading}>Loading...</div>;
   if (!isAuthenticated)
     return (
       <div className={PostFormStyles.emptyState}>
@@ -86,6 +147,12 @@ export default function TutorialCreateForm() {
       setError("Title, summary, content, and cover image are required.");
       return;
     }
+    if (form.contentHtml.length > MAX_TUTORIAL_BODY_CHARACTERS) {
+      setError(
+        `Content exceeds the maximum length of ${MAX_TUTORIAL_BODY_CHARACTERS} characters.`
+      );
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -98,7 +165,6 @@ export default function TutorialCreateForm() {
             ...form,
             title: form.title.trim(),
             summary: form.summary.trim(),
-            category: normalizeCategoryValue(form.category),
             contentHtml: form.contentHtml.trim(),
             coverImageUrl: form.coverImageUrl.trim(),
             youtubeUrl: form.youtubeUrl.trim(),
@@ -119,6 +185,17 @@ export default function TutorialCreateForm() {
       setSubmitting(false);
     }
   };
+
+  if (isLoadingEditContent) {
+    return (
+      <div className={PostFormStyles.editSkeleton}>
+        <div className={PostFormStyles.editSkeletonTitle} />
+        <div className={PostFormStyles.editSkeletonField} />
+        <div className={PostFormStyles.editSkeletonField} />
+        <div className={PostFormStyles.editSkeletonBody} />
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className={PostFormStyles.shell}>
@@ -141,18 +218,6 @@ export default function TutorialCreateForm() {
             className={PostFormStyles.input}
             required
           />
-        </label>
-        <label className={PostFormStyles.field}>
-          <span className={PostFormStyles.label}>Category</span>
-          <select
-            value={form.category}
-            onChange={event => updateField("category", event.target.value)}
-            className={PostFormStyles.selectInput}
-          >
-            {POST_CATEGORY_OPTIONS.map(option => (
-              <option key={option}>{option}</option>
-            ))}
-          </select>
         </label>
         <div className={PostFormStyles.field}>
           <span id="cover-image-label" className={PostFormStyles.label}>
@@ -209,18 +274,63 @@ export default function TutorialCreateForm() {
             required
           />
         </label>
-        <label className={PostFormStyles.fieldFull}>
-          <span className={PostFormStyles.label}>Tutorial Body</span>
+        <div className={PostFormStyles.postBodyField}>
+          <div className={PostFormStyles.toolbarRow}>
+            <label htmlFor="tutorial-body" className={PostFormStyles.label}>
+              Tutorial Body
+            </label>
+            <div className={PostFormStyles.editorToolbar}>
+              {editorButtons.map(button => (
+                <button
+                  key={button.label}
+                  type="button"
+                  onClick={() => applyTextFormat(button.command)}
+                  className={PostFormStyles.editorButton}
+                  aria-label={`Apply ${button.label.toLowerCase()} formatting`}
+                >
+                  {button.label}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={applyBulletFormat}
+                className={PostFormStyles.editorButton}
+                aria-label="Apply bullet list formatting"
+              >
+                Bullet
+              </button>
+            </div>
+          </div>
+
           <textarea
+            id="tutorial-body"
+            name="contentHtml"
+            ref={textareaRef}
             value={form.contentHtml}
-            onChange={event => updateField("contentHtml", event.target.value)}
-            className={PostFormStyles.textarea}
-            rows={12}
+            onChange={event => {
+              const nextValue = event.target.value.slice(
+                0,
+                MAX_TUTORIAL_BODY_CHARACTERS
+              );
+              updateField("contentHtml", nextValue);
+            }}
+            rows={8}
             required
+            aria-required="true"
+            aria-describedby="tutorial-body-character-counter"
+            className={cn(PostFormStyles.editor, "block resize-none")}
+            placeholder="Share your tutorial step-by-step..."
           />
-        </label>
+          <div
+            id="tutorial-body-character-counter"
+            className={PostFormStyles.previewHint}
+            aria-live="polite"
+          >
+            {tutorialBodyCharacterCount} / {MAX_TUTORIAL_BODY_CHARACTERS}
+          </div>
+        </div>
       </div>
-      <div className={cn(PostFormStyles.actions, "justify-end")}>
+      <div className={PostFormStyles.actions}>
         <button
           type="button"
           onClick={() => router.push("/tutorials")}

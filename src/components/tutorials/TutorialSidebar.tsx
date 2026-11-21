@@ -119,7 +119,7 @@ export default function TutorialSidebar({
           <h3 className={PostSidebarStyles.sectionTitle}>Recent Tutorials</h3>
 
           {loading ? (
-            <div className="mt-4 flex items-center justify-center py-8">
+            <div className={PostSidebarStyles.loadingWrap}>
               <LoadingSpinner size="sm" text="Loading tutorials..." />
             </div>
           ) : null}
@@ -135,22 +135,22 @@ export default function TutorialSidebar({
                   key={tutorial.id}
                   className={
                     index < tutorials.length - 1
-                      ? "border-b border-primary-200 pb-4 mb-4 dark:border-slate-500"
+                      ? PostSidebarStyles.tutorialItemDivider
                       : ""
                   }
                 >
-                  <h4 className="text-base font-semibold text-foreground-light dark:text-foreground-dark">
+                  <h4 className={PostSidebarStyles.tutorialItemTitle}>
                     <Link
                       href={`/tutorials/${tutorial.slug}`}
-                      className="hover:text-primary-700 dark:hover:text-primary-300"
+                      className={PostSidebarStyles.tutorialItemLink}
                     >
                       {tutorial.title}
                     </Link>
                   </h4>
-                  <p className="mt-1 line-clamp-2 text-base text-foreground-light dark:text-foreground-dark">
+                  <p className={PostSidebarStyles.tutorialItemExcerpt}>
                     {tutorial.excerpt}
                   </p>
-                  <span className="mt-1 block text-base text-foreground-light dark:text-foreground-dark">
+                  <span className={PostSidebarStyles.tutorialItemDate}>
                     {tutorial.publishedDate}
                   </span>
                 </div>
