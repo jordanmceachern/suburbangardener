@@ -168,7 +168,7 @@ describe("post security helpers", () => {
     );
     expect(titleInput).toHaveClass("auth-input");
     expect(PostFormStyles.input).toContain("auth-input");
-    expect(PostFormStyles.label).toContain("text-lg");
+    expect(PostFormStyles.label).toContain("text-xl");
     expect(PostFormStyles.shell).toContain("bg-primary-100");
   });
 

@@ -346,7 +346,7 @@ export const PostFormStyles = {
   field: "space-y-2",
   fieldFull: "space-y-2 md:col-span-2",
   label:
-    "whitespace-nowrap text-lg font-medium text-foreground-light dark:text-foreground-dark",
+    "whitespace-nowrap text-xl font-medium text-foreground-light dark:text-foreground-dark",
   input: postFormInputBase,
   textarea:
     "auth-input block w-full resize-none rounded-lg border border-neutral-300 bg-white px-4 py-3 text-lg placeholder:text-neutral-500 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-primary-200 dark:bg-primary-100 dark:placeholder:text-neutral-600",

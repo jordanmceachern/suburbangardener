@@ -155,22 +155,40 @@ export default function TutorialCreateForm() {
           </select>
         </label>
         <div className={PostFormStyles.field}>
-          <span className={PostFormStyles.label}>Cover Image</span>
-          <CldUploadButton
-            uploadPreset="suburbangardener"
-            config={{ cloud: { cloudName: "dtweazqf2" } }}
-            onSuccess={(results: CloudinaryUploadWidgetResults) => {
-              if (results.info && typeof results.info !== "string") {
-                updateField(
-                  "coverImageUrl",
-                  results.info.secure_url || results.info.url
-                );
-              }
-            }}
-            className={PostFormStyles.uploadButton}
-          >
-            {form.coverImageUrl ? "File selected" : "Choose File"}
-          </CldUploadButton>
+          <span id="cover-image-label" className={PostFormStyles.label}>
+            {POST_FORM_COPY.labels.coverImage}
+          </span>
+          <div>
+            <CldUploadButton
+              uploadPreset="suburbangardener"
+              config={{ cloud: { cloudName: "dtweazqf2" } }}
+              options={{
+                sources: ["local"],
+                multiple: false,
+                maxFiles: 1,
+                clientAllowedFormats: ["jpg", "jpeg", "png", "gif", "webp"],
+                maxFileSize: 10 * 1024 * 1024,
+              }}
+              onSuccess={(results: CloudinaryUploadWidgetResults) => {
+                if (results.info && typeof results.info !== "string") {
+                  updateField(
+                    "coverImageUrl",
+                    results.info.secure_url || results.info.url
+                  );
+                }
+              }}
+              className={PostFormStyles.uploadButton}
+              aria-labelledby="cover-image-label"
+              aria-describedby="cover-image-help"
+            >
+              {form.coverImageUrl
+                ? POST_FORM_COPY.labels.fileSelected
+                : POST_FORM_COPY.labels.chooseFile}
+            </CldUploadButton>
+          </div>
+          <p id="cover-image-help" className={PostFormStyles.previewHint}>
+            {POST_FORM_COPY.uploadHelp}
+          </p>
         </div>
         <label className={PostFormStyles.fieldFull}>
           <span className={PostFormStyles.label}>YouTube</span>
