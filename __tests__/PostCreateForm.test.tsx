@@ -47,9 +47,9 @@ function fillRequiredFields() {
   fireEvent.change(screen.getByLabelText(/summary/i), {
     target: { value: "How to grow, harvest, and cook Jerusalem artichokes." },
   });
-  fireEvent.change(screen.getByLabelText(/post body/i), {
+  fireEvent.input(screen.getByRole("textbox", { name: /post body/i }), {
     target: {
-      value: "Plant artichokes in loose soil and harvest after frost.",
+      textContent: "Plant artichokes in loose soil and harvest after frost.",
     },
   });
   fireEvent.click(screen.getByRole("button", { name: /choose file/i }));

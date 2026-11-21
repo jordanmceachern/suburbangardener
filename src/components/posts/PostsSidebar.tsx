@@ -5,6 +5,7 @@ import SearchPosts from "./SearchPosts";
 import type { PostDisplayData } from "./PostDisplayCard";
 import PostListItem from "./PostListItem";
 import { PostSidebarStyles, cn } from "../../lib/tailwind";
+import LoadingSpinner from "../LoadingSpinner";
 
 // Use PostDisplayData since it has all the fields we need
 type PostMetadata = PostDisplayData;
@@ -123,21 +124,8 @@ export default function PostsSidebar(props: any) {
           <h3 className={PostSidebarStyles.sectionTitle}>Recent Posts</h3>
 
           {loading && (
-            <div className={PostSidebarStyles.skeletonWrap}>
-              {Array.from({ length: maxPosts }).map((_, index) => (
-                <div
-                  key={index}
-                  className={
-                    index < maxPosts - 1
-                      ? PostSidebarStyles.skeletonDivider
-                      : PostSidebarStyles.skeletonItem
-                  }
-                >
-                  <div className={PostSidebarStyles.skeletonBlock} />
-                  <div className={PostSidebarStyles.skeletonLine} />
-                  <div className={PostSidebarStyles.skeletonShort} />
-                </div>
-              ))}
+            <div className={PostSidebarStyles.loadingWrap}>
+              <LoadingSpinner size="sm" text="Loading posts..." />
             </div>
           )}
 

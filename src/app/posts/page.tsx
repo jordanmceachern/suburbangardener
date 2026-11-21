@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { PostProvider, usePosts } from "../../contexts/PostContext";
 import PostsSidebar from "../../components/posts/PostsSidebar";
 import PostsPageHeader from "../../components/posts/PostsPageHeader";
@@ -10,10 +10,12 @@ import PostDisplayList from "../../components/posts/PostDisplayList";
 // Renders the Posts Page Content page and its page-specific behavior.
 function PostsPageContent() {
   const { loadPosts } = usePosts();
+  const initialLoadStarted = useRef(false);
 
   // Synchronizes local component state with browser events and external data changes.
   useEffect(() => {
-    // Load initial Posts on mount
+    if (initialLoadStarted.current) return;
+    initialLoadStarted.current = true;
     loadPosts();
   }, [loadPosts]);
 

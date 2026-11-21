@@ -47,6 +47,7 @@ export default function PostCreateForm() {
   const [editPostId, setEditPostId] = useState<string | null>(null);
   const [isCancelConfirmed, setIsCancelConfirmed] = useState(false);
   const [cancelCooldown, setCancelCooldown] = useState(false);
+  const [isLoadingEditContent, setIsLoadingEditContent] = useState(false);
   const cancelCooldownRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -64,6 +65,7 @@ export default function PostCreateForm() {
     }
 
     let isMounted = true;
+    setIsLoadingEditContent(true);
 
     async function loadPost() {
       try {
@@ -88,7 +90,20 @@ export default function PostCreateForm() {
           youtubeUrl: data.post.youtubeUrl || "",
           contentHtml: convertLegacyEmphasis(
             data.post.contentHtml || initialForm.contentHtml
-          ),
+          )
+            .replace(/<strong>/gi, "**")
+            .replace(/<\/strong>/gi, "**")
+            .replace(/<b>/gi, "**")
+            .replace(/<\/b>/gi, "**")
+            .replace(/<em>/gi, "*")
+            .replace(/<\/em>/gi, "*")
+            .replace(/<i>/gi, "*")
+            .replace(/<\/i>/gi, "*")
+            .replace(/<u>/gi, "<u>")
+            .replace(/<\/u>/gi, "</u>")
+            .replace(/<ul>|<\/ul>/gi, "")
+            .replace(/<li>/gi, "- ")
+            .replace(/<\/li>/gi, "\n"),
         });
       } catch (loadError) {
         if (isMounted) {
@@ -98,6 +113,8 @@ export default function PostCreateForm() {
               : "Unable to load Post for editing."
           );
         }
+      } finally {
+        setIsLoadingEditContent(false);
       }
     }
 
@@ -108,10 +125,13 @@ export default function PostCreateForm() {
     };
   }, []);
 
-  const editorButtons = [
-    { label: "Bold", prefix: "<strong>", suffix: "</strong>" },
-    { label: "Italic", prefix: "<em>", suffix: "</em>" },
-    { label: "Underline", prefix: "<u>", suffix: "</u>" },
+  const editorButtons: Array<{
+    label: "Bold" | "Italic" | "Underline";
+    command: "bold" | "italic" | "underline";
+  }> = [
+    { label: "Bold", command: "bold" },
+    { label: "Italic", command: "italic" },
+    { label: "Underline", command: "underline" },
   ];
 
   const updateField = (field: keyof typeof initialForm, value: string) => {
@@ -176,56 +196,40 @@ export default function PostCreateForm() {
   ).length;
   const summaryCharacterCount = getPlainTextContent(form.summary || "").length;
 
-  const applyTextFormat = (prefix: string, suffix = prefix) => {
+  const applyTextFormat = (command: "bold" | "italic" | "underline") => {
     const textarea = textareaRef.current;
+    if (!textarea) return;
 
-    if (!textarea) {
-      return;
-    }
+    const prefix = command === "bold" ? "**" : command === "italic" ? "*" : "";
+    const suffix = prefix;
+    if (!prefix) return;
 
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const selected = textarea.value.slice(start, end);
-    const before = textarea.value.slice(0, start);
-    const after = textarea.value.slice(end);
-    const nextValue = `${before}${prefix}${selected}${suffix}${after}`;
+    const nextValue = `${textarea.value.slice(0, start)}${prefix}${selected}${suffix}${textarea.value.slice(end)}`;
 
     updateField("contentHtml", nextValue);
-
     requestAnimationFrame(() => {
       textarea.focus();
-      const caretStart = start + prefix.length;
-      const caretEnd = caretStart + selected.length;
-      textarea.setSelectionRange(caretStart, caretEnd);
+      textarea.setSelectionRange(
+        start + prefix.length,
+        start + prefix.length + selected.length
+      );
     });
   };
 
   const applyBulletFormat = () => {
     const textarea = textareaRef.current;
-
-    if (!textarea) {
-      return;
-    }
+    if (!textarea) return;
 
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const selected = textarea.value.slice(start, end);
     const before = textarea.value.slice(0, start);
     const after = textarea.value.slice(end);
-    const selectedLines = selected ? selected.split("\n") : [""];
-    const formattedLines = selectedLines.map(line =>
-      line.trim() ? `- ${line.trim()}` : "- "
-    );
-    const nextValue = `${before}${formattedLines.join("\n")}${after}`;
-
-    updateField("contentHtml", nextValue);
-
-    requestAnimationFrame(() => {
-      textarea.focus();
-      const cursorStart = start + 2;
-      const cursorEnd = cursorStart + formattedLines.join("\n").length;
-      textarea.setSelectionRange(cursorStart, cursorEnd);
-    });
+    const lines = (selected || "").split("\n").map(line => `- ${line}`);
+    updateField("contentHtml", `${before}${lines.join("\n")}${after}`);
   };
 
   const handleCloudinaryUpload = (results: CloudinaryUploadWidgetResults) => {
@@ -365,9 +369,16 @@ export default function PostCreateForm() {
   };
 
   if (isLoading) {
+    return <div className={PostFormStyles.loading}>Loading...</div>;
+  }
+
+  if (isLoadingEditContent) {
     return (
-      <div className="p-8 text-foreground-light dark:text-foreground-dark">
-        Loading...
+      <div className={PostFormStyles.editSkeleton}>
+        <div className={PostFormStyles.editSkeletonTitle} />
+        <div className={PostFormStyles.editSkeletonField} />
+        <div className={PostFormStyles.editSkeletonField} />
+        <div className={PostFormStyles.editSkeletonBody} />
       </div>
     );
   }
@@ -547,18 +558,12 @@ export default function PostCreateForm() {
             <label htmlFor="post-body" className={PostFormStyles.label}>
               {POST_FORM_COPY.labels.postBody}
             </label>
-            <div className={cn(PostFormStyles.editorToolbar, "ms-4")}>
+            <div className={PostFormStyles.editorToolbar}>
               {editorButtons.map(button => (
                 <button
                   key={button.label}
                   type="button"
-                  onClick={() =>
-                    button.label === "Bold"
-                      ? applyTextFormat(button.prefix, button.suffix)
-                      : button.label === "Italic"
-                        ? applyTextFormat(button.prefix, button.suffix)
-                        : applyTextFormat(button.prefix, button.suffix)
-                  }
+                  onClick={() => applyTextFormat(button.command)}
                   className={PostFormStyles.editorButton}
                   aria-label={`Apply ${button.label.toLowerCase()} formatting`}
                 >

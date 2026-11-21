@@ -4,12 +4,16 @@ import React, { useCallback, useEffect, useState } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { useAuth } from "@/lib/auth-nextauth";
 import { PostDetailStyles, buttonStyles, cn } from "@/lib/tailwind";
+import { isAdminEmail } from "@/lib/postSecurity";
 
 interface CommentRecord {
   id: string;
   author: string;
+  authorId?: string | null;
   bodyHtml: string;
   createdAt: string;
+  parentId?: string | null;
+  replies?: CommentRecord[];
 }
 
 export default function PostComments({
@@ -18,9 +22,11 @@ export default function PostComments({
   postId?: string;
 }) {
   const postId = postIdProp ?? "";
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [comments, setComments] = useState<CommentRecord[]>([]);
   const [commentBody, setCommentBody] = useState("");
+  const [replyTargetId, setReplyTargetId] = useState<string | null>(null);
+  const [replyBody, setReplyBody] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -99,6 +105,62 @@ export default function PostComments({
     }
   };
 
+  const handleReplySubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!replyTargetId || !replyBody.trim()) return;
+
+    setSubmitting(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`/api/posts/${postId}/comments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bodyHtml: replyBody.trim(),
+          parentId: replyTargetId,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to post reply.");
+      }
+      setReplyTargetId(null);
+      setReplyBody("");
+      await fetchComments();
+    } catch (replyError) {
+      setError(
+        replyError instanceof Error
+          ? replyError.message
+          : "Unable to post reply."
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    if (!isAuthenticated) return;
+
+    try {
+      const response = await fetch(
+        `/api/posts/${postId}/comments/${commentId}`,
+        { method: "DELETE" }
+      );
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to delete comment.");
+      }
+      await fetchComments();
+    } catch (deleteError) {
+      setError(
+        deleteError instanceof Error
+          ? deleteError.message
+          : "Unable to delete comment."
+      );
+    }
+  };
+
   return (
     <section className={PostDetailStyles.commentsSection}>
       <h3 className={PostDetailStyles.commentsHeader}>Comments</h3>
@@ -163,6 +225,105 @@ export default function PostComments({
                 className={PostDetailStyles.commentBody}
                 dangerouslySetInnerHTML={{ __html: comment.bodyHtml }}
               />
+
+              {isAuthenticated ? (
+                <div className={PostDetailStyles.commentActionRow}>
+                  <button
+                    type="button"
+                    className={PostDetailStyles.replyActionLink}
+                    onClick={() => {
+                      setReplyTargetId(comment.id);
+                      setReplyBody("");
+                    }}
+                  >
+                    Reply
+                  </button>
+                  {(user?.email === comment.authorId ||
+                    isAdminEmail(user?.email)) && (
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteComment(comment.id)}
+                      className={PostDetailStyles.deleteActionLink}
+                    >
+                      Delete
+                    </button>
+                  )}
+                </div>
+              ) : null}
+
+              {replyTargetId === comment.id ? (
+                <form
+                  onSubmit={handleReplySubmit}
+                  className={PostDetailStyles.commentComposer}
+                >
+                  <textarea
+                    value={replyBody}
+                    onChange={event => setReplyBody(event.target.value)}
+                    rows={3}
+                    className={PostDetailStyles.textarea}
+                    placeholder={`Reply to ${comment.author}...`}
+                  />
+                  <div className={PostDetailStyles.actionRow}>
+                    <div className={PostDetailStyles.replyActionRow}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setReplyTargetId(null);
+                          setReplyBody("");
+                        }}
+                        className={cn(
+                          buttonStyles.danger,
+                          PostDetailStyles.commentActionFocus
+                        )}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={submitting || !replyBody.trim()}
+                        className={cn(
+                          buttonStyles.primary,
+                          PostDetailStyles.primaryAction,
+                          PostDetailStyles.commentActionFocus
+                        )}
+                      >
+                        {submitting ? "Commenting..." : "Comment"}
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              ) : null}
+
+              {(comment.replies || []).map(reply => (
+                <div key={reply.id} className={PostDetailStyles.replyIndent}>
+                  <div className={PostDetailStyles.commentMeta}>
+                    <strong>{reply.author}</strong>
+                    <span className={PostDetailStyles.commentDot}>•</span>
+                    <span>
+                      {new Date(reply.createdAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </span>
+                  </div>
+                  <div
+                    className={PostDetailStyles.commentBody}
+                    dangerouslySetInnerHTML={{ __html: reply.bodyHtml }}
+                  />
+
+                  {isAuthenticated &&
+                  (isAdminEmail(user?.email) || reply.authorId === user?.id) ? (
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteComment(reply.id)}
+                      className={PostDetailStyles.nestedDeleteActionLink}
+                    >
+                      Delete
+                    </button>
+                  ) : null}
+                </div>
+              ))}
             </div>
           ))}
         </div>

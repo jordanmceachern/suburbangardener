@@ -870,4 +870,30 @@ html[data-theme="light"] {
   .dashboard-posts-loading {
     @apply flex min-h-32 w-full items-center justify-center;
   }
+
+  .Post-content p,
+  .Post-content ul,
+  .Post-content ol,
+  .Post-content blockquote,
+  .Post-content pre {
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .Post-content ul,
+  .Post-content ol {
+    padding-left: 1.5rem;
+  }
+
+  .Post-content ul {
+    list-style: disc;
+  }
+
+  .Post-content ol {
+    list-style: decimal;
+  }
+
+  .Post-content li {
+    display: list-item;
+  }
 }

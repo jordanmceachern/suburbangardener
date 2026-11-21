@@ -121,8 +121,16 @@ export function sanitizeHtml(input: string): string {
     );
 
   sanitized = sanitized.replace(
-    /<(?!\/?(?:p|br|strong|b|em|i|u|ul|ol|li|blockquote|a|h1|h2|h3|h4|h5|h6|span|div|code|pre|hr|img|figure|figcaption|sub|sup|mark)\b)[^>]+>/gi,
+    /<(?!\/?(?:p|br|strong|b|em|i|u|ul|ol|li|blockquote|a|h1|h2|h3|h4|h5|h6|span|div|code|pre|hr|sub|sup|mark)\b)[^>]+>/gi,
     ""
+  );
+
+  sanitized = sanitized.replace(
+    /<(strong|b|em|i|u|p|br|ul|ol|li|blockquote|h1|h2|h3|h4|h5|h6|span|div|code|pre|sub|sup|mark)(?:\s[^>]*)?>/gi,
+    (match, tag: string) => {
+      const normalizedTag = String(tag).toLowerCase();
+      return `<${normalizedTag}>`;
+    }
   );
 
   return sanitized.trim();
@@ -130,15 +138,26 @@ export function sanitizeHtml(input: string): string {
 
 // Older posts stored Markdown-style **bold** and *italic*; only text outside HTML tags is converted.
 export function convertLegacyEmphasis(html: string): string {
-  return html
+  const converted = html
     .split(/(<[^>]*>)/)
-    .map((part, index) =>
-      index % 2 === 1
-        ? part
-        : part
-            .replace(/\*\*(\S(?:[^*]*\S)?)\*\*/g, "<strong>$1</strong>")
-            .replace(/\*(\S(?:[^*]*\S)?)\*/g, "<em>$1</em>")
-    )
+    .map((part, index) => {
+      if (index % 2 === 1) return part;
+
+      return part
+        .replace(/\*\*(\S(?:[^*]*\S)?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*(\S(?:[^*]*\S)?)\*/g, "<em>$1</em>");
+    })
+    .join("");
+
+  return converted
+    .split(/\n+/)
+    .map(line => {
+      const trimmed = line.trim();
+      if (/^[-*]\s+/.test(trimmed)) {
+        return `<li>${trimmed.replace(/^[-*]\s+/, "")}</li>`;
+      }
+      return trimmed;
+    })
     .join("");
 }
 

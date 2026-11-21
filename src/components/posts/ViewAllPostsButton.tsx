@@ -7,6 +7,7 @@ interface ViewAllPostsButtonProps {
   variant?: "primary" | "secondary";
   text?: string;
   arrowDirection?: "left" | "right";
+  href?: string;
 }
 
 // Renders the ViewAllPostsButton UI block.
@@ -15,6 +16,7 @@ export default function ViewAllPostsButton({
   variant = "primary",
   text = "View All Posts",
   arrowDirection = "right",
+  href = "/posts",
 }: ViewAllPostsButtonProps) {
   const variantClasses =
     buttonStyles[variant === "primary" ? "primary" : "secondary"];
@@ -26,7 +28,7 @@ export default function ViewAllPostsButton({
   );
 
   return (
-    <Link href="/posts" className={combinedClasses}>
+    <Link href={href} className={combinedClasses}>
       {arrowDirection === "left" && (
         <ArrowIcon direction="left" className={viewAllPostsStyles.iconLeft} />
       )}

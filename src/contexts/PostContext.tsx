@@ -51,7 +51,7 @@ const initialState: PostState = {
   featuredPost: null,
   total: 0,
   hasMore: false,
-  loading: false,
+  loading: true,
   error: null,
   searchTerm: "",
   selectedCategory: ALL_POST_CATEGORIES,
