@@ -26,7 +26,7 @@ exports[`PostDisplayCard Component should match DOM snapshot 1`] = `
       class="flex items-center mb-2 justify-between gap-3"
     >
       <span
-        class="text-foreground-light dark:text-neutral-200 text-sm"
+        class="text-base text-foreground-light dark:text-foreground-dark"
       >
         2024-01-01
          · 

@@ -251,7 +251,7 @@ export const PostCardStyles = {
   image: "w-full h-full rounded-b-none",
   content: "px-6 pb-6 py-4 flex flex-col flex-grow",
   meta: "flex items-center mb-2 justify-between gap-3",
-  metaText: "text-foreground-light dark:text-neutral-200 text-sm",
+  metaText: "text-base text-foreground-light dark:text-foreground-dark",
   title:
     "text-xl lg:text-2xl xl:text-3xl font-bold text-foreground-light dark:text-foreground-dark mb-3",
   excerpt:
