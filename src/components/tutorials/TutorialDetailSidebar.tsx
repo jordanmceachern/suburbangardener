@@ -162,15 +162,15 @@ export default function TutorialDetailSidebar({
                       : ""
                   }
                 >
-                  <h4 className="font-semibold text-foreground-light dark:text-foreground-dark">
+                  <h4 className="text-base font-semibold text-foreground-light dark:text-foreground-dark">
                     <Link href={`/tutorials/${tutorial.slug}`}>
                       {tutorial.title}
                     </Link>
                   </h4>
-                  <p className="mt-1 line-clamp-2 text-sm">
+                  <p className="mt-1 line-clamp-2 text-base">
                     {tutorial.excerpt}
                   </p>
-                  <span className="mt-1 block text-xs">
+                  <span className="mt-1 block text-base">
                     {tutorial.publishedDate}
                   </span>
                 </div>
@@ -204,7 +204,7 @@ export default function TutorialDetailSidebar({
                       : ""
                   }
                 >
-                  <h4 className="font-semibold text-foreground-light dark:text-foreground-dark">
+                  <h4 className="text-base font-semibold text-foreground-light dark:text-foreground-dark">
                     <Link href={`/tutorials/${tutorial.slug}`}>
                       {tutorial.title}
                     </Link>

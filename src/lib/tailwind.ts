@@ -152,7 +152,7 @@ export const PostSidebarStyles = {
   skeletonLine: "h-3 bg-slate-300 dark:bg-slate-600 rounded mb-2",
   skeletonShort: "h-3 bg-slate-300 dark:bg-slate-600 rounded w-1/3",
   errorText: "text-sm text-red-600 dark:text-red-400",
-  relatedEmpty: "text-sm text-slate-600 dark:text-slate-300 italic",
+  relatedEmpty: "text-base text-foreground-light dark:text-foreground-dark",
   divider: "my-6 border-0 border-t border-primary-200 dark:border-slate-500",
   listWrap: "space-y-4",
   sectionSpacing: "mb-8",
@@ -295,8 +295,8 @@ export const PostListItemStyles = {
   title: "font-medium text-foreground-light dark:text-foreground-dark mb-2",
   titleLink:
     "text-foreground-light dark:text-foreground-dark underline hover:no-underline hover:text-primary-600 dark:hover:text-primary-300 transition-colors",
-  excerpt: "text-sm text-foreground-light dark:text-foreground-dark mb-2",
-  date: "text-xs text-foreground-light dark:text-foreground-dark",
+  excerpt: "text-base text-foreground-light dark:text-foreground-dark mb-2",
+  date: "text-base text-foreground-light dark:text-foreground-dark",
 } as const;
 
 export const POST_FORM_COPY = {

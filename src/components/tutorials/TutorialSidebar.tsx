@@ -139,7 +139,7 @@ export default function TutorialSidebar({
                       : ""
                   }
                 >
-                  <h4 className="font-semibold text-foreground-light dark:text-foreground-dark">
+                  <h4 className="text-base font-semibold text-foreground-light dark:text-foreground-dark">
                     <Link
                       href={`/tutorials/${tutorial.slug}`}
                       className="hover:text-primary-700 dark:hover:text-primary-300"
@@ -147,10 +147,10 @@ export default function TutorialSidebar({
                       {tutorial.title}
                     </Link>
                   </h4>
-                  <p className="mt-1 line-clamp-2 text-sm text-foreground-light dark:text-foreground-dark">
+                  <p className="mt-1 line-clamp-2 text-base text-foreground-light dark:text-foreground-dark">
                     {tutorial.excerpt}
                   </p>
-                  <span className="mt-1 block text-xs text-foreground-light dark:text-foreground-dark">
+                  <span className="mt-1 block text-base text-foreground-light dark:text-foreground-dark">
                     {tutorial.publishedDate}
                   </span>
                 </div>
