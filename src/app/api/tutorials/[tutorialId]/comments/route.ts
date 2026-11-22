@@ -4,17 +4,34 @@ import { authOptions } from "@/lib/auth";
 import { sanitizeHtml } from "@/lib/postSecurity";
 import { prisma } from "@/lib/prisma";
 
+type TutorialDelegate = {
+  findUnique(_args: unknown): Promise<unknown | null>;
+};
+
+type TutorialCommentDelegate = {
+  findMany(_args: unknown): Promise<unknown[]>;
+  findUnique(
+    _args: unknown
+  ): Promise<{ tutorialId: string; parentId: string | null } | null>;
+  create(_args: unknown): Promise<{ id: string }>;
+};
+
+const tutorialPrisma = prisma as unknown as {
+  tutorial: TutorialDelegate;
+  tutorialComment: TutorialCommentDelegate;
+};
+
 export async function GET(
   _request: NextRequest,
   { params }: { params: { tutorialId: string } }
 ) {
-  const tutorial = await prisma.tutorial.findUnique({
+  const tutorial = await tutorialPrisma.tutorial.findUnique({
     where: { id: params.tutorialId },
   });
   if (!tutorial)
     return NextResponse.json({ error: "Tutorial not found" }, { status: 404 });
 
-  const comments = await prisma.tutorialComment.findMany({
+  const comments = (await tutorialPrisma.tutorialComment.findMany({
     where: { tutorialId: params.tutorialId, parentId: null },
     orderBy: { createdAt: "asc" },
     include: {
@@ -24,7 +41,22 @@ export async function GET(
         include: { author: { select: { email: true, name: true } } },
       },
     },
-  });
+  })) as unknown as {
+    id: string;
+    author: { email: string | null; name: string | null };
+    bodyHtml: string;
+    createdAt: Date;
+    parentId: null;
+    authorId: string;
+    replies: Array<{
+      id: string;
+      author: { email: string | null; name: string | null };
+      bodyHtml: string;
+      createdAt: Date;
+      parentId: string | null;
+      authorId: string;
+    }>;
+  }[];
 
   return NextResponse.json({
     comments: comments.map(comment => ({
@@ -58,7 +90,7 @@ export async function POST(
   if (!session?.user?.id)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const tutorial = await prisma.tutorial.findUnique({
+  const tutorial = await tutorialPrisma.tutorial.findUnique({
     where: { id: params.tutorialId },
   });
   if (!tutorial)
@@ -82,7 +114,7 @@ export async function POST(
       : "";
 
   if (parentId) {
-    const parent = await prisma.tutorialComment.findUnique({
+    const parent = await tutorialPrisma.tutorialComment.findUnique({
       where: { id: parentId },
       select: { tutorialId: true, parentId: true },
     });
@@ -102,7 +134,7 @@ export async function POST(
     }
   }
 
-  const comment = await prisma.tutorialComment.create({
+  const comment = await tutorialPrisma.tutorialComment.create({
     data: {
       tutorialId: params.tutorialId,
       authorId: session.user.id,

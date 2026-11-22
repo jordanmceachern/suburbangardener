@@ -10,7 +10,7 @@ export default function BioPage() {
           aria-label="Suburban Gardener header image"
         >
           <Image
-            src="https://res.cloudinary.com/dtweazqf2/image/upload/q_auto,f_auto/v1754661544/SuburbanGardener/IMG_7791_nl7dzw.jpg"
+            src="https://res.cloudinary.com/dtweazqf2/image/upload/c_fill,g_north,h_768,w_896,q_auto,f_auto/v1795378876/SuburbanGardener/n9jsiyw1wzrcr2vter00.jpg"
             alt="Suburban Gardener"
             fill
             sizes="(max-width: 768px) 100vw, 896px"
@@ -18,41 +18,51 @@ export default function BioPage() {
           />
         </header>
 
-        <h1 className={bioStyles.title}>Meet Jordan McEachern</h1>
+        <h1 className={bioStyles.title}>About Me</h1>
 
         <div className={bioStyles.body}>
           <p>
-            Hi, I&apos;m Jordan McEachern, and I help suburban gardeners grow
-            more food with less work through smart, custom-built rainwater
+            Hi, I&apos;m Jordan McEachern, and I&apos;m the creator of Suburban
+            Gardener.
+          </p>
+          <p>
+            Since graduating from The University of New Brunswick, mechanical
+            engineering program, I&apos;ve embarked on what turned out to be a
+            rather unconventional career path. I&apos;ve now spent over 15 years
+            working as an engineer — first in mechanical (where I completed the
+            professional licensing requirements for the province of New
+            Brunswick as well as the junior licensing for the state of Maine),
+            then nearly a decade in software for a variety of companies. That
+            combination of hands-on mechanical design and software engineering
+            experience gave me the skills and vision for creating smart
             irrigation systems.
           </p>
           <p>
-            My path here is a little unusual. I spent over 15 years working as
-            an engineer — first in mechanical design-and-build for mechanical
-            systems (I was professionally licensed in New Brunswick and remain
-            junior-licensed in Maine), and then nearly a decade as a software
-            engineer for a variety of companies. That combination of hands-on
-            mechanical design and software thinking turns out to be exactly what
-            smart irrigation demands: reliable plumbing and hardware that can
-            stand up to the elements, controlled by automation that just works.
-          </p>
-          <p>
             Like a lot of people, I started vegetable gardening during the
-            pandemic. Unlike most, my first instinct was to build my own
-            irrigation system — one that captured rainwater, ran on a timer, and
-            quietly kept my beds watered while I got on with my life. It saved
-            me hours of dragging hoses and made my harvests bigger and more
-            consistent. Every year since, my garden has grown, and my grocery
-            bill has shrunk.
+            pandemic as a hobby. Due to my background, building my own
+            irrigation systems was one of my first instincts. The prototypes I
+            created captured rainwater, ran on a timer, and quietly kept my beds
+            watered while I got on with my day job and life as a parent. It
+            saved me hours of lugging watering cans daily, and allowed the
+            family to go on vacation without worrying about the garden being
+            looked after.
           </p>
           <p>
-            I built this business to bring that same result to other home
-            gardeners: a system designed for your yard, built properly, and
-            simple to live with. When I&apos;m not in the garden or the
-            workshop, I&apos;m probably out running or lifting — I&apos;ve been
-            a lifelong athlete (running, weightlifting, Tae Kwon Do, and some
-            MMA sparring), and I bring that same discipline and persistence to
-            everything I build.
+            I&apos;ve built this business to bring these same cost and time
+            saving benefits to other suburban gardeners: irrigation custom
+            designed to suit your personal garden needs, powered by sustainable
+            energy, reduces your grocery bill, and saves you daily watering
+            efforts.
+          </p>
+          <p>
+            When I&apos;m not being a dad, I&apos;m in the garden or the
+            workshop, and when I&apos;m not there, I&apos;m probably hitting the
+            gym for training — I&apos;ve been a lifelong athlete since age 12
+            (running, weightlifting, and in more recent years Tae Kwon Do and
+            MMA sparring...). I try my best to apply the same commitment and
+            dedication to my work, and I sincerely hope that the solutions
+            I&apos;ve created make your life easier and garden care more
+            sustainable when you have so many other important responsibilities.
           </p>
         </div>
       </article>

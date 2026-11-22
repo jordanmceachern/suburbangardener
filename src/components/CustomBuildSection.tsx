@@ -1,22 +1,15 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import { useAuth } from "../lib/auth-nextauth";
-import { cn, customBuildStyles } from "../lib/tailwind";
-
-interface CustomBuildSectionProps {
-  className?: string;
-}
+import { customBuildStyles } from "../lib/tailwind";
 
 // Renders the CustomBuildSection UI block.
-export default function CustomBuildSection({
-  className = "",
-}: CustomBuildSectionProps) {
+export default function CustomBuildSection() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <section className={cn(customBuildStyles.section, className)}>
+    <section className={customBuildStyles.section}>
       <div className={customBuildStyles.inner}>
         <h2 className={customBuildStyles.title}>Custom Build Your Own</h2>
         <ul className={customBuildStyles.list}>

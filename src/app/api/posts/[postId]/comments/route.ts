@@ -70,34 +70,7 @@ export async function GET(
     },
   });
 
-  const mappedComments = comments.map(comment => ({
-    id: comment.id,
-    postId: comment.postId,
-    authorId: comment.authorId || null,
-    author: comment.author?.email
-      ? comment.author.email.split("@")[0]
-      : comment.author?.name || "Anonymous",
-    bodyHtml: comment.bodyHtml,
-    parentId: null,
-    createdAt:
-      comment.createdAt instanceof Date
-        ? comment.createdAt.toISOString()
-        : new Date(comment.createdAt).toISOString(),
-    replies: comment.replies.map(reply => ({
-      id: reply.id,
-      postId: reply.postId,
-      author: reply.author?.email
-        ? reply.author.email.split("@")[0]
-        : reply.author?.name || "Anonymous",
-      bodyHtml: reply.bodyHtml,
-      parentId: reply.parentId,
-      authorId: reply.authorId,
-      createdAt:
-        reply.createdAt instanceof Date
-          ? reply.createdAt.toISOString()
-          : new Date(reply.createdAt).toISOString(),
-    })),
-  }));
+  const mappedComments = comments.map(mapComment);
 
   return NextResponse.json({ comments: mappedComments });
 }
