@@ -557,3 +557,19 @@ export const sharedEditFormLoadingStyles = {
   editSkeletonField: "h-14 rounded bg-neutral-200 dark:bg-neutral-600",
   editSkeletonBody: "h-64 rounded bg-neutral-200 dark:bg-neutral-600",
 } as const;
+
+export const bioStyles = {
+  homeBlock:
+    "rounded-lg border border-tertiary-200 bg-tertiary-100 p-6 text-center dark:border-tertiary-700 dark:bg-tertiary-800",
+  homeDescription:
+    "mb-2 text-lg text-foreground-light dark:text-foreground-dark",
+  homeLink:
+    "text-lg font-semibold text-primary-700 underline underline-offset-4 hover:no-underline dark:text-primary-300",
+  shell:
+    "mx-auto max-w-4xl space-y-8 rounded-2xl border border-secondary-200 bg-primary-100 p-6 shadow-xl dark:border-secondary-700 dark:bg-secondary-800",
+  banner: "relative h-72 overflow-hidden rounded-xl bg-slate-800 md:h-96",
+  bannerImage: "h-full w-full object-cover",
+  title:
+    "text-center text-3xl font-bold text-foreground-light dark:text-foreground-dark md:text-4xl",
+  body: "space-y-5 text-lg leading-relaxed text-foreground-light dark:text-foreground-dark",
+} as const;
