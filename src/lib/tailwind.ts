@@ -50,7 +50,7 @@ export const navStyles = {
 
 export const customBuildStyles = {
   section:
-    "p-6 rounded-lg bg-primary-100 dark:bg-slate-600 border border-primary-200 dark:border-slate-500",
+    "mt-8 p-6 rounded-lg bg-primary-100 dark:bg-slate-600 border border-primary-200 dark:border-slate-500",
   inner: "text-center",
   title:
     "text-2xl sm:text-3xl font-bold mb-3 text-foreground-light dark:text-foreground-dark",
@@ -109,9 +109,9 @@ export const PostListStyles = {
 
 export const homePostStyles = {
   sectionLoading:
-    "p-6 rounded-lg bg-secondary-100 dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700",
+    "mt-12 p-6 rounded-lg bg-secondary-100 dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700",
   sectionLoaded:
-    "p-6 rounded-lg bg-secondary-100 dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700",
+    "mt-12 p-6 rounded-lg bg-secondary-100 dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700",
   titleWrap: "text-center mb-2",
   title:
     "text-2xl sm:text-3xl font-bold text-foreground-light dark:text-foreground-dark mb-2",
@@ -556,4 +556,25 @@ export const sharedEditFormLoadingStyles = {
     "mx-auto h-8 w-64 rounded bg-neutral-200 dark:bg-neutral-600",
   editSkeletonField: "h-14 rounded bg-neutral-200 dark:bg-neutral-600",
   editSkeletonBody: "h-64 rounded bg-neutral-200 dark:bg-neutral-600",
+} as const;
+
+export const bioStyles = {
+  homeBlock:
+    "rounded-lg border border-tertiary-200 bg-tertiary-100 p-6 text-center dark:border-tertiary-700 dark:bg-tertiary-800",
+  homeDescription:
+    "mb-2 text-xl text-foreground-light dark:text-foreground-dark",
+  homeLink:
+    "text-xl font-semibold text-foreground-light underline underline-offset-4 hover:no-underline dark:text-foreground-dark",
+  shell:
+    "mx-auto max-w-4xl space-y-8 rounded-2xl border border-secondary-200 bg-primary-100 p-6 shadow-xl dark:border-secondary-700 dark:bg-secondary-800",
+  banner: "relative h-72 overflow-hidden rounded-xl bg-slate-800 md:h-96",
+  bannerImage: "h-full w-full object-cover object-top",
+  title:
+    "text-center text-3xl font-bold text-foreground-light dark:text-foreground-dark md:text-4xl",
+  body: "space-y-5 text-lg leading-relaxed text-foreground-light dark:text-foreground-dark",
+} as const;
+
+export const homePageStyles = {
+  main: "min-h-screen p-8 bg-background-light dark:bg-background-dark",
+  container: "max-w-4xl mx-auto space-y-8",
 } as const;

@@ -1,14 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PostDisplayCard from "./PostDisplayCard";
 import ViewAllPostsButton from "./ViewAllPostsButton";
-import { cn, homePostStyles } from "../../lib/tailwind";
+import { homePostStyles } from "../../lib/tailwind";
 import type { PostDisplayData } from "./PostDisplayCard";
-
-interface HomePostsSectionProps {
-  className?: string;
-}
 
 async function fetchFeaturedPosts(): Promise<PostDisplayData[]> {
   try {
@@ -33,9 +29,7 @@ async function fetchFeaturedPosts(): Promise<PostDisplayData[]> {
 }
 
 // Renders the HomePostsSection UI block.
-export default function HomePostsSection({
-  className = "",
-}: HomePostsSectionProps) {
+export default function HomePostsSection() {
   const [posts, setPosts] = useState<PostDisplayData[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -58,7 +52,7 @@ export default function HomePostsSection({
 
   if (loading) {
     return (
-      <section className={cn(homePostStyles.sectionLoading, className)}>
+      <section className={homePostStyles.sectionLoading}>
         <div className={homePostStyles.titleWrap}>
           <h2 className={homePostStyles.title}>Community Shared Knowledge</h2>
           <p className={homePostStyles.description}>
@@ -83,7 +77,7 @@ export default function HomePostsSection({
   }
 
   return (
-    <section className={cn(homePostStyles.sectionLoaded, className)}>
+    <section className={homePostStyles.sectionLoaded}>
       <div className={homePostStyles.titleWrap}>
         <h2 className={homePostStyles.title}>Community Shared Knowledge</h2>
         <p className={homePostStyles.descriptionMobile}>
